@@ -325,6 +325,21 @@ app.post('/api/volumes/:id/reopen', async (req, res) => {
     }
 });
 
+// Buscar Produto por EAN (Lookup)
+app.get('/api/products/:ean', async (req, res) => {
+    const { ean } = req.params;
+    try {
+        const prodRes = await query('SELECT * FROM produtos WHERE ean = $1', [ean]);
+        if (prodRes.rows.length === 0) {
+            return res.status(404).json({ error: 'Produto não encontrado' });
+        }
+        res.json(prodRes.rows[0]);
+    } catch (err) {
+        console.error('Erro ao buscar produto:', err);
+        res.status(500).json({ error: 'Erro ao buscar produto' });
+    }
+});
+
 // Bipar Item (Scan)
 app.post('/api/scan', async (req, res) => {
     const { volumeId, barcode, quantity = 1 } = req.body;

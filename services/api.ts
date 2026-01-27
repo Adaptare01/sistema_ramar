@@ -70,6 +70,12 @@ export const api = {
         return response.json();
     },
 
+    getProduct: async (ean: string) => {
+        const response = await fetch(`${API_Base}/products/${ean}`);
+        if (!response.ok) throw new Error('Produto não encontrado');
+        return response.json();
+    },
+
     deleteItem: async (itemId: string) => {
         const response = await fetch(`${API_Base}/items/${itemId}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Falha ao remover item');

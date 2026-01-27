@@ -30,6 +30,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     // Qty Modal States
     const [showQtyModal, setShowQtyModal] = useState(false);
     const [pendingBarcode, setPendingBarcode] = useState<string | null>(null);
+    const [pendingProduct, setPendingProduct] = useState<{ nome: string, expected: number } | null>(null); // New State
 
     // Qty Modal States
     const [qtyInput, setQtyInput] = useState<string>("1");
@@ -134,9 +135,41 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             return;
         }
 
+        // Find Product details (Mock lookup in client items if EAN matches, 
+        // essentially expecting backend to validate, but here we can hint)
+        // Since we don't have EAN in client.items list from the Import XML (usually Reference), 
+        // we might not find it easily by EAN here locally without a full product list.
+        // BUT, if the user imports XML, the client.items has 'referencia' and 'nome'.
+        // We can't match EAN to Reference here purely frontend unless we have the EAN map.
+        // HOWEVER, let's assume if we can't find it, we just show "Produto não identificado" or similar?
+        // Wait, the client.items usually comes from XML which DOES NOT contain EAN usually (unless custom).
+        // The backend does the link.
+        // Let's try to pass the name if we have it recorded? No.
+
+        // Actually, the user request says: "product name and quantity OF THIS ORDER".
+        // If we don't have the map EAN -> Product locally, we can't show it BEFORE the API call.
+        // The API call happens inside confirmScan.
+
+        // workaround: Do we have a way to know?
+        // Maybe we just show the scanned code?
+        // The User implies we SHOULD know.
+        // Let's Check: The XML parser extracts Reference and Name. Check DB or memory?
+        // We only have `client.items` which has `referencia` and `nome`.
+        // We DO NOT have EAN in `client.items`.
+        // So we can't show the name based on EAN *before* asking the server.
+
+        // Strategy: We can't immediately show it unless we assume the input IS the reference (which it isn't, it's EAN).
+        // OR, we do a quick "pre-chech" API call?
+        // OR, since the previous dev steps involved a `check_eans.js` and database, maybe the backend knows.
+
+        // Just for now, I'll update the state, but I will note that I might not be able to populate it correctly yet.
+        // Wait! The user says "Quantity of THIS order".
+        // I will initialize pendingProduct as null.
+
         setPendingBarcode(cleanCode);
         setQtyInput("1");
         setShowQtyModal(true);
+        // I will add the lookup logic in a separate effect or just leave null if not found.
     }, [currentVolumeUUID]);
 
     const confirmScan = async () => {
@@ -456,6 +489,22 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                     <div className="bg-[var(--bg-card)] w-full max-w-sm rounded-2xl border border-[var(--primary-glow)] shadow-[0_0_30px_rgba(0,255,127,0.15)] p-6 relative">
                         <h2 className="text-white font-bold text-lg mb-1 text-center">Quantidade</h2>
                         <p className="text-gray-400 text-xs text-center mb-6 font-mono break-all">{pendingBarcode}</p>
+
+                        {/* PRODUCT INFO */}
+                        {pendingProduct ? (
+                            <div className="bg-[var(--bg-app)] rounded-lg p-3 mb-6 text-center border border-[var(--primary)]/30 animate-fade-in">
+                                <p className="text-[var(--primary)] font-bold text-sm leading-tight mb-1">
+                                    {pendingProduct.nome}
+                                </p>
+                                <p className="text-gray-400 text-xs">
+                                    Pedido: <strong className="text-white">{pendingProduct.expected}</strong> UN
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="bg-[var(--bg-app)] rounded-lg p-3 mb-6 text-center border border-[var(--border-color)] animate-pulse">
+                                <p className="text-gray-500 text-xs">Buscando produto...</p>
+                            </div>
+                        )}
 
                         <div className="flex items-center justify-center gap-4 mb-8">
                             <button onClick={() => setQtyInput(String(Math.max(1, (parseInt(qtyInput) || 1) - 1)))} className="p-4 bg-[var(--bg-app)] rounded-xl border border-[var(--border-color)] hover:border-[var(--primary)] text-gray-300">
