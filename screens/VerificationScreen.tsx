@@ -30,7 +30,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     // Qty Modal States
     const [showQtyModal, setShowQtyModal] = useState(false);
     const [pendingBarcode, setPendingBarcode] = useState<string | null>(null);
-    const [pendingProduct, setPendingProduct] = useState<{ nome: string, expected: number } | null>(null); // New State
+    const [pendingProduct, setPendingProduct] = useState<{ nome: string, expected: number, isExtra?: boolean } | null>(null); // New State
 
     // Qty Modal States
     const [qtyInput, setQtyInput] = useState<string>("1");
@@ -150,7 +150,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
             setPendingProduct({
                 nome: product.nome || product.descricao || 'Produto sem nome',
-                expected: orderItem ? orderItem.quantidadeEsperada : 0
+                expected: orderItem ? orderItem.quantidadeEsperada : 0,
+                isExtra: !orderItem
             });
 
         } catch (err) {
@@ -486,13 +487,17 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
                         {/* PRODUCT INFO */}
                         {pendingProduct ? (
-                            <div className="bg-[var(--bg-app)] rounded-lg p-3 mb-6 text-center border border-[var(--primary)]/30 animate-fade-in">
-                                <p className={`font-bold text-sm leading-tight mb-1 ${pendingProduct.nome === 'Produto Não Cadastrado' ? 'text-red-500' : 'text-[var(--primary)]'}`}>
+                            <div className={`rounded-lg p-3 mb-6 text-center border animate-fade-in ${pendingProduct.isExtra ? 'bg-orange-500/20 border-orange-500/50' : 'bg-[var(--bg-app)] border-[var(--primary)]/30'}`}>
+                                <p className={`font-bold text-sm leading-tight mb-1 ${pendingProduct.nome === 'Produto Não Cadastrado' ? 'text-red-500' : (pendingProduct.isExtra ? 'text-orange-400' : 'text-[var(--primary)]')}`}>
                                     {pendingProduct.nome}
                                 </p>
-                                <p className="text-gray-400 text-xs">
-                                    Pedido: <strong className="text-white">{pendingProduct.expected}</strong> UN
-                                </p>
+                                {pendingProduct.isExtra ? (
+                                    <p className="text-orange-400 font-bold text-xs mt-1">PRODUTO NÃO PERTENCE AO PEDIDO</p>
+                                ) : (
+                                    <p className="text-gray-400 text-xs">
+                                        Pedido: <strong className="text-white">{pendingProduct.expected}</strong> UN
+                                    </p>
+                                )}
                             </div>
                         ) : (
                             <div className="bg-[var(--bg-app)] rounded-lg p-3 mb-6 text-center border border-[var(--border-color)] animate-pulse">
