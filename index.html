@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conferência de Cargas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+      /* Custom scrollbar for better UX */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8; 
+      }
+
+      /* PRINT STYLES - THERMAL LABELS */
+      @media print {
+        /* Oculta tudo por padrão */
+        body * {
+          visibility: hidden;
+          height: 0;
+          overflow: hidden;
+        }
+
+        /* Exibe apenas a área de etiquetas */
+        #printable-labels, #printable-labels * {
+          visibility: visible;
+          height: auto;
+          overflow: visible;
+        }
+
+        #printable-labels {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          background: white;
+        }
+
+        /* Configuração da Etiqueta Individual */
+        .thermal-label {
+          width: 100mm;
+          height: 50mm;
+          page-break-after: always; /* Quebra de página forçada */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          padding: 2mm;
+          border: 1px solid #ddd; /* Apenas para visualização se a margem falhar, na térmica sai limpo */
+          box-sizing: border-box;
+          font-family: sans-serif;
+          color: black;
+          background: white;
+        }
+
+        .label-header {
+          font-size: 12px;
+          font-weight: bold;
+          text-align: center;
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          border-bottom: 2px solid black;
+          padding-bottom: 2px;
+        }
+
+        .label-id {
+          font-size: 24px;
+          font-weight: 900;
+          margin: 2px 0;
+        }
+
+        .label-barcode {
+          width: 90%;
+          height: 40px;
+        }
+        
+        /* Ajuste do SVG gerado pelo JsBarcode */
+        .label-barcode svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .label-footer {
+          font-size: 10px;
+          border-top: 1px solid black;
+          width: 100%;
+          text-align: right;
+          padding-top: 2px;
+        }
+
+        /* Configura a página da impressora para 0 margens */
+        @page {
+          size: 100mm 50mm;
+          margin: 0;
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-gray-100 text-gray-900 font-sans antialiased">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

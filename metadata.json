@@ -1,0 +1,7 @@
+{
+  "name": "Conferência de Cargas - MVP",
+  "description": "Sistema de conferência de cargas via XML e leitor de código de barras.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
