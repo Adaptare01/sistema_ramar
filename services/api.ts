@@ -12,7 +12,7 @@ export const api = {
 
         if (!response.ok) {
             const err = await response.json();
-            throw new Error(err.message || 'Falha na importação');
+            throw new Error(err.message || err.error || 'Falha na importação');
         }
 
         return response.json();

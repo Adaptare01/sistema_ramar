@@ -33,9 +33,13 @@ app.post('/api/import', async (req, res) => {
         const clientsData = parseCrystalReportsXML(xmlContent);
         const totalItens = clientsData.reduce((acc, c) => acc + c.totalItems, 0);
 
-        // 3. Check for Duplicate Hash (DISABLED DUE TO DB PERMISSION ISSUE)
-        // const duplicateCheck = await query('SELECT id FROM cargas WHERE xml_hash = $1 LIMIT 1', [hash]);
-        // ... (Logic removed/commented)
+        // 3. Check for Duplicate Filename
+        const duplicateCheck = await query('SELECT id FROM cargas WHERE nome_arquivo = $1 LIMIT 1', [fileName]);
+        if (duplicateCheck.rows.length > 0) {
+            return res.status(409).json({
+                error: `O arquivo '${fileName}' já foi importado anteriormente.`
+            });
+        }
 
         await client.query('BEGIN');
 
