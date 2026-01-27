@@ -92,7 +92,10 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     }, [volumes]);
 
     const totalScannedCount = allScannedItems.reduce((acc, i) => acc + i.quantity, 0);
-    const progressPercent = client.totalItems > 0 ? Math.min(100, Math.round((totalScannedCount / client.totalItems) * 100)) : 0;
+    // Progress based on unique products scanned vs total unique products in order
+    const uniqueScannedCount = client.items.filter(item => (scannedMap.get(item.referencia) || 0) > 0).length;
+    const totalUniqueItems = client.items.length;
+    const progressPercent = totalUniqueItems > 0 ? Math.round((uniqueScannedCount / totalUniqueItems) * 100) : 0;
 
     // Focus Management
     useEffect(() => {
