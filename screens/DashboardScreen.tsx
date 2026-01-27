@@ -112,7 +112,7 @@ export const DashboardScreen = ({ onNavigate }: DashboardProps) => {
                         <p className="text-[10px] text-gray-500 mt-1">Verificação rápida</p>
                     </Card>
 
-                    <Card className="group opacity-50">
+                    <Card onClick={() => onNavigate('labels')} className="group">
                         <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition-all mb-3">
                             <Printer size={20} />
                         </div>

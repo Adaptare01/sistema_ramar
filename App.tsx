@@ -7,9 +7,10 @@ import { UploadScreen } from './screens/UploadScreen';
 import { ClientListScreen } from './screens/ClientListScreen';
 import { VerificationScreen } from './screens/VerificationScreen';
 
-import { LoadingScreen } from './components/LoadingScreen'; // Hypothetical or reuse Dashboard loading
+
 import { LoadListScreen } from './screens/LoadListScreen';
 import { ConfigScreen } from './screens/ConfigScreen';
+import { LabelScreen } from './screens/LabelScreen';
 
 export default function App() {
     const [screen, setScreen] = useState<AppScreen>('dashboard');
@@ -97,6 +98,8 @@ export default function App() {
                 return <div className="p-8 text-center text-gray-500">Módulo de Relatórios em Breve</div>;
             case 'settings':
                 return <ConfigScreen onBack={() => setScreen('dashboard')} />;
+            case 'labels':
+                return <LabelScreen onBack={() => setScreen('dashboard')} />;
             default:
                 return <DashboardScreen onNavigate={setScreen} />;
         }

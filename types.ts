@@ -34,4 +34,4 @@ export interface Volume {
   items: ScannedItem[];
 }
 
-export type AppScreen = 'dashboard' | 'upload' | 'clients' | 'conference' | 'reports' | 'settings' | 'loads';
+export type AppScreen = 'dashboard' | 'upload' | 'clients' | 'conference' | 'reports' | 'settings' | 'loads' | 'labels';

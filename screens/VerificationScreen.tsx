@@ -17,7 +17,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     const [currentVolumeId, setCurrentVolumeId] = useState<number | null>(null); // Visual sequential ID
     const [currentVolumeUUID, setCurrentVolumeUUID] = useState<string | null>(null); // Database ID
     const [barcode, setBarcode] = useState("");
-    const [alertMsg, setAlertMsg] = useState<{ type: 'error' | 'info', msg: string } | null>(null);
+    const [alertMsg, setAlertMsg] = useState<{ type: 'error' | 'info' | 'warning', msg: string } | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const scannerRef = useRef<Html5QrcodeScanner | null>(null);
 
@@ -194,10 +194,10 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                 playSound('error');
             } else if (result.warning && result.warning.type === 'EXCESS_QUANTITY') {
                 setAlertMsg({
-                    type: 'error',
+                    type: 'warning',
                     msg: `ATENÇÃO: Quantidade (${result.warning.attempted}) maior que o pedido (${result.warning.expected})!`
                 });
-                playSound('error');
+                playSound('error'); // Keep error sound for attention
             }
 
             setShowQtyModal(false);
@@ -360,9 +360,9 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                 {alertMsg && (
                     <div className={`p-4 rounded-xl flex items-center gap-3 shadow-lg border animate-fade-in ${alertMsg.type === 'error'
                         ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                        : 'bg-green-500/10 border-green-500/30 text-green-400'
+                        : (alertMsg.type === 'warning' ? 'bg-orange-500/10 border-orange-500/30 text-orange-400' : 'bg-green-500/10 border-green-500/30 text-green-400')
                         }`}>
-                        {alertMsg.type === 'error' ? <AlertTriangle size={20} /> : <CheckCircle size={20} />}
+                        {alertMsg.type === 'error' ? <AlertTriangle size={20} /> : (alertMsg.type === 'warning' ? <AlertCircle size={20} /> : <CheckCircle size={20} />)}
                         <span className="font-bold text-sm">{alertMsg.msg}</span>
                     </div>
                 )}
