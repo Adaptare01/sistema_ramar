@@ -61,20 +61,20 @@ export const LoadListScreen = ({ onSelect }: LoadListScreenProps) => {
 
                         return (
                             <Card key={load.id} className="hover:border-[var(--primary)]/50 transition cursor-pointer group" onClick={() => onSelect(load.id)}>
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-3 rounded-lg bg-[var(--bg-app)] text-[var(--primary)] border border-[var(--border-color)]">
+                                <div className="flex justify-between items-start mb-4 gap-4">
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                        <div className="p-3 rounded-lg bg-[var(--bg-app)] text-[var(--primary)] border border-[var(--border-color)] shrink-0">
                                             <FileText size={24} />
                                         </div>
-                                        <div>
-                                            <h3 className="font-bold text-gray-200 group-hover:text-[var(--primary)] transition">{load.nome_arquivo}</h3>
+                                        <div className="min-w-0">
+                                            <h3 className="font-bold text-gray-200 group-hover:text-[var(--primary)] transition truncate">{load.nome_arquivo}</h3>
                                             <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
                                                 <Calendar size={12} />
                                                 <span>{formatDate(load.data_importacao)}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={`px-3 py-1 rounded-full text-xs font-bold border ${progress === 100
+                                    <div className={`px-3 py-1 rounded-full text-xs font-bold border shrink-0 ${progress === 100
                                         ? 'bg-green-500/10 border-green-500/30 text-green-400'
                                         : 'bg-blue-500/10 border-blue-500/30 text-blue-400'
                                         }`}>
