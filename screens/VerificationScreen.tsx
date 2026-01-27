@@ -124,7 +124,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
 
     // Logic: Process Barcode (Triggers Modal)
-    const processBarcode = useCallback((code: string) => {
+    const processBarcode = useCallback(async (code: string) => {
         const cleanCode = code.trim();
         if (!cleanCode) return;
 
@@ -135,42 +135,29 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             return;
         }
 
-        // Find Product details (Mock lookup in client items if EAN matches, 
-        // essentially expecting backend to validate, but here we can hint)
-        // Since we don't have EAN in client.items list from the Import XML (usually Reference), 
-        // we might not find it easily by EAN here locally without a full product list.
-        // BUT, if the user imports XML, the client.items has 'referencia' and 'nome'.
-        // We can't match EAN to Reference here purely frontend unless we have the EAN map.
-        // HOWEVER, let's assume if we can't find it, we just show "Produto não identificado" or similar?
-        // Wait, the client.items usually comes from XML which DOES NOT contain EAN usually (unless custom).
-        // The backend does the link.
-        // Let's try to pass the name if we have it recorded? No.
-
-        // Actually, the user request says: "product name and quantity OF THIS ORDER".
-        // If we don't have the map EAN -> Product locally, we can't show it BEFORE the API call.
-        // The API call happens inside confirmScan.
-
-        // workaround: Do we have a way to know?
-        // Maybe we just show the scanned code?
-        // The User implies we SHOULD know.
-        // Let's Check: The XML parser extracts Reference and Name. Check DB or memory?
-        // We only have `client.items` which has `referencia` and `nome`.
-        // We DO NOT have EAN in `client.items`.
-        // So we can't show the name based on EAN *before* asking the server.
-
-        // Strategy: We can't immediately show it unless we assume the input IS the reference (which it isn't, it's EAN).
-        // OR, we do a quick "pre-chech" API call?
-        // OR, since the previous dev steps involved a `check_eans.js` and database, maybe the backend knows.
-
-        // Just for now, I'll update the state, but I will note that I might not be able to populate it correctly yet.
-        // Wait! The user says "Quantity of THIS order".
-        // I will initialize pendingProduct as null.
-
         setPendingBarcode(cleanCode);
         setQtyInput("1");
+        setPendingProduct(null); // Show 'Buscando...'
         setShowQtyModal(true);
-        // I will add the lookup logic in a separate effect or just leave null if not found.
-    }, [currentVolumeUUID]);
+
+        try {
+            // 1. Lookup Product in DB
+            const product = await api.getProduct(cleanCode);
+
+            // 2. Match with Client Order (client.items)
+            // Note: client.items uses 'referencia', product has 'referencia'
+            const orderItem = client.items.find((i: any) => i.referencia === product.referencia);
+
+            setPendingProduct({
+                nome: product.nome || product.descricao || 'Produto sem nome',
+                expected: orderItem ? orderItem.quantidadeEsperada : 0
+            });
+
+        } catch (err) {
+            console.warn("Produto não encontrado para pré-visualização", err);
+            setPendingProduct({ nome: 'Produto Não Cadastrado', expected: 0 });
+        }
+    }, [currentVolumeUUID, client.items]);
 
     const confirmScan = async () => {
         if (!pendingBarcode || !currentVolumeUUID) return;
@@ -493,7 +480,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                         {/* PRODUCT INFO */}
                         {pendingProduct ? (
                             <div className="bg-[var(--bg-app)] rounded-lg p-3 mb-6 text-center border border-[var(--primary)]/30 animate-fade-in">
-                                <p className="text-[var(--primary)] font-bold text-sm leading-tight mb-1">
+                                <p className={`font-bold text-sm leading-tight mb-1 ${pendingProduct.nome === 'Produto Não Cadastrado' ? 'text-red-500' : 'text-[var(--primary)]'}`}>
                                     {pendingProduct.nome}
                                 </p>
                                 <p className="text-gray-400 text-xs">
