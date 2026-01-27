@@ -162,6 +162,13 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     const confirmScan = async () => {
         if (!pendingBarcode || !currentVolumeUUID) return;
 
+        // Block unregistered products
+        if (pendingProduct?.nome === 'Produto Não Cadastrado') {
+            setAlertMsg({ type: 'error', msg: 'Produto não cadastrado não pode ser adicionado!' });
+            playSound('error');
+            return;
+        }
+
         try {
             const qty = parseInt(qtyInput) || 1;
             const result = await api.scanItem(currentVolumeUUID, pendingBarcode, qty);
@@ -514,7 +521,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
                         <button
                             onClick={confirmScan}
-                            className="w-full py-4 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-black font-bold rounded-xl shadow-[0_0_20px_var(--primary-glow)] text-lg transition"
+                            disabled={pendingProduct?.nome === 'Produto Não Cadastrado'}
+                            className={`w-full py-4 text-black font-bold rounded-xl shadow-[0_0_20px_var(--primary-glow)] text-lg transition ${pendingProduct?.nome === 'Produto Não Cadastrado' ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-[var(--primary)] hover:bg-[var(--primary-dark)]'}`}
                         >
                             CONFIRMAR (ENTER)
                         </button>
