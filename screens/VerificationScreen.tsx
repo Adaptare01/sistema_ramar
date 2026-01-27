@@ -170,6 +170,13 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             return;
         }
 
+        // Block extra products (not in order)
+        if (pendingProduct?.isExtra) {
+            setAlertMsg({ type: 'error', msg: 'Produto não pertence ao pedido e não pode ser adicionado!' });
+            playSound('error');
+            return;
+        }
+
         try {
             const qty = parseInt(qtyInput) || 1;
             const result = await api.scanItem(currentVolumeUUID, pendingBarcode, qty);
@@ -526,8 +533,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
                         <button
                             onClick={confirmScan}
-                            disabled={pendingProduct?.nome === 'Produto Não Cadastrado'}
-                            className={`w-full py-4 text-black font-bold rounded-xl shadow-[0_0_20px_var(--primary-glow)] text-lg transition ${pendingProduct?.nome === 'Produto Não Cadastrado' ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-[var(--primary)] hover:bg-[var(--primary-dark)]'}`}
+                            disabled={pendingProduct?.nome === 'Produto Não Cadastrado' || pendingProduct?.isExtra}
+                            className={`w-full py-4 text-black font-bold rounded-xl shadow-[0_0_20px_var(--primary-glow)] text-lg transition ${pendingProduct?.nome === 'Produto Não Cadastrado' || pendingProduct?.isExtra ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-[var(--primary)] hover:bg-[var(--primary-dark)]'}`}
                         >
                             CONFIRMAR (ENTER)
                         </button>
