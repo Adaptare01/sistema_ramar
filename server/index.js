@@ -489,6 +489,10 @@ app.use((err, req, res, next) => {
 });
 
 // Inicialização do servidor
-app.listen(port, () => {
-    console.log(`🚀 Servidor backend rodando em http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(port, () => {
+        console.log(`🚀 Servidor backend rodando em http://localhost:${port}`);
+    });
+}
+
+export default app;
