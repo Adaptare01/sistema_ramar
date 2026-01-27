@@ -1,13 +1,14 @@
-import pkg from 'pg';
+import { createRequire } from 'module';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
+const require = createRequire(import.meta.url);
+const { Pool } = require('pg');
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '../.env.local') });
-
-const { Pool } = pkg;
 
 // Configuração estrita conforme padrão Adaptare
 const pool = new Pool({
