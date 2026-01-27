@@ -9,6 +9,7 @@ import { VerificationScreen } from './screens/VerificationScreen';
 
 import { LoadingScreen } from './components/LoadingScreen'; // Hypothetical or reuse Dashboard loading
 import { LoadListScreen } from './screens/LoadListScreen';
+import { ConfigScreen } from './screens/ConfigScreen';
 
 export default function App() {
     const [screen, setScreen] = useState<AppScreen>('dashboard');
@@ -95,7 +96,7 @@ export default function App() {
             case 'reports':
                 return <div className="p-8 text-center text-gray-500">Módulo de Relatórios em Breve</div>;
             case 'settings':
-                return <div className="p-8 text-center text-gray-500">Configurações em Breve</div>;
+                return <ConfigScreen onBack={() => setScreen('dashboard')} />;
             default:
                 return <DashboardScreen onNavigate={setScreen} />;
         }

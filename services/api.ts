@@ -76,6 +76,12 @@ export const api = {
         return response.json();
     },
 
+    getAllProducts: async () => {
+        const response = await fetch(`${API_Base}/products`);
+        if (!response.ok) throw new Error('Falha ao listar produtos');
+        return response.json();
+    },
+
     deleteItem: async (itemId: string) => {
         const response = await fetch(`${API_Base}/items/${itemId}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Falha ao remover item');

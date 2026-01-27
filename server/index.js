@@ -340,6 +340,17 @@ app.get('/api/products/:ean', async (req, res) => {
     }
 });
 
+// Listar todos os produtos
+app.get('/api/products', async (req, res) => {
+    try {
+        const result = await query('SELECT * FROM produtos ORDER BY descricao ASC LIMIT 1000');
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Erro ao listar produtos:', err);
+        res.status(500).json({ error: 'Erro ao listar produtos' });
+    }
+});
+
 // Bipar Item (Scan)
 app.post('/api/scan', async (req, res) => {
     const { volumeId, barcode, quantity = 1 } = req.body;
