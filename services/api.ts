@@ -114,5 +114,20 @@ export const api = {
         const response = await fetch(`${API_Base}/cargas/${cargaId}/clients`);
         if (!response.ok) throw new Error('Falha ao buscar clientes da carga');
         return response.json();
+    },
+
+    importProducts: async (fileContent: string): Promise<{ success: boolean; details: any }> => {
+        const response = await fetch(`${API_Base}/products/import`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fileContent })
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.message || err.error || 'Falha na importação de produtos');
+        }
+
+        return response.json();
     }
 };
