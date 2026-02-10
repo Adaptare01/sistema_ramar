@@ -149,7 +149,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
             // 2. Match with Client Order (client.items)
             // Note: client.items uses 'referencia', product has 'referencia'
-            const orderItem = client.items.find((i: any) => i.referencia === product.referencia);
+            const orderItem = client.items.find((i: any) => i.referencia === product.referencia || i.referencia === parseInt(product.referencia).toString());
 
             setPendingProduct({
                 nome: product.nome || product.descricao || 'Produto sem nome',
@@ -173,11 +173,10 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             return;
         }
 
-        // Block extra products (not in order)
+        // Allow extra products (WARNING but NOT BLOCKING)
         if (pendingProduct?.isExtra) {
-            setAlertMsg({ type: 'error', msg: 'Produto não pertence ao pedido e não pode ser adicionado!' });
-            playSound('error');
-            return;
+            // Just a visual warning, logic continues
+            console.warn("Item extra detectado");
         }
 
         try {
@@ -306,10 +305,33 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
         }
 
         const errors: any[] = [];
+
+        // 1. Check for Missing or Excess items in EXPECTED list
         client.items.forEach(expected => {
             const scanned = scannedMap.get(expected.referencia) || 0;
             if (scanned !== expected.quantidadeEsperada) {
-                errors.push({ ...expected, scanned, diff: scanned - expected.quantidadeEsperada });
+                errors.push({
+                    nome: expected.nome,
+                    scanned,
+                    diff: scanned - expected.quantidadeEsperada,
+                    type: scanned < expected.quantidadeEsperada ? 'MISSING' : 'EXCESS'
+                });
+            }
+        });
+
+        // 2. Check for EXTRA items (scanned but not in client.items)
+        scannedMap.forEach((qty, ref) => {
+            const isExpected = client.items.some(i => i.referencia === ref);
+            if (!isExpected) {
+                // We need to find the name of this extra product. 
+                // Since we don't have a direct lookup here, we try to find it in the scanned items list
+                const nameItem = allScannedItems.find(i => i.referencia === ref);
+                errors.push({
+                    nome: nameItem?.nome || `REF: ${ref}`,
+                    scanned: qty,
+                    diff: qty,
+                    type: 'EXTRA'
+                });
             }
         });
 
@@ -536,8 +558,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
                         <button
                             onClick={confirmScan}
-                            disabled={pendingProduct?.nome === 'Produto Não Cadastrado' || pendingProduct?.isExtra}
-                            className={`w-full py-4 text-black font-bold rounded-xl shadow-[0_0_20px_var(--primary-glow)] text-lg transition ${pendingProduct?.nome === 'Produto Não Cadastrado' || pendingProduct?.isExtra ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-[var(--primary)] hover:bg-[var(--primary-dark)]'}`}
+                            disabled={pendingProduct?.nome === 'Produto Não Cadastrado'}
+                            className={`w-full py-4 text-black font-bold rounded-xl shadow-[0_0_20px_var(--primary-glow)] text-lg transition ${pendingProduct?.nome === 'Produto Não Cadastrado' ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-[var(--primary)] hover:bg-[var(--primary-dark)]'}`}
                         >
                             CONFIRMAR (ENTER)
                         </button>
@@ -581,13 +603,19 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                     <div key={idx} className="flex justify-between items-center text-sm border-b border-gray-200 pb-2 last:border-0 last:pb-0">
                                         <span className="text-black font-medium">{err.nome}</span>
                                         <span className={err.diff < 0 ? 'text-red-400 font-bold' : 'text-orange-400 font-bold'}>
-                                            {err.diff < 0 ? `Faltando ${Math.abs(err.diff)}` : `Extra ${err.diff}`}
+                                            {err.diff < 0
+                                                ? `Faltando ${Math.abs(err.diff)}`
+                                                : (err.type === 'EXTRA' ? `EXTRA: ${err.diff}` : `Excesso: ${err.diff}`)
+                                            }
                                         </span>
                                     </div>
                                 ))}
                             </div>
-                            <button onClick={() => setShowBlockingModal(false)} className="w-full py-3 bg-[var(--bg-panel)] border border-[var(--border-color)] text-black font-bold rounded-lg hover:bg-black/5 transition">
+                            <button onClick={() => setShowBlockingModal(false)} className="w-full py-3 bg-[var(--bg-panel)] border border-[var(--border-color)] text-black font-bold rounded-lg hover:bg-black/5 transition mb-3">
                                 VOU CORRIGIR
+                            </button>
+                            <button onClick={() => { setShowBlockingModal(false); setShowFinalReport(true); }} className="w-full py-3 bg-orange-500/20 border border-orange-500/50 text-orange-600 font-bold rounded-lg hover:bg-orange-500/30 transition">
+                                FINALIZAR COM RESSALVAS
                             </button>
                         </div>
                     </div>

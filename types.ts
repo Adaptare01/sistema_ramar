@@ -1,7 +1,9 @@
 export interface ProductDbItem {
+  id: string;
   ean: string;
   referencia: string;
   nome: string;
+  descricao: string;
 }
 
 export interface InvoiceItem {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
-import { ArrowLeft, Search, RefreshCw, Package, Upload } from 'lucide-react';
+import { ArrowLeft, Search, RefreshCw, Package, Upload, Pencil, X, Save, Trash2 } from 'lucide-react';
 import { ProductDbItem } from '../types';
 
 interface ConfigScreenProps {
@@ -11,6 +11,8 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
     const [products, setProducts] = useState<ProductDbItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [editingProduct, setEditingProduct] = useState<ProductDbItem | null>(null);
+    const [editForm, setEditForm] = useState({ descricao: '', ean: '' });
 
     const loadProducts = async () => {
         setLoading(true);
@@ -45,11 +47,14 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
             reader.onload = async (evt) => {
                 const base64 = (evt.target?.result as string).split(',')[1];
                 try {
+
                     const res = await api.importProducts(base64);
-                    alert(`Importação concluída!\nInseridos: ${res.details.inserted}\nAtualizados: ${res.details.updated}\nErros: ${res.details.errors}`);
+
+                    // Backend returns { success: true, message: string }
+                    alert(res.message || 'Importação realizada com sucesso!');
                     loadProducts();
                 } catch (err: any) {
-                    alert('Erro na importação: ' + err.message);
+                    alert('Erro na importação: ' + (err.message || err));
                 }
             };
             reader.readAsDataURL(file);
@@ -59,6 +64,62 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
         } finally {
             e.target.value = '';
             setLoading(false);
+        }
+    };
+
+    const handleEditClick = (product: ProductDbItem) => {
+        setEditingProduct(product);
+        setEditForm({
+            descricao: product.descricao,
+            ean: product.ean || ''
+        });
+    };
+
+    const handleCancelEdit = () => {
+        setEditingProduct(null);
+        setEditForm({ descricao: '', ean: '' });
+    };
+
+    const handleDeleteClick = async (product: ProductDbItem) => {
+        if (!confirm(`Tem certeza que deseja excluir o produto "${product.descricao}"?\nEsta ação não pode ser desfeita.`)) {
+            return;
+        }
+
+        try {
+            await api.deleteProduct(product.id);
+            setProducts(prev => prev.filter(p => p.id !== product.id));
+            alert('Produto excluído com sucesso!');
+        } catch (err: any) {
+            console.error(err);
+            alert('Erro ao excluir produto: ' + err.message);
+        }
+    };
+
+    const handleSaveEdit = async () => {
+        if (!editingProduct) return;
+        if (!editForm.descricao.trim()) {
+            alert('A descrição é obrigatória');
+            return;
+        }
+
+        try {
+            await api.updateProduct(editingProduct.id, {
+                descricao: editForm.descricao,
+                ean: editForm.ean
+            });
+
+            // Update local state to reflect changes immediately
+            setProducts(prev => prev.map(p =>
+                p.id === editingProduct.id
+                    ? { ...p, descricao: editForm.descricao, ean: editForm.ean }
+                    : p
+            ));
+
+            alert('Produto atualizado com sucesso!');
+            setEditingProduct(null);
+        } catch (err: any) {
+            console.error(err);
+            alert('Erro ao atualizar produto: ' + err.message);
         }
     };
 
@@ -138,6 +199,20 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
                                         <span>EAN: <span className="text-black">{product.ean || '-'}</span></span>
                                     </div>
                                 </div>
+                                <button
+                                    onClick={() => handleEditClick(product)}
+                                    className="p-2 text-gray-400 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-full transition"
+                                    title="Editar Produto"
+                                >
+                                    <Pencil size={18} />
+                                </button>
+                                <button
+                                    onClick={() => handleDeleteClick(product)}
+                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-full transition"
+                                    title="Excluir Produto"
+                                >
+                                    <Trash2 size={18} />
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -147,6 +222,76 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
                     </div>
                 )}
             </div>
-        </div>
+            {/* Edit Modal */}
+            {
+                editingProduct && (
+                    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                        <div className="bg-white border border-[var(--border-color)] rounded-2xl w-full max-w-md p-6 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+                            <button
+                                onClick={handleCancelEdit}
+                                className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition"
+                            >
+                                <X size={24} />
+                            </button>
+
+                            <h3 className="text-xl font-bold text-black mb-6 flex items-center gap-2">
+                                <Pencil size={20} className="text-[var(--primary)]" />
+                                Editar Produto
+                            </h3>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm text-gray-400 mb-1">Referência (Fixo)</label>
+                                    <input
+                                        type="text"
+                                        value={editingProduct.referencia}
+                                        disabled
+                                        className="w-full bg-black/20 border border-[var(--border-color)] text-gray-500 p-3 rounded-xl cursor-not-allowed"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Descrição</label>
+                                    <input
+                                        type="text"
+                                        value={editForm.descricao}
+                                        onChange={e => setEditForm(prev => ({ ...prev, descricao: e.target.value }))}
+                                        className="w-full bg-gray-50 border border-gray-200 text-black p-3 rounded-xl focus:border-[var(--primary)] outline-none transition"
+                                        placeholder="Nome do produto"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">EAN / Código de Barras</label>
+                                    <input
+                                        type="text"
+                                        value={editForm.ean}
+                                        onChange={e => setEditForm(prev => ({ ...prev, ean: e.target.value }))}
+                                        className="w-full bg-gray-50 border border-gray-200 text-black p-3 rounded-xl focus:border-[var(--primary)] outline-none transition font-mono"
+                                        placeholder="Sem código de barras"
+                                    />
+                                </div>
+
+                                <div className="flex gap-3 pt-4">
+                                    <button
+                                        onClick={handleCancelEdit}
+                                        className="flex-1 bg-transparent border border-[var(--border-color)] text-gray-700 py-3 rounded-xl hover:bg-gray-100 transition font-medium"
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        onClick={handleSaveEdit}
+                                        className="flex-1 bg-[var(--primary)] text-white py-3 rounded-xl hover:bg-blue-600 transition font-medium shadow-lg shadow-blue-500/20 flex justify-center items-center gap-2"
+                                    >
+                                        <Save size={18} />
+                                        Salvar Alterações
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        </div >
     );
 };

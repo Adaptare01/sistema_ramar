@@ -13,6 +13,95 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 import { randomUUID, createHash } from 'crypto';
 import { read, utils } from 'xlsx';
 
+
+// Rota de Health Check (Teste)
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Rota de Importação de XML
+app.post('/api/products/import', async (req, res) => {
+    console.log('[API] Recebida solicitação de importação de produtos');
+    const { fileContent } = req.body; // Base64 content
+
+    if (!fileContent) {
+        return res.status(400).json({ error: 'Conteúdo do arquivo é obrigatório' });
+    }
+
+    let client;
+    try {
+        client = await getClient();
+
+        // Convert Base64 to Buffer e ler planilha
+        const buffer = Buffer.from(fileContent, 'base64');
+        const workbook = read(buffer, { type: 'buffer' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        // Get data as array of arrays
+        const data = utils.sheet_to_json(sheet, { header: 1 });
+
+        console.log(`[IMPORT] Iniciando importação de ${data.length} linhas...`);
+
+        await client.query('BEGIN');
+
+        // 1. Apagar TODOS os produtos existentes (Full Replace)
+        await client.query('DELETE FROM produtos');
+
+        let insertedCount = 0;
+
+        // Skip header row (index 0)
+        for (let i = 1; i < data.length; i++) {
+            const row = data[i];
+            if (!row || row.length === 0) continue;
+
+            let ref, desc, ean;
+
+            // Heurística de colunas
+            if (row.length === 3) {
+                // Formato simples: Ref, Desc, EAN
+                ref = String(row[0] || '').trim();
+                desc = String(row[1] || '').trim();
+                ean = String(row[2] || '').trim();
+            } else {
+                // Formato "Modelo 02" ou mais colunas: Ref=2, Desc=3, EAN=5
+                // Fallback seguro se não tiver tantas colunas
+                ref = String(row[2] || row[0] || '').trim();
+                desc = String(row[3] || row[1] || '').trim();
+                ean = String(row[5] || row[2] || '').trim();
+            }
+
+            if (!ref) continue;
+
+            // Converter EAN
+            if (ean.length > 20) ean = ean.substring(0, 20);
+
+            // Inserir
+            await client.query(
+                `INSERT INTO produtos (id, referencia, descricao, ean)
+                 VALUES ($1, $2, $3, $4)`,
+                [randomUUID(), ref, desc, ean]
+            );
+            insertedCount++;
+        }
+
+        await client.query('COMMIT');
+
+        console.log(`✅ Importação concluída. ${insertedCount} produtos importados.`);
+        res.json({
+            success: true,
+            message: `Importação concluída! ${insertedCount} produtos importados (Substituição Total).`
+        });
+
+    } catch (err) {
+        if (client) await client.query('ROLLBACK');
+        console.error('Erro na importação de produtos:', err);
+        res.status(500).json({ error: 'Falha ao processar arquivo: ' + err.message });
+    } finally {
+        if (client) client.release();
+    }
+});
+
 // Rota de Importação de XML
 app.post('/api/import', async (req, res) => {
     const { xmlContent, fileName } = req.body;
@@ -520,6 +609,51 @@ app.get('/api/clients/:id/volumes', async (req, res) => {
     }
 });
 
+
+
+// Atualizar produto (Descrição e EAN apenas)
+app.put('/api/products/:id', async (req, res) => {
+    const { id } = req.params;
+    const { descricao, ean } = req.body;
+
+    console.log(`[UPDATE PRODUCT] ID: ${id}, Desc: ${descricao}, EAN: ${ean}`);
+
+    try {
+        const result = await query(
+            `UPDATE produtos 
+             SET descricao = $1, ean = $2 
+             WHERE id = $3 
+             RETURNING *`,
+            [descricao, ean, id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Produto não encontrado' });
+        }
+
+        res.json({ success: true, product: result.rows[0] });
+    } catch (err) {
+        console.error('Erro ao atualizar produto:', err);
+        res.status(500).json({ error: 'Falha ao atualizar produto' });
+    }
+});
+
+// Excluir produto
+app.delete('/api/products/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(`[DELETE PRODUCT] ID: ${id}`);
+    try {
+        const result = await query('DELETE FROM produtos WHERE id = $1 RETURNING *', [id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Produto não encontrado' });
+        }
+        res.json({ success: true, message: 'Produto excluído com sucesso' });
+    } catch (err) {
+        console.error('Erro ao excluir produto:', err);
+        res.status(500).json({ error: 'Falha ao excluir produto' });
+    }
+});
+
 // Global Error Handler
 app.use((err, req, res, next) => {
     console.error('Unhandled Error:', err);
@@ -536,120 +670,5 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
         console.log(`🚀 Servidor backend rodando em http://localhost:${port}`);
     });
 }
-
-// Rota para IMPORTAR PRODUTOS via CSV/XLS
-app.post('/api/products/import', async (req, res) => {
-    const { fileContent } = req.body; // Base64 content
-
-    if (!fileContent) {
-        return res.status(400).json({ error: 'Conteúdo do arquivo é obrigatório' });
-    }
-
-    let client;
-    try {
-        client = await getClient();
-
-        // Convert Base64 to Buffer
-        const buffer = Buffer.from(fileContent, 'base64');
-        const workbook = read(buffer, { type: 'buffer' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-
-        // Get data as array of arrays
-        const data = utils.sheet_to_json(sheet, { header: 1 });
-
-        console.log(`[IMPORT] Iniciando importação de ${data.length} linhas...`);
-
-        await client.query('BEGIN');
-
-        let inserted = 0;
-        let updated = 0;
-        let errors = 0;
-
-        // Skip header row (index 0)
-        for (let i = 1; i < data.length; i++) {
-            const row = data[i];
-            if (!row || row.length === 0) continue;
-
-            // Mapping Strategy:
-            // 0:codgru, 1:codsub, 2:codpro(REF), 3:despro(DESC), 4:unipro, 5:codbar(EAN)
-            // Or try to detect if generic CSV
-
-            let ref, desc, ean;
-
-            // Heuristic: If row has at least 3 columns, assume it might be valid
-            if (row.length >= 3) {
-                // Check if it matches the "Modelo 02" strict format
-                // Usually Ref is col 2, Desc is col 3, EAN is col 5
-
-                // Fallback for smaller CSVs: 0=Ref, 1=Desc, 2=EAN
-                if (row.length === 3) {
-                    ref = String(row[0] || '').trim();
-                    desc = String(row[1] || '').trim();
-                    ean = String(row[2] || '').trim();
-                } else {
-                    // Default "Modelo 02"
-                    ref = String(row[2] || '').trim();
-                    desc = String(row[3] || '').trim();
-                    ean = String(row[5] || '').trim();
-
-                    // Fallback check: if Ref is empty but col 0 has data, maybe it's a different format?
-                    if (!ref && row[0]) {
-                        ref = String(row[0] || '').trim(); // Try col 0
-                        desc = String(row[1] || '').trim();
-                        ean = String(row[2] || '').trim();
-                    }
-                }
-            }
-
-            if (!ref) {
-                errors++;
-                continue;
-            }
-
-            if (ean.length > 20) ean = ean.substring(0, 20);
-
-            try {
-                const newId = randomUUID();
-                const upsert = await client.query(
-                    `INSERT INTO produtos (id, referencia, descricao, ean)
-                     VALUES ($1, $2, $3, $4)
-                     ON CONFLICT (referencia) 
-                     DO UPDATE SET 
-                        descricao = EXCLUDED.descricao,
-                        ean = EXCLUDED.ean
-                     RETURNING (xmax = 0) AS inserted`,
-                    [newId, ref, desc, ean]
-                );
-
-                if (upsert.rows[0].inserted) inserted++;
-                else updated++;
-            } catch (err) {
-                console.error(`Erro importing row ${i}: ${err.message}`);
-                errors++;
-            }
-        }
-
-        await client.query('COMMIT');
-
-        res.json({
-            success: true,
-            message: 'Importação concluída',
-            details: {
-                total: data.length - 1,
-                inserted,
-                updated,
-                errors
-            }
-        });
-
-    } catch (err) {
-        if (client) await client.query('ROLLBACK');
-        console.error('Erro na importação de produtos:', err);
-        res.status(500).json({ error: 'Falha ao processar arquivo' });
-    } finally {
-        if (client) client.release();
-    }
-});
 
 export default app;

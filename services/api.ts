@@ -129,5 +129,29 @@ export const api = {
         }
 
         return response.json();
+    },
+
+    updateProduct: async (id: string, updates: Partial<{ descricao: string; ean: string }>) => {
+        const response = await fetch(`${API_Base}/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updates)
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Falha ao atualizar produto');
+        }
+
+        return response.json();
+    },
+
+    deleteProduct: async (id: string) => {
+        const response = await fetch(`${API_Base}/products/${id}`, { method: 'DELETE' });
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Falha ao excluir produto');
+        }
+        return response.json();
     }
 };
