@@ -593,13 +593,10 @@ app.get('/api/clients/:id/volumes', async (req, res) => {
     const { cargaId } = req.query;
 
     try {
-        const result = await query(
-            `SELECT v.*, 
-                    (SELECT COUNT(*) FROM volume_itens vi WHERE vi.volume_id = v.id) as item_count,
-                    (SELECT json_agg(vi) FROM volume_itens vi WHERE vi.volume_id = v.id) as items
-             FROM volumes v 
-             WHERE v.cliente_id = $1 AND v.carga_id = $2
-             ORDER BY v.numero_sequencial`,
+        (SELECT json_agg(vi) FROM volume_itens vi WHERE vi.volume_id = v.id) as items
+              FROM volumes v 
+              WHERE v.cliente_id = $1 AND v.carga_id = $2
+              ORDER BY v.numero_sequencial`,
             [id, cargaId]
         );
         res.json(result.rows);
@@ -609,6 +606,71 @@ app.get('/api/clients/:id/volumes', async (req, res) => {
     }
 });
 
+// --- CONFERÊNCIAS FINALIZADAS ---
+
+// Salvar Conferência (Finalizar)
+app.post('/api/conferencias', async (req, res) => {
+    const { cargaId, clienteId, resumo, reportSnapshot } = req.body;
+    try {
+        const id = randomUUID();
+        await query(
+            `INSERT INTO conferencias(id, carga_id, cliente_id, resumo, report_snapshot, status)
+VALUES($1, $2, $3, $4, $5, 'FINALIZADA')`,
+            [id, cargaId, clienteId, resumo, reportSnapshot]
+        );
+        res.json({ success: true, id });
+    } catch (err) {
+        console.error('Erro ao finalizar conferência:', err);
+        res.status(500).json({ error: 'Erro ao finalizar conferência' });
+    }
+});
+
+// Listar Conferências Finalizadas
+app.get('/api/conferencias', async (req, res) => {
+    try {
+        const result = await query(`
+SELECT
+conf.*,
+    c.nome_arquivo as carga_nome,
+    cli.nome as cliente_nome
+            FROM conferencias conf
+            JOIN cargas c ON conf.carga_id = c.id
+            JOIN clientes cli ON conf.cliente_id = cli.id
+            ORDER BY conf.created_at DESC
+    `);
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Erro ao listar conferências:', err);
+        res.status(500).json({ error: 'Erro ao listar conferências' });
+    }
+});
+
+// Obter Detalhes da Conferência
+app.get('/api/conferencias/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await query(`
+SELECT
+conf.*,
+    c.nome_arquivo as carga_nome,
+    cli.nome as cliente_nome
+            FROM conferencias conf
+            JOIN cargas c ON conf.carga_id = c.id
+            JOIN clientes cli ON conf.cliente_id = cli.id
+            WHERE conf.id = $1
+    `, [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Conferência não encontrada' });
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error('Erro ao obter conferência:', err);
+        res.status(500).json({ error: 'Erro ao obter conferência' });
+    }
+});
+
+
 
 
 // Atualizar produto (Descrição e EAN apenas)
@@ -616,14 +678,14 @@ app.put('/api/products/:id', async (req, res) => {
     const { id } = req.params;
     const { descricao, ean } = req.body;
 
-    console.log(`[UPDATE PRODUCT] ID: ${id}, Desc: ${descricao}, EAN: ${ean}`);
+    console.log(`[UPDATE PRODUCT]ID: ${ id }, Desc: ${ descricao }, EAN: ${ ean } `);
 
     try {
         const result = await query(
             `UPDATE produtos 
              SET descricao = $1, ean = $2 
-             WHERE id = $3 
-             RETURNING *`,
+             WHERE id = $3
+RETURNING * `,
             [descricao, ean, id]
         );
 
@@ -641,7 +703,7 @@ app.put('/api/products/:id', async (req, res) => {
 // Excluir produto
 app.delete('/api/products/:id', async (req, res) => {
     const { id } = req.params;
-    console.log(`[DELETE PRODUCT] ID: ${id}`);
+    console.log(`[DELETE PRODUCT]ID: ${ id } `);
     try {
         const result = await query('DELETE FROM produtos WHERE id = $1 RETURNING *', [id]);
         if (result.rowCount === 0) {
