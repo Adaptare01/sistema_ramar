@@ -593,10 +593,13 @@ app.get('/api/clients/:id/volumes', async (req, res) => {
     const { cargaId } = req.query;
 
     try {
-        (SELECT json_agg(vi) FROM volume_itens vi WHERE vi.volume_id = v.id) as items
-              FROM volumes v 
-              WHERE v.cliente_id = $1 AND v.carga_id = $2
-              ORDER BY v.numero_sequencial`,
+        const result = await query(
+            `SELECT v.*, 
+                    (SELECT COUNT(*) FROM volume_itens vi WHERE vi.volume_id = v.id) as item_count,
+                    (SELECT json_agg(vi) FROM volume_itens vi WHERE vi.volume_id = v.id) as items
+             FROM volumes v 
+             WHERE v.cliente_id = $1 AND v.carga_id = $2
+             ORDER BY v.numero_sequencial`,
             [id, cargaId]
         );
         res.json(result.rows);
@@ -659,7 +662,7 @@ conf.*,
             JOIN clientes cli ON conf.cliente_id = cli.id
             WHERE conf.id = $1
     `, [id]);
-        
+
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Conferência não encontrada' });
         }
@@ -678,7 +681,7 @@ app.put('/api/products/:id', async (req, res) => {
     const { id } = req.params;
     const { descricao, ean } = req.body;
 
-    console.log(`[UPDATE PRODUCT]ID: ${ id }, Desc: ${ descricao }, EAN: ${ ean } `);
+    console.log(`[UPDATE PRODUCT]ID: ${id}, Desc: ${descricao}, EAN: ${ean} `);
 
     try {
         const result = await query(
@@ -703,7 +706,7 @@ RETURNING * `,
 // Excluir produto
 app.delete('/api/products/:id', async (req, res) => {
     const { id } = req.params;
-    console.log(`[DELETE PRODUCT]ID: ${ id } `);
+    console.log(`[DELETE PRODUCT]ID: ${id} `);
     try {
         const result = await query('DELETE FROM produtos WHERE id = $1 RETURNING *', [id]);
         if (result.rowCount === 0) {
