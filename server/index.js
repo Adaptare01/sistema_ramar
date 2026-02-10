@@ -310,13 +310,21 @@ app.get('/api/cargas/:id/clients', async (req, res) => {
             );
             const totalScanned = parseFloat(scannedRes.rows[0].total_scanned);
 
+            // Verificar se conferência foi finalizada e pegar ID do relatório
+            const confRes = await client.query(
+                `SELECT id FROM conferencias WHERE carga_id = $1 AND cliente_id = $2`,
+                [id, cli.id]
+            );
+            const reportId = confRes.rows.length > 0 ? confRes.rows[0].id : null;
+
             clientsData.push({
                 id: cli.id,
                 name: cli.nome,
                 items: itemsRes.rows,
                 totalItems,
                 totalScanned,
-                isCompleted: totalScanned >= totalItems
+                isCompleted: totalScanned >= totalItems, // Or check if reportId exists for true completion status
+                reportId: reportId
             });
         }
 
@@ -727,6 +735,24 @@ app.use((err, req, res, next) => {
         message: 'Erro interno do servidor',
         error: err.message
     });
+});
+
+// Listar conferências em andamento (volumes abertos)
+app.get('/api/conferencias/in-progress', async (req, res) => {
+    try {
+        const result = await query(
+            `SELECT v.id, v.carga_id, v.cliente_id, c.nome as cliente_nome, ca.nome_arquivo as carga_nome, v.created_at
+             FROM volumes v
+             JOIN clientes c ON v.cliente_id = c.id
+             JOIN cargas ca ON v.carga_id = ca.id
+             WHERE v.is_open = true
+             ORDER BY v.created_at DESC`
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Erro ao listar conferências em andamento:', err);
+        res.status(500).json({ error: 'Erro ao listar conferências em andamento' });
+    }
 });
 
 // Inicialização do servidor

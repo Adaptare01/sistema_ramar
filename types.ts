@@ -20,6 +20,7 @@ export interface ClientData {
   totalItems: number; // Sum of quantities
   totalScanned?: number;
   isCompleted?: boolean;
+  reportId?: string;
 }
 
 export interface ScannedItem {
@@ -38,4 +39,4 @@ export interface Volume {
   items: ScannedItem[];
 }
 
-export type AppScreen = 'dashboard' | 'upload' | 'clients' | 'conference' | 'reports' | 'settings' | 'loads' | 'labels';
+export type AppScreen = 'dashboard' | 'upload' | 'clients' | 'conference' | 'loads' | 'reports' | 'settings' | 'labels' | 'finished_loads' | 'conference_report';

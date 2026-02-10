@@ -11,12 +11,15 @@ import { VerificationScreen } from './screens/VerificationScreen';
 import { LoadListScreen } from './screens/LoadListScreen';
 import { ConfigScreen } from './screens/ConfigScreen';
 import { LabelScreen } from './screens/LabelScreen';
+import { FinishedLoadsScreen } from './screens/FinishedLoadsScreen';
+import { ConferenceReportScreen } from './screens/ConferenceReportScreen';
 
 export default function App() {
-    const [screen, setScreen] = useState<AppScreen>('dashboard');
+    const [screen, setScreen] = useState<AppScreen | 'finished_loads' | 'conference_report'>('dashboard');
     const [clients, setClients] = useState<ClientData[]>([]);
     const [selectedClient, setSelectedClient] = useState<ClientData | null>(null);
     const [cargaId, setCargaId] = useState<string | null>(null);
+    const [reportId, setReportId] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
     // XML Processing Logic
@@ -88,7 +91,11 @@ export default function App() {
             case 'upload':
                 return <UploadScreen onProcess={handleProcessFile} isProcessing={isProcessing} />;
             case 'clients':
-                return <ClientListScreen clients={clients} onSelect={handleSelectClient} />;
+                return <ClientListScreen
+                    clients={clients}
+                    onSelect={handleSelectClient}
+                    onViewReport={(id) => { setReportId(id); setScreen('conference_report'); }}
+                />;
             case 'conference':
                 if (!selectedClient || !cargaId) return <DashboardScreen onNavigate={setScreen} />;
                 return <VerificationScreen client={selectedClient} cargaId={cargaId} onBack={() => setScreen('clients')} />;
@@ -100,6 +107,17 @@ export default function App() {
                 return <ConfigScreen onBack={() => setScreen('dashboard')} />;
             case 'labels':
                 return <LabelScreen onBack={() => setScreen('dashboard')} />;
+            case 'finished_loads':
+                return <FinishedLoadsScreen
+                    onBack={() => setScreen('dashboard')}
+                    onSelectConference={(id) => { setReportId(id); setScreen('conference_report'); }}
+                />;
+            case 'conference_report':
+                if (!reportId) return <FinishedLoadsScreen
+                    onBack={() => setScreen('dashboard')}
+                    onSelectConference={(id) => { setReportId(id); setScreen('conference_report'); }}
+                />;
+                return <ConferenceReportScreen conferenceId={reportId} onBack={() => setScreen('finished_loads')} />;
             default:
                 return <DashboardScreen onNavigate={setScreen} />;
         }

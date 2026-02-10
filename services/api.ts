@@ -153,5 +153,34 @@ export const api = {
             throw new Error(err.error || 'Falha ao excluir produto');
         }
         return response.json();
+    },
+
+    // Finished Conferences
+    finalizeConference: async (data: { cargaId: string, clienteId: string, resumo: any, reportSnapshot: any }) => {
+        const response = await fetch(`${API_Base}/conferencias`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('Falha ao finalizar conferência');
+        return response.json();
+    },
+
+    getFinishedConferences: async () => {
+        const response = await fetch(`${API_Base}/conferencias`);
+        if (!response.ok) throw new Error('Falha ao listar conferências');
+        return response.json();
+    },
+
+    getConferenceDetails: async (id: string) => {
+        const response = await fetch(`${API_Base}/conferencias/${id}`);
+        if (!response.ok) throw new Error('Falha ao obter detalhes da conferência');
+        return response.json();
+    },
+
+    getInProgressConferences: async () => {
+        const response = await fetch(`${API_Base}/conferencias/in-progress`);
+        if (!response.ok) throw new Error('Falha ao listar conferências em andamento');
+        return response.json();
     }
 };

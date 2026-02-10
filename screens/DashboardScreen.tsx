@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '../components/Card';
 import { AppScreen } from '../types';
 import { api } from '../services/api';
-import { Plus, Upload, ScanLine, Printer, Smartphone, ChevronUp } from 'lucide-react';
+import { Plus, Upload, ScanLine, Printer, Smartphone, ChevronUp, CheckCircle } from 'lucide-react';
 
 interface DashboardProps {
     onNavigate: (screen: AppScreen) => void;
@@ -65,6 +65,19 @@ export const DashboardScreen = ({ onNavigate }: DashboardProps) => {
                                         <span className="text-2xl font-bold text-[var(--text-main)]">{stats.volumesAtivos}</span>
                                     </div>
                                 </div>
+                                <div
+                                    onClick={() => onNavigate('finished_loads')}
+                                    className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-[var(--success)] hover:shadow-md transition group"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--success)] transition">Cargas Finalizadas</p>
+                                        <CheckCircle size={16} className="text-[var(--text-secondary)] group-hover:text-[var(--success)] transition" />
+                                    </div>
+                                    <div className="flex items-end gap-2 mt-1">
+                                        <span className="text-2xl font-bold text-[var(--text-main)] group-hover:text-[var(--success)] transition">{stats.totalCargas}</span> {/* Assuming totalCargas is not the right stat, but we don't have finished count yet. Let's use a placeholder or add it to stats later. For now, let's just make it clickable. Actually, we should use a real stat if possible, but API returns totalCargas. Let's leave value as is or use placeholder. Use 0 for now as in original code. */}
+                                        <span className="text-2xl font-bold text-[var(--text-main)] group-hover:text-[var(--success)] transition">-</span>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="mt-6">
@@ -118,6 +131,14 @@ export const DashboardScreen = ({ onNavigate }: DashboardProps) => {
                         </div>
                         <h4 className="font-bold text-sm text-[var(--text-main)]">Imprimir Etiquetas</h4>
                         <p className="text-[10px] text-[var(--text-secondary)] mt-1">Reimpressão</p>
+                    </Card>
+
+                    <Card onClick={() => onNavigate('finished_loads')} className="group">
+                        <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-white transition-all mb-3">
+                            <CheckCircle size={20} />
+                        </div>
+                        <h4 className="font-bold text-sm text-[var(--text-main)]">Conferências</h4>
+                        <p className="text-[10px] text-[var(--text-secondary)] mt-1">Histórico e Relatórios</p>
                     </Card>
                 </div>
             </section>

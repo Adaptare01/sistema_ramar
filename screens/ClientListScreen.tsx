@@ -5,6 +5,7 @@ import { ChevronRight, Package, Truck } from 'lucide-react';
 interface ClientListScreenProps {
     clients: ClientData[];
     onSelect: (c: ClientData) => void;
+    onViewReport?: (reportId: string) => void;
 }
 
 export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) => {
@@ -19,8 +20,8 @@ export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) =
                         key={client.id}
                         onClick={() => onSelect(client)}
                         className={`p-5 rounded-xl border cursor-pointer transition group relative overflow-hidden ${client.isCompleted
-                                ? 'bg-[var(--primary)] border-[var(--primary)] shadow-lg shadow-blue-500/30'
-                                : 'bg-[var(--bg-card)] border-[var(--border-color)] hover:border-[var(--primary)] hover:shadow-[0_0_15px_rgba(0,212,255,0.15)]'
+                            ? 'bg-[var(--primary)] border-[var(--primary)] shadow-lg shadow-blue-500/30'
+                            : 'bg-[var(--bg-card)] border-[var(--border-color)] hover:border-[var(--primary)] hover:shadow-[0_0_15px_rgba(0,212,255,0.15)]'
                             }`}
                     >
                         {/* Active Indication Line (only for incomplete) */}
@@ -31,8 +32,8 @@ export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) =
                         <div className="flex justify-between items-center relative z-10">
                             <div className="flex items-center gap-4">
                                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center border transition ${client.isCompleted
-                                        ? 'bg-white/20 border-white/30'
-                                        : 'bg-[var(--bg-app)] border-[var(--border-color)] group-hover:border-[var(--primary)]/30'
+                                    ? 'bg-white/20 border-white/30'
+                                    : 'bg-[var(--bg-app)] border-[var(--border-color)] group-hover:border-[var(--primary)]/30'
                                     }`}>
                                     <Truck className={`w-6 h-6 transition ${client.isCompleted ? 'text-white' : 'text-black group-hover:text-[var(--primary)]'
                                         }`} />
@@ -56,11 +57,24 @@ export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) =
                             </div>
                         </div>
 
-                        <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition duration-300 ${client.isCompleted
-                                ? 'translate-x-0 opacity-100'
-                                : 'opacity-0 group-hover:opacity-10 translate-x-4 group-hover:translate-x-0'
+                        <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition duration-300 flex items-center gap-2 ${client.isCompleted
+                            ? 'translate-x-0 opacity-100'
+                            : 'opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0'
                             }`}>
-                            <ChevronRight className={client.isCompleted ? 'text-white' : 'text-[var(--primary)]'} />
+                            {client.isCompleted && client.reportId ? (
+                                <div
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (onViewReport && client.reportId) onViewReport(client.reportId);
+                                    }}
+                                    className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full backdrop-blur-sm hover:bg-white/30 transition cursor-pointer z-20"
+                                >
+                                    <span className="text-white text-xs font-bold uppercase"> Relatório</span>
+                                    <ChevronRight className="text-white w-4 h-4" />
+                                </div>
+                            ) : (
+                                <ChevronRight className={client.isCompleted ? 'text-white' : 'text-[var(--primary)]'} />
+                            )}
                         </div>
                     </div>
                 ))}

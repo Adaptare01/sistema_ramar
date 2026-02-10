@@ -356,9 +356,43 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             setBlockingErrors(errors);
             setShowBlockingModal(true);
             playSound('error');
-        } else {
-            playSound('success');
-            setShowFinalReport(true);
+            return;
+        }
+
+        // If no errors, Finalize immediately
+        handleConfirmFinalize([]);
+    };
+
+    const handleConfirmFinalize = async (overrideSnapshot?: any[]) => {
+        try {
+            const report = overrideSnapshot || [];
+
+            // Calculate summary stats
+            const missing = report.filter((i: any) => i.type === 'MISSING').length;
+            const excess = report.filter((i: any) => i.type === 'EXCESS').length;
+            const extra = report.filter((i: any) => i.type === 'EXTRA').length;
+
+            const resumo = {
+                total_items: client.items.reduce((acc, i) => acc + i.quantidadeEsperada, 0),
+                scanned_items: Array.from(scannedMap.values()).reduce((acc, q) => acc + q, 0),
+                missing,
+                excess,
+                extra
+            };
+
+            await api.finalizeConference({
+                cargaId,
+                clienteId: client.id,
+                resumo,
+                reportSnapshot: report
+            });
+
+            alert("Conferência Finalizada com Sucesso!");
+            onBack(); // Go back to client list (or could go to finished loads)
+
+        } catch (err) {
+            console.error(err);
+            alert("Erro ao finalizar conferência.");
         }
     };
 
@@ -631,25 +665,14 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                             <button onClick={() => setShowBlockingModal(false)} className="w-full py-3 bg-[var(--bg-panel)] border border-[var(--border-color)] text-black font-bold rounded-lg hover:bg-black/5 transition mb-3">
                                 VOU CORRIGIR
                             </button>
-                            <button onClick={() => { setShowBlockingModal(false); setShowFinalReport(true); }} className="w-full py-3 bg-orange-500/20 border border-orange-500/50 text-orange-600 font-bold rounded-lg hover:bg-orange-500/30 transition">
+                            <button onClick={() => {
+                                setShowBlockingModal(false);
+                                handleConfirmFinalize(blockingErrors); // Call with discrepancies 
+                            }} className="w-full py-3 bg-red-600 border border-red-700 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-lg">
                                 FINALIZAR COM RESSALVAS
                             </button>
                         </div>
                     </div>
-                </div>
-            )}
-
-            {/* 4. SUCCESS / REPORT */}
-            {showFinalReport && (
-                <div className="fixed inset-0 bg-[var(--bg-app)] z-[80] flex flex-col items-center justify-center p-8 animate-fade-in">
-                    <div className="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(16,185,129,0.4)]">
-                        <Check className="text-green-500 w-12 h-12" />
-                    </div>
-                    <h1 className="text-3xl font-bold text-black mb-2">Sucesso!</h1>
-                    <p className="text-black text-center max-w-xs mb-8">Todos os itens conferem com o manifesto. Carga {loadId} pronta.</p>
-                    <button onClick={() => { setShowFinalReport(false); onBack(); }} className="bg-white text-black font-bold py-3 px-8 rounded-full shadow-xl hover:scale-105 transition">
-                        VOLTAR AO INÍCIO
-                    </button>
                 </div>
             )}
         </div>
