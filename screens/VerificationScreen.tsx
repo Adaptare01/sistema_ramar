@@ -308,20 +308,37 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
         // 1. Check for Missing or Excess items in EXPECTED list
         client.items.forEach(expected => {
-            const scanned = scannedMap.get(expected.referencia) || 0;
-            if (scanned !== expected.quantidadeEsperada) {
+            // Find scanned items that match this expected item (flexible match)
+            let scannedQty = 0;
+
+            // Iterate over map to sum all matching references (in case of duplicates in map keys e.g. "2316" and "002316")
+            scannedMap.forEach((qty, ref) => {
+                const r1 = String(expected.referencia).trim().replace(/^0+/, '');
+                const r2 = String(ref).trim().replace(/^0+/, '');
+                if (r1 === r2) {
+                    scannedQty += qty;
+                }
+            });
+
+            if (scannedQty !== expected.quantidadeEsperada) {
                 errors.push({
                     nome: expected.nome,
-                    scanned,
-                    diff: scanned - expected.quantidadeEsperada,
-                    type: scanned < expected.quantidadeEsperada ? 'MISSING' : 'EXCESS'
+                    scanned: scannedQty,
+                    diff: scannedQty - expected.quantidadeEsperada,
+                    type: scannedQty < expected.quantidadeEsperada ? 'MISSING' : 'EXCESS'
                 });
             }
         });
 
         // 2. Check for EXTRA items (scanned but not in client.items)
         scannedMap.forEach((qty, ref) => {
-            const isExpected = client.items.some(i => i.referencia === ref);
+            // Stronger matching: Normalize refs (trim, remove leading zeros)
+            const isExpected = client.items.some(i => {
+                const r1 = String(i.referencia).trim().replace(/^0+/, '');
+                const r2 = String(ref).trim().replace(/^0+/, '');
+                return r1 === r2;
+            });
+
             if (!isExpected) {
                 // We need to find the name of this extra product. 
                 // Since we don't have a direct lookup here, we try to find it in the scanned items list
