@@ -80,16 +80,16 @@ export const LabelScreen: React.FC<LabelScreenProps> = ({ onBack }) => {
                         else if (step === 'clients') setStep('loads');
                         else onBack();
                     }} className="p-2 rounded-full hover:bg-white/10 transition">
-                        <ArrowLeft className="w-5 h-5 text-gray-400" />
+                        <ArrowLeft className="w-5 h-5 text-black" />
                     </button>
                     <div>
-                        <h2 className="text-lg font-bold text-gray-200">
+                        <h2 className="text-lg font-bold text-black">
                             {step === 'loads' && 'Selecione a Carga'}
                             {step === 'clients' && 'Selecione o Cliente'}
                             {step === 'labels' && 'Imprimir Etiquetas'}
                         </h2>
                         {selectedCarga && (
-                            <p className="text-xs text-[var(--text-muted)] truncate max-w-[200px]">
+                            <p className="text-xs text-black truncate max-w-[200px]">
                                 {selectedCarga.nome_arquivo}
                                 {selectedClient && ` > ${selectedClient.name}`}
                             </p>
@@ -121,14 +121,14 @@ export const LabelScreen: React.FC<LabelScreenProps> = ({ onBack }) => {
                                         <Truck size={24} />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-gray-200">{carga.nome_arquivo}</h3>
-                                        <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                                        <h3 className="font-bold text-black">{carga.nome_arquivo}</h3>
+                                        <p className="text-xs text-black flex items-center gap-1 mt-1">
                                             <Calendar size={12} />
                                             {new Date(carga.data_importacao).toLocaleDateString()}
                                         </p>
                                     </div>
                                 </div>
-                                <ChevronRight className="text-gray-600 group-hover:text-[var(--primary)] transition" />
+                                <ChevronRight className="text-black group-hover:text-[var(--primary)] transition" />
                             </div>
                         ))}
                     </div>
@@ -143,11 +143,11 @@ export const LabelScreen: React.FC<LabelScreenProps> = ({ onBack }) => {
                                         <User size={20} />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-gray-200">{client.name}</h3>
-                                        <p className="text-xs text-gray-500">ID: {client.id}</p>
+                                        <h3 className="font-bold text-black">{client.name}</h3>
+                                        <p className="text-xs text-black">ID: {client.id}</p>
                                     </div>
                                 </div>
-                                <ChevronRight className="text-gray-600 group-hover:text-[var(--primary)] transition" />
+                                <ChevronRight className="text-black group-hover:text-[var(--primary)] transition" />
                             </div>
                         ))}
                     </div>
@@ -156,7 +156,7 @@ export const LabelScreen: React.FC<LabelScreenProps> = ({ onBack }) => {
                 {!loading && step === 'labels' && (
                     <div className="space-y-8">
                         {volumes.length === 0 ? (
-                            <div className="text-center py-12 text-gray-500">
+                            <div className="text-center py-12 text-black">
                                 <Box size={48} className="mx-auto mb-4 opacity-30" />
                                 <p>Nenhum volume encontrado para este cliente nesta carga.</p>
                             </div>

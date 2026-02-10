@@ -49,9 +49,9 @@ export const LoadListScreen = ({ onSelect }: LoadListScreenProps) => {
             </h1>
 
             {loading ? (
-                <div className="text-center py-12 text-gray-500">Carregando cargas...</div>
+                <div className="text-center py-12 text-black">Carregando cargas...</div>
             ) : loads.length === 0 ? (
-                <div className="text-center py-12 text-gray-500">Nenhuma carga importada ainda.</div>
+                <div className="text-center py-12 text-black">Nenhuma carga importada ainda.</div>
             ) : (
                 <div className="grid grid-cols-1 gap-4">
                     {loads.map(load => {

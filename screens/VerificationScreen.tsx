@@ -332,12 +332,12 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             <div className="bg-[var(--bg-panel)]/90 backdrop-blur-sm border-b border-[var(--border-color)] p-4 sticky top-0 z-20 flex justify-between items-center shadow-md">
                 <div className="flex items-center gap-3">
                     <button onClick={onBack} className="p-2 rounded-full hover:bg-white/10 transition">
-                        <ArrowLeft className="w-5 h-5 text-gray-400" />
+                        <ArrowLeft className="w-5 h-5 text-black" />
                     </button>
                     <div>
-                        <h2 className="text-sm font-bold text-gray-200">{client.name.substring(0, 20)}{client.name.length > 20 ? '...' : ''}</h2>
-                        <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono mt-0.5">
-                            <span className="bg-white/5 px-1 rounded border border-white/10">{loadId}</span>
+                        <h2 className="text-sm font-bold text-black">{client.name.substring(0, 20)}{client.name.length > 20 ? '...' : ''}</h2>
+                        <div className="flex items-center gap-2 text-xs text-black font-mono mt-0.5">
+                            <span className="bg-black/5 px-1 rounded border border-black/10 text-black">{loadId}</span>
                             <span>•</span>
                             <span className={progressPercent === 100 ? 'text-[var(--success)]' : 'text-[var(--primary)]'}>{progressPercent}% Pronto</span>
                         </div>
@@ -373,8 +373,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                         <div className="w-16 h-16 bg-[var(--primary)]/10 rounded-full flex items-center justify-center mx-auto mb-4 text-[var(--primary)]">
                             <Box size={32} />
                         </div>
-                        <h3 className="text-lg font-bold text-gray-300">Nenhum Volume Ativo</h3>
-                        <p className="text-xs text-[var(--text-muted)] mb-6">Inicie uma nova caixa para começar a bipar itens.</p>
+                        <h3 className="text-lg font-bold text-black">Nenhum Volume Ativo</h3>
+                        <p className="text-xs text-black mb-6">Inicie uma nova caixa para começar a bipar itens.</p>
                         <button
                             onClick={handleOpenVolume}
                             className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-black font-bold py-3 px-8 rounded-full shadow-[0_0_20px_var(--primary-glow)] transition flex items-center gap-2 mx-auto"
@@ -391,9 +391,9 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                     {currentVolumeId}
                                 </div>
                                 <div>
-                                    <span className="text-gray-400 text-sm">Volume Atual:</span>
+                                    <span className="text-black text-sm">Volume Atual:</span>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-xl font-bold text-white tracking-widest">
+                                        <span className="text-xl font-bold text-black tracking-widest">
                                             {client.id}_{currentVolumeId}
                                         </span>
                                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-500/20 text-green-400 border border-green-500/30 animate-pulse">
@@ -422,11 +422,11 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                         }
                                     }}
                                     placeholder="Bipar ou digitar EAN..."
-                                    className="w-full bg-[var(--bg-card)] border border-[var(--border-color)] text-white p-4 pl-12 rounded-xl focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none transition font-mono"
+                                    className="w-full bg-[var(--bg-card)] border border-[var(--border-color)] text-black p-4 pl-12 rounded-xl focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none transition font-mono"
                                     autoFocus
                                     disabled={showQtyModal} // Disable while modal is open
                                 />
-                                <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 pointer-events-none" />
+                                <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-black w-5 h-5 pointer-events-none" />
                             </div>
                             <button
                                 onClick={() => setShowCamera(true)}
@@ -438,7 +438,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
                         {/* Scanned Items List */}
                         <div className="space-y-2">
-                            <h3 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest pl-1">Itens nesta caixa</h3>
+                            <h3 className="text-xs font-bold text-black uppercase tracking-widest pl-1">Itens nesta caixa</h3>
                             {currentVolume && currentVolume.items.length > 0 ? (
                                 [...currentVolume.items].reverse().map((item) => (
                                     <div key={item.timestamp} className="bg-[var(--bg-card)] p-3 rounded-lg border border-[var(--border-color)] flex justify-between items-center group animate-fade-in">
@@ -447,8 +447,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                                 {item.quantity}x
                                             </div>
                                             <div className="min-w-0">
-                                                <p className="text-sm font-medium text-gray-200 truncate">{item.nome || item.referencia}</p> {/* Fallback name */}
-                                                <p className="text-[10px] text-gray-500 font-mono">EAN: {item.ean}</p>
+                                                <p className="text-sm font-medium text-black truncate">{item.nome || item.referencia}</p> {/* Fallback name */}
+                                                <p className="text-[10px] text-black font-mono">EAN: {item.ean}</p>
                                             </div>
                                         </div>
                                         <button onClick={() => handleDeleteItem(item.id || '')} className="p-2 text-gray-500 hover:text-red-400 transition">
@@ -457,7 +457,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                     </div>
                                 ))
                             ) : (
-                                <div className="text-center py-8 text-gray-600 italic text-sm">
+                                <div className="text-center py-8 text-black italic text-sm">
                                     Caixa vazia. Bipe itens para adicionar.
                                 </div>
                             )}
@@ -468,13 +468,13 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                 {/* Previous Volumes */}
                 {volumes.length > 1 && (
                     <div className="pt-8 border-t border-[var(--border-color)]">
-                        <h3 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-4">Volumes Completos</h3>
+                        <h3 className="text-xs font-bold text-black uppercase tracking-widest mb-4">Volumes Completos</h3>
                         <div className="grid grid-cols-2 gap-3">
                             {volumes.filter(v => v.id !== currentVolumeId).map(vol => (
                                 <div key={vol.id} className="bg-[var(--bg-card)] p-3 rounded-lg border border-[var(--border-color)] opacity-70 hover:opacity-100 transition flex justify-between items-center">
                                     <div>
-                                        <p className="text-xs font-bold text-gray-300">Volume {vol.id}</p>
-                                        <p className="text-[10px] text-gray-500">{vol.items.length} itens</p>
+                                        <p className="text-xs font-bold text-black">Volume {vol.id}</p>
+                                        <p className="text-[10px] text-black">{vol.items.length} itens</p>
                                     </div>
                                     <button onClick={() => handleEditVolume(vol.uuid)} className="text-[var(--primary)] hover:bg-[var(--primary)]/10 p-2 rounded-lg transition" title="Reabrir Volume para Conferência">
                                         <Edit size={16} />
@@ -492,8 +492,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             {showQtyModal && (
                 <div className="fixed inset-0 bg-black/95 z-[100] flex flex-col items-center justify-center p-6">
                     <div className="bg-[var(--bg-card)] w-full max-w-sm rounded-2xl border border-[var(--primary-glow)] shadow-[0_0_30px_rgba(0,255,127,0.15)] p-6 relative">
-                        <h2 className="text-white font-bold text-lg mb-1 text-center">Quantidade</h2>
-                        <p className="text-gray-400 text-xs text-center mb-6 font-mono break-all">{pendingBarcode}</p>
+                        <h2 className="text-black font-bold text-lg mb-1 text-center">Quantidade</h2>
+                        <p className="text-black text-xs text-center mb-6 font-mono break-all">{pendingBarcode}</p>
 
                         {/* PRODUCT INFO */}
                         {pendingProduct ? (
@@ -504,19 +504,19 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                 {pendingProduct.isExtra ? (
                                     <p className="text-orange-400 font-bold text-xs mt-1">PRODUTO NÃO PERTENCE AO PEDIDO</p>
                                 ) : (
-                                    <p className="text-gray-400 text-xs">
-                                        Pedido: <strong className="text-white">{pendingProduct.expected}</strong> UN
+                                    <p className="text-black text-xs">
+                                        Pedido: <strong className="text-black">{pendingProduct.expected}</strong> UN
                                     </p>
                                 )}
                             </div>
                         ) : (
                             <div className="bg-[var(--bg-app)] rounded-lg p-3 mb-6 text-center border border-[var(--border-color)] animate-pulse">
-                                <p className="text-gray-500 text-xs">Buscando produto...</p>
+                                <p className="text-black text-xs">Buscando produto...</p>
                             </div>
                         )}
 
                         <div className="flex items-center justify-center gap-4 mb-8">
-                            <button onClick={() => setQtyInput(String(Math.max(1, (parseInt(qtyInput) || 1) - 1)))} className="p-4 bg-[var(--bg-app)] rounded-xl border border-[var(--border-color)] hover:border-[var(--primary)] text-gray-300">
+                            <button onClick={() => setQtyInput(String(Math.max(1, (parseInt(qtyInput) || 1) - 1)))} className="p-4 bg-[var(--bg-app)] rounded-xl border border-[var(--border-color)] hover:border-[var(--primary)] text-black">
                                 <MinusCircle size={24} />
                             </button>
 
@@ -524,12 +524,12 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                 type="number"
                                 value={qtyInput}
                                 onChange={e => setQtyInput(e.target.value)}
-                                className="w-24 bg-transparent text-center text-4xl font-bold text-white outline-none"
+                                className="w-24 bg-transparent text-center text-4xl font-bold text-black outline-none"
                                 autoFocus
                                 onKeyDown={e => e.key === 'Enter' && confirmScan()}
                             />
 
-                            <button onClick={() => setQtyInput(String((parseInt(qtyInput) || 0) + 1))} className="p-4 bg-[var(--bg-app)] rounded-xl border border-[var(--border-color)] hover:border-[var(--primary)] text-gray-300">
+                            <button onClick={() => setQtyInput(String((parseInt(qtyInput) || 0) + 1))} className="p-4 bg-[var(--bg-app)] rounded-xl border border-[var(--border-color)] hover:border-[var(--primary)] text-black">
                                 <PlusCircle size={24} />
                             </button>
                         </div>
@@ -543,7 +543,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                         </button>
                         <button
                             onClick={() => { setShowQtyModal(false); setPendingBarcode(null); setBarcode(""); }}
-                            className="w-full mt-3 py-3 text-gray-500 text-xs hover:text-white transition"
+                            className="w-full mt-3 py-3 text-black text-xs hover:text-gray-700 transition"
                         >
                             CANCELAR
                         </button>
@@ -559,7 +559,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                             <X size={24} />
                         </button>
                         <div id="reader" className="w-full h-auto"></div>
-                        <div className="p-4 text-center text-gray-400 text-sm">
+                        <div className="p-4 text-center text-black text-sm">
                             Aponte a câmera para o código de barras
                         </div>
                     </div>
@@ -574,19 +574,19 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                             <Lock className="text-white w-8 h-8" />
                         </div>
                         <div className="pt-12 p-6 text-center">
-                            <h2 className="text-2xl font-bold text-white mb-2">Divergência na Conferência</h2>
-                            <p className="text-gray-400 text-sm mb-6">Por favor, corrija os erros abaixo antes de finalizar.</p>
-                            <div className="bg-black/40 rounded-lg p-4 max-h-60 overflow-y-auto mb-6 text-left space-y-2">
+                            <h2 className="text-2xl font-bold text-black mb-2">Divergência na Conferência</h2>
+                            <p className="text-black text-sm mb-6">Por favor, corrija os erros abaixo antes de finalizar.</p>
+                            <div className="bg-gray-100 rounded-lg p-4 max-h-60 overflow-y-auto mb-6 text-left space-y-2 border border-gray-200">
                                 {blockingErrors.map((err, idx) => (
-                                    <div key={idx} className="flex justify-between items-center text-sm border-b border-white/10 pb-2 last:border-0 last:pb-0">
-                                        <span className="text-gray-300 font-medium">{err.nome}</span>
+                                    <div key={idx} className="flex justify-between items-center text-sm border-b border-gray-200 pb-2 last:border-0 last:pb-0">
+                                        <span className="text-black font-medium">{err.nome}</span>
                                         <span className={err.diff < 0 ? 'text-red-400 font-bold' : 'text-orange-400 font-bold'}>
                                             {err.diff < 0 ? `Faltando ${Math.abs(err.diff)}` : `Extra ${err.diff}`}
                                         </span>
                                     </div>
                                 ))}
                             </div>
-                            <button onClick={() => setShowBlockingModal(false)} className="w-full py-3 bg-[var(--bg-panel)] border border-[var(--border-color)] text-white font-bold rounded-lg hover:bg-white/5 transition">
+                            <button onClick={() => setShowBlockingModal(false)} className="w-full py-3 bg-[var(--bg-panel)] border border-[var(--border-color)] text-black font-bold rounded-lg hover:bg-black/5 transition">
                                 VOU CORRIGIR
                             </button>
                         </div>
@@ -600,8 +600,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                     <div className="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(16,185,129,0.4)]">
                         <Check className="text-green-500 w-12 h-12" />
                     </div>
-                    <h1 className="text-3xl font-bold text-white mb-2">Sucesso!</h1>
-                    <p className="text-gray-400 text-center max-w-xs mb-8">Todos os itens conferem com o manifesto. Carga {loadId} pronta.</p>
+                    <h1 className="text-3xl font-bold text-black mb-2">Sucesso!</h1>
+                    <p className="text-black text-center max-w-xs mb-8">Todos os itens conferem com o manifesto. Carga {loadId} pronta.</p>
                     <button onClick={() => { setShowFinalReport(false); onBack(); }} className="bg-white text-black font-bold py-3 px-8 rounded-full shadow-xl hover:scale-105 transition">
                         VOLTAR AO INÍCIO
                     </button>

@@ -24,8 +24,8 @@ export const UploadScreen = ({ onProcess, isProcessing }: UploadScreenProps) => 
                     <FileText className="w-10 h-10 text-[var(--primary)]" />
                 </div>
 
-                <h1 className="text-2xl font-bold mb-2 text-white">Importar Minuta</h1>
-                <p className="text-[var(--text-muted)] mb-8 text-sm">Selecione o arquivo XML do Crystal Reports para iniciar a conferência.</p>
+                <h1 className="text-2xl font-bold mb-2 text-black">Importar Minuta</h1>
+                <p className="text-black mb-8 text-sm">Selecione o arquivo XML do Crystal Reports para iniciar a conferência.</p>
 
                 <label className={`block w-full border-2 border-dashed rounded-xl p-8 mb-8 transition cursor-pointer relative group overflow-hidden ${file ? 'border-[var(--primary)] bg-[var(--primary)]/5' : 'border-[var(--border-color)] hover:border-[var(--text-muted)]'}`}>
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition"></div>
@@ -33,8 +33,8 @@ export const UploadScreen = ({ onProcess, isProcessing }: UploadScreenProps) => 
                     <input type="file" accept=".xml" onChange={handleFileChange} className="hidden" />
 
                     <div className="relative z-10 flex flex-col items-center gap-2">
-                        <Upload className={`w-8 h-8 ${file ? 'text-[var(--primary)]' : 'text-gray-500'}`} />
-                        <span className={`font-medium ${file ? 'text-[var(--primary)]' : 'text-gray-500'}`}>
+                        <Upload className={`w-8 h-8 ${file ? 'text-[var(--primary)]' : 'text-black'}`} />
+                        <span className={`font-medium ${file ? 'text-[var(--primary)]' : 'text-black'}`}>
                             {file ? file.name : "Toque para selecionar XML"}
                         </span>
                     </div>
@@ -44,7 +44,7 @@ export const UploadScreen = ({ onProcess, isProcessing }: UploadScreenProps) => 
                     onClick={() => file && onProcess(file)}
                     disabled={!file || isProcessing}
                     className={`w-full font-bold py-4 px-4 rounded-xl transition flex items-center justify-center relative overflow-hidden group ${!file || isProcessing
-                        ? 'bg-[var(--bg-panel)] text-gray-500 cursor-not-allowed border border-[var(--border-color)]'
+                        ? 'bg-[var(--bg-panel)] text-black cursor-not-allowed border border-[var(--border-color)]'
                         : 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-[0_0_20px_rgba(0,180,255,0.4)]'
                         }`}
                 >

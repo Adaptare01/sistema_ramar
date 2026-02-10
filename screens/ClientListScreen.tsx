@@ -26,7 +26,7 @@ export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) =
                         <div className="flex justify-between items-center relative z-10">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 rounded-lg bg-[var(--bg-app)] flex items-center justify-center border border-[var(--border-color)] group-hover:border-[var(--primary)]/30 transition">
-                                    <Truck className="w-6 h-6 text-gray-500 group-hover:text-[var(--primary)] transition" />
+                                    <Truck className="w-6 h-6 text-black group-hover:text-[var(--primary)] transition" />
                                 </div>
                                 <div>
                                     <h2 className="text-lg font-bold text-[var(--text-main)] group-hover:text-[var(--primary)] transition">{client.name}</h2>
