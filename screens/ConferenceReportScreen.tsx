@@ -35,23 +35,15 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
     if (loading) return <div className="flex h-full items-center justify-center text-black">Carregando relatório...</div>;
     if (!data) return <div className="flex h-full items-center justify-center text-black">Relatório não encontrado.</div>;
 
-    const snapshot = data.report_snapshot || [];
+    const snapshot = Array.isArray(data.report_snapshot) ? data.report_snapshot : [];
 
-    // Categorize items
-    const missing = snapshot.filter((i: any) => i.type === 'MISSING');
-    const excess = snapshot.filter((i: any) => i.type === 'EXCESS');
-    const extra = snapshot.filter((i: any) => i.type === 'EXTRA');
-    // We might want to list correct items too if they are stored or implied, 
-    // but usually report focuses on discrepancies or full list.
-    // Ensure the snapshot contains ALL items or just discrepancies?
-    // Based on VerificationScreen logic, 'blockingErrors' passed to snapshot triggers this.
-    // If successful, snapshot might be empty of errors.
+    // Categorize items safely
+    const missing = snapshot.filter((i: any) => i?.type === 'MISSING') || [];
+    const excess = snapshot.filter((i: any) => i?.type === 'EXCESS') || [];
+    const extra = snapshot.filter((i: any) => i?.type === 'EXTRA') || [];
 
-    // Ideally, we want a full list. 
-    // For now, let's display specific sections for issues, and a summary.
-
-    // If 'resumo' has counts:
     const summary = data.resumo || {};
+    const createdDate = data.created_at ? new Date(data.created_at) : new Date();
 
     return (
         <div className="flex flex-col h-full bg-[var(--bg-app)] text-black">
@@ -62,7 +54,7 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                 </button>
                 <div className="flex-1">
                     <h1 className="text-lg font-bold text-black leading-tight">Relatório de Conferência</h1>
-                    <p className="text-xs text-gray-500 font-mono">{conferenceId.split('-')[0]}...</p>
+                    <p className="text-xs text-gray-500 font-mono">ID: {(conferenceId || '').split('-')[0]}...</p>
                 </div>
                 <button className="p-2 text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg" title="Exportar PDF (Futuro)">
                     <Download size={20} />
@@ -79,7 +71,7 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                         </div>
                         <div>
                             <p className="text-xs text-gray-500 uppercase font-bold">Cliente</p>
-                            <p className="font-bold text-black">{data.cliente_nome}</p>
+                            <p className="font-bold text-black">{data.cliente_nome || 'N/A'}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -88,7 +80,7 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                         </div>
                         <div>
                             <p className="text-xs text-gray-500 uppercase font-bold">Carga</p>
-                            <p className="font-bold text-black">{data.carga_nome}</p>
+                            <p className="font-bold text-black">{data.carga_nome || 'N/A'}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100">
@@ -97,7 +89,7 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                         </div>
                         <div>
                             <p className="text-xs text-gray-500 uppercase font-bold">Data Finalização</p>
-                            <p className="font-bold text-black">{new Date(data.created_at).toLocaleString()}</p>
+                            <p className="font-bold text-black">{createdDate.toLocaleString()}</p>
                         </div>
                     </div>
                 </div>

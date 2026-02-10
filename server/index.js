@@ -656,6 +656,42 @@ conf.*,
     }
 });
 
+// Listar conferências em andamento (volumes abertos)
+app.get('/api/conferencias/in-progress', async (req, res) => {
+    try {
+        const result = await query(
+            `SELECT v.id, v.carga_id, v.cliente_id, c.nome as cliente_nome, ca.nome_arquivo as carga_nome, v.created_at
+             FROM volumes v
+             JOIN clientes c ON v.cliente_id = c.id
+             JOIN cargas ca ON v.carga_id = ca.id
+             WHERE v.is_open = true
+             ORDER BY v.created_at DESC`
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Erro ao listar conferências em andamento:', err);
+        res.status(500).json({ error: 'Erro ao listar conferências em andamento' });
+    }
+});
+
+// Listar conferências em andamento (volumes abertos)
+app.get('/api/conferencias/in-progress', async (req, res) => {
+    try {
+        const result = await query(
+            `SELECT v.id, v.carga_id, v.cliente_id, c.nome as cliente_nome, ca.nome_arquivo as carga_nome, v.created_at
+             FROM volumes v
+             JOIN clientes c ON v.cliente_id = c.id
+             JOIN cargas ca ON v.carga_id = ca.id
+             WHERE v.is_open = true
+             ORDER BY v.created_at DESC`
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Erro ao listar conferências em andamento:', err);
+        res.status(500).json({ error: 'Erro ao listar conferências em andamento' });
+    }
+});
+
 // Obter Detalhes da Conferência
 app.get('/api/conferencias/:id', async (req, res) => {
     const { id } = req.params;
@@ -737,23 +773,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Listar conferências em andamento (volumes abertos)
-app.get('/api/conferencias/in-progress', async (req, res) => {
-    try {
-        const result = await query(
-            `SELECT v.id, v.carga_id, v.cliente_id, c.nome as cliente_nome, ca.nome_arquivo as carga_nome, v.created_at
-             FROM volumes v
-             JOIN clientes c ON v.cliente_id = c.id
-             JOIN cargas ca ON v.carga_id = ca.id
-             WHERE v.is_open = true
-             ORDER BY v.created_at DESC`
-        );
-        res.json(result.rows);
-    } catch (err) {
-        console.error('Erro ao listar conferências em andamento:', err);
-        res.status(500).json({ error: 'Erro ao listar conferências em andamento' });
-    }
-});
+
 
 // Inicialização do servidor
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
