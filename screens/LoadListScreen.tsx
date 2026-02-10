@@ -44,7 +44,7 @@ export const LoadListScreen = ({ onSelect }: LoadListScreenProps) => {
 
     return (
         <div className="p-4 md:p-8 space-y-6 pb-24 animate-fade-in">
-            <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-white">
+            <h1 className="text-2xl font-bold text-[var(--text-main)]">
                 Minhas Cargas
             </h1>
 
@@ -63,12 +63,12 @@ export const LoadListScreen = ({ onSelect }: LoadListScreenProps) => {
                             <Card key={load.id} className="hover:border-[var(--primary)]/50 transition cursor-pointer group" onClick={() => onSelect(load.id)}>
                                 <div className="flex justify-between items-start mb-4 gap-4">
                                     <div className="flex items-center gap-3 min-w-0 flex-1">
-                                        <div className="p-3 rounded-lg bg-[var(--bg-app)] text-[var(--primary)] border border-[var(--border-color)] shrink-0">
+                                        <div className="p-3 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20 shrink-0">
                                             <FileText size={24} />
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="font-bold text-gray-200 group-hover:text-[var(--primary)] transition truncate">{load.nome_arquivo}</h3>
-                                            <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                            <h3 className="font-bold text-[var(--text-main)] group-hover:text-[var(--primary)] transition truncate">{load.nome_arquivo}</h3>
+                                            <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)] mt-1">
                                                 <Calendar size={12} />
                                                 <span>{formatDate(load.data_importacao)}</span>
                                             </div>
@@ -83,17 +83,17 @@ export const LoadListScreen = ({ onSelect }: LoadListScreenProps) => {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div className="bg-[var(--bg-app)] p-3 rounded-lg border border-[var(--border-color)]">
-                                        <p className="text-xs text-gray-500 mb-1 flex items-center gap-1"><Package size={12} /> Volumes</p>
-                                        <p className="text-lg font-bold text-white">{load.volumes_count}</p>
+                                    <div className="bg-slate-100 p-3 rounded-lg border border-slate-200">
+                                        <p className="text-xs text-[var(--text-secondary)] mb-1 flex items-center gap-1"><Package size={12} /> Volumes</p>
+                                        <p className="text-lg font-bold text-[var(--text-main)]">{load.volumes_count}</p>
                                     </div>
-                                    <div className="bg-[var(--bg-app)] p-3 rounded-lg border border-[var(--border-color)]">
-                                        <p className="text-xs text-gray-500 mb-1 flex items-center gap-1"><CheckCircle size={12} /> Progresso</p>
-                                        <p className="text-lg font-bold text-white">{progress}%</p>
+                                    <div className="bg-slate-100 p-3 rounded-lg border border-slate-200">
+                                        <p className="text-xs text-[var(--text-secondary)] mb-1 flex items-center gap-1"><CheckCircle size={12} /> Progresso</p>
+                                        <p className="text-lg font-bold text-[var(--text-main)]">{progress}%</p>
                                     </div>
                                 </div>
 
-                                <div className="h-1.5 w-full bg-[var(--bg-app)] rounded-full overflow-hidden">
+                                <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
                                     <div
                                         className={`h-full ${progress === 100 ? 'bg-green-500' : 'bg-[var(--primary)]'} transition-all duration-500`}
                                         style={{ width: `${progress}%` }}

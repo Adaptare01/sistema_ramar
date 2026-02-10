@@ -10,8 +10,8 @@ interface ClientListScreenProps {
 export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) => {
     return (
         <div className="p-6 animate-fade-in pb-24">
-            <h1 className="text-2xl font-bold text-white mb-2">Selecionar Cliente</h1>
-            <p className="text-[var(--text-muted)] text-sm mb-6">{clients.length} clientes encontrados na minuta.</p>
+            <h1 className="text-2xl font-bold text-[var(--text-main)] mb-2">Selecionar Cliente</h1>
+            <p className="text-[var(--text-secondary)] text-sm mb-6">{clients.length} clientes encontrados na minuta.</p>
 
             <div className="grid gap-4 md:grid-cols-2">
                 {clients.map(client => (
@@ -29,8 +29,8 @@ export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) =
                                     <Truck className="w-6 h-6 text-gray-500 group-hover:text-[var(--primary)] transition" />
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-200 group-hover:text-white transition">{client.name}</h2>
-                                    <p className="text-xs text-[var(--text-muted)] font-mono">ID: {client.id}</p>
+                                    <h2 className="text-lg font-bold text-[var(--text-main)] group-hover:text-[var(--primary)] transition">{client.name}</h2>
+                                    <p className="text-xs text-[var(--text-secondary)] font-mono">ID: {client.id}</p>
                                 </div>
                             </div>
 
@@ -39,7 +39,7 @@ export const ClientListScreen = ({ clients, onSelect }: ClientListScreenProps) =
                                     <Package size={16} />
                                     <span>{client.totalItems}</span>
                                 </div>
-                                <span className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Itens</span>
+                                <span className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider">Itens</span>
                             </div>
                         </div>
 

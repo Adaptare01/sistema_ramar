@@ -5,26 +5,32 @@
 @tailwind utilities;
 
 :root {
-  --bg-app: #0b0e14; /* Deep Dark Blue/Black */
-  --bg-panel: #11161f; /* Slightly lighter for panels */
-  --bg-card: #151b26; /* Card background */
-  --bg-card-hover: #1f2736;
-  
-  --primary: #00d4ff; /* Neon Cyan */
-  --primary-dark: #00a3cc;
-  --primary-glow: rgba(0, 212, 255, 0.3);
-  
-  --secondary: #6366f1; /* Indigo/Purple secondary */
-  
-  --text-main: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  
-  --border-color: #1e293b;
+  --bg-app: #f8fafc;
+  /* Light Gray Background */
+  --bg-panel: #ffffff;
+  /* White for panels */
+  --bg-card: #ffffff;
+  /* White card background */
+  --bg-card-hover: #f1f5f9;
+
+  --primary: #0284c7;
+  /* Professional Sky Blue */
+  --primary-dark: #0369a1;
+  --primary-glow: rgba(2, 132, 199, 0.15);
+
+  --secondary: #6366f1;
+  /* Indigo/Purple secondary */
+
+  --text-main: #1e293b;
+  /* Dark slate for main text */
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+
+  --border-color: #e2e8f0;
 }
 
 body {
@@ -38,23 +44,27 @@ body {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--bg-app); 
+  background: var(--bg-app);
 }
+
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color); 
+  background: var(--border-color);
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted); 
+  background: var(--text-muted);
 }
 
 /* Utilities */
 .glass-panel {
-  background: rgba(21, 27, 38, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .text-glow {
@@ -66,6 +76,13 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
