@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
-import { ArrowLeft, Search, RefreshCw, Package } from 'lucide-react';
+import { ArrowLeft, Search, RefreshCw, Package, Upload } from 'lucide-react';
 import { ProductDbItem } from '../types';
 
 interface ConfigScreenProps {
@@ -25,6 +25,43 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
         }
     };
 
+    const handleImportClick = () => {
+        const input = document.getElementById('product-import-input') as HTMLInputElement;
+        if (input) input.click();
+    };
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!confirm(`Deseja importar os produtos do arquivo "${file.name}"? Isso atualizará o banco de dados.`)) {
+            e.target.value = '';
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const reader = new FileReader();
+            reader.onload = async (evt) => {
+                const base64 = (evt.target?.result as string).split(',')[1];
+                try {
+                    const res = await api.importProducts(base64);
+                    alert(`Importação concluída!\nInseridos: ${res.details.inserted}\nAtualizados: ${res.details.updated}\nErros: ${res.details.errors}`);
+                    loadProducts();
+                } catch (err: any) {
+                    alert('Erro na importação: ' + err.message);
+                }
+            };
+            reader.readAsDataURL(file);
+        } catch (err) {
+            console.error(err);
+            alert('Erro ao ler arquivo');
+        } finally {
+            e.target.value = '';
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         loadProducts();
     }, []);
@@ -45,8 +82,23 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
                     </button>
                     <h2 className="text-lg font-bold text-black">Configurações - Produtos</h2>
                 </div>
-                <button onClick={loadProducts} className="bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 text-[var(--primary)] p-2 rounded-lg transition" title="Recarregar">
+                <button onClick={loadProducts} className="bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 text-[var(--primary)] p-2 rounded-lg transition mr-2" title="Recarregar">
                     <RefreshCw size={20} />
+                </button>
+
+                <input
+                    type="file"
+                    id="product-import-input"
+                    accept=".csv, .xls, .xlsx"
+                    className="hidden"
+                    onChange={handleFileChange}
+                />
+                <button
+                    onClick={handleImportClick}
+                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition shadow-md"
+                >
+                    <Upload size={18} />
+                    <span>Importar XLS/CSV</span>
                 </button>
             </div>
 

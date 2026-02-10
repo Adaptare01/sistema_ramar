@@ -11,7 +11,7 @@ app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
 import { randomUUID, createHash } from 'crypto';
-import { parseCrystalReportsXML } from './xmlParserNode.js';
+import { read, utils } from 'xlsx';
 
 // Rota de Importação de XML
 app.post('/api/import', async (req, res) => {
@@ -211,11 +211,23 @@ app.get('/api/cargas/:id/clients', async (req, res) => {
             // Calcular total de itens
             const totalItems = itemsRes.rows.reduce((acc, i) => acc + i.quantidadeEsperada, 0);
 
+            // Calcular total de itens bipados
+            const scannedRes = await client.query(
+                `SELECT COALESCE(SUM(vi.quantidade), 0) as total_scanned
+                 FROM volume_itens vi
+                 JOIN volumes v ON vi.volume_id = v.id
+                 WHERE v.carga_id = $1 AND v.cliente_id = $2`,
+                [id, cli.id]
+            );
+            const totalScanned = parseFloat(scannedRes.rows[0].total_scanned);
+
             clientsData.push({
                 id: cli.id,
                 name: cli.nome,
                 items: itemsRes.rows,
-                totalItems
+                totalItems,
+                totalScanned,
+                isCompleted: totalScanned >= totalItems
             });
         }
 
@@ -524,5 +536,120 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
         console.log(`🚀 Servidor backend rodando em http://localhost:${port}`);
     });
 }
+
+// Rota para IMPORTAR PRODUTOS via CSV/XLS
+app.post('/api/products/import', async (req, res) => {
+    const { fileContent } = req.body; // Base64 content
+
+    if (!fileContent) {
+        return res.status(400).json({ error: 'Conteúdo do arquivo é obrigatório' });
+    }
+
+    let client;
+    try {
+        client = await getClient();
+
+        // Convert Base64 to Buffer
+        const buffer = Buffer.from(fileContent, 'base64');
+        const workbook = read(buffer, { type: 'buffer' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        // Get data as array of arrays
+        const data = utils.sheet_to_json(sheet, { header: 1 });
+
+        console.log(`[IMPORT] Iniciando importação de ${data.length} linhas...`);
+
+        await client.query('BEGIN');
+
+        let inserted = 0;
+        let updated = 0;
+        let errors = 0;
+
+        // Skip header row (index 0)
+        for (let i = 1; i < data.length; i++) {
+            const row = data[i];
+            if (!row || row.length === 0) continue;
+
+            // Mapping Strategy:
+            // 0:codgru, 1:codsub, 2:codpro(REF), 3:despro(DESC), 4:unipro, 5:codbar(EAN)
+            // Or try to detect if generic CSV
+
+            let ref, desc, ean;
+
+            // Heuristic: If row has at least 3 columns, assume it might be valid
+            if (row.length >= 3) {
+                // Check if it matches the "Modelo 02" strict format
+                // Usually Ref is col 2, Desc is col 3, EAN is col 5
+
+                // Fallback for smaller CSVs: 0=Ref, 1=Desc, 2=EAN
+                if (row.length === 3) {
+                    ref = String(row[0] || '').trim();
+                    desc = String(row[1] || '').trim();
+                    ean = String(row[2] || '').trim();
+                } else {
+                    // Default "Modelo 02"
+                    ref = String(row[2] || '').trim();
+                    desc = String(row[3] || '').trim();
+                    ean = String(row[5] || '').trim();
+
+                    // Fallback check: if Ref is empty but col 0 has data, maybe it's a different format?
+                    if (!ref && row[0]) {
+                        ref = String(row[0] || '').trim(); // Try col 0
+                        desc = String(row[1] || '').trim();
+                        ean = String(row[2] || '').trim();
+                    }
+                }
+            }
+
+            if (!ref) {
+                errors++;
+                continue;
+            }
+
+            if (ean.length > 20) ean = ean.substring(0, 20);
+
+            try {
+                const newId = randomUUID();
+                const upsert = await client.query(
+                    `INSERT INTO produtos (id, referencia, descricao, ean)
+                     VALUES ($1, $2, $3, $4)
+                     ON CONFLICT (referencia) 
+                     DO UPDATE SET 
+                        descricao = EXCLUDED.descricao,
+                        ean = EXCLUDED.ean
+                     RETURNING (xmax = 0) AS inserted`,
+                    [newId, ref, desc, ean]
+                );
+
+                if (upsert.rows[0].inserted) inserted++;
+                else updated++;
+            } catch (err) {
+                console.error(`Erro importing row ${i}: ${err.message}`);
+                errors++;
+            }
+        }
+
+        await client.query('COMMIT');
+
+        res.json({
+            success: true,
+            message: 'Importação concluída',
+            details: {
+                total: data.length - 1,
+                inserted,
+                updated,
+                errors
+            }
+        });
+
+    } catch (err) {
+        if (client) await client.query('ROLLBACK');
+        console.error('Erro na importação de produtos:', err);
+        res.status(500).json({ error: 'Falha ao processar arquivo' });
+    } finally {
+        if (client) client.release();
+    }
+});
 
 export default app;

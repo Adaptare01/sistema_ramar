@@ -16,6 +16,8 @@ export interface ClientData {
   name: string;
   items: InvoiceItem[];
   totalItems: number; // Sum of quantities
+  totalScanned?: number;
+  isCompleted?: boolean;
 }
 
 export interface ScannedItem {

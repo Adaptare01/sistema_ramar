@@ -1,0 +1,37 @@
+{
+  "volumes": [
+    "id (uuid)",
+    "carga_id (uuid)",
+    "cliente_id (character varying)",
+    "numero_sequencial (integer)",
+    "is_open (boolean)",
+    "created_at (timestamp without time zone)",
+    "closed_at (timestamp without time zone)"
+  ],
+  "carga_itens": [
+    "id (uuid)",
+    "carga_id (uuid)",
+    "cliente_id (character varying)",
+    "produto_referencia (character varying)",
+    "quantidade_esperada (integer)",
+    "produto_nome (character varying)",
+    "unidade (character varying)",
+    "created_at (timestamp without time zone)"
+  ],
+  "volume_itens": [
+    "id (uuid)",
+    "volume_id (uuid)",
+    "produto_ean (character varying)",
+    "produto_referencia (character varying)",
+    "quantidade (integer)",
+    "data_leitura (timestamp without time zone)"
+  ],
+  "cargas": [
+    "id (uuid)",
+    "nome_arquivo (character varying)",
+    "data_importacao (timestamp without time zone)",
+    "status (character varying)",
+    "total_itens (integer)",
+    "total_volumes (integer)"
+  ]
+}
