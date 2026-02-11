@@ -154,12 +154,7 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                     </div>
                 )}
 
-                {extra.length === 0 && missing.length === 0 && excess.length === 0 && (
-                    <div className="text-center py-8 text-gray-500">
-                        <CheckCircle size={48} className="mx-auto mb-2 text-green-500 opacity-50" />
-                        <p>Nenhuma divergência encontrada.</p>
-                    </div>
-                )}
+
 
                 {/* Matched Items Section */}
                 {match.length > 0 && (
@@ -181,7 +176,14 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                                     <div key={idx} className="bg-white p-3 rounded-lg border border-gray-100 flex justify-between items-center shadow-sm">
                                         <div>
                                             <p className="text-sm font-medium text-black">{item.nome}</p>
-                                            <p className="text-xs text-gray-400">Qtd: {item.scanned}</p>
+                                            <div className="flex gap-2 text-xs text-gray-500">
+                                                <span>Qtd: {item.scanned}</span>
+                                                {item.locations && item.locations.length > 0 && (
+                                                    <span className="font-mono text-[var(--primary)]">
+                                                        Vol: {item.locations.map((l: any) => `V${l}`).join(', ')}
+                                                    </span>
+                                                )}
+                                            </div>
                                         </div>
                                         <span className="text-xs font-bold bg-green-50 px-2 py-1 rounded border border-green-100 text-green-600 flex items-center gap-1">
                                             <CheckCircle size={10} /> OK

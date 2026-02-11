@@ -353,7 +353,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                     scanned: scannedQty,
                     expected: expected.quantidadeEsperada,
                     diff: 0,
-                    type: 'MATCH'
+                    type: 'MATCH',
+                    locations: getVolumeLocations(expected.referencia)
                 });
             }
         });
