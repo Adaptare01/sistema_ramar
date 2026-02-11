@@ -3,7 +3,7 @@ import { Html5QrcodeScanner } from 'html5-qrcode';
 import { ClientData, ScannedItem, Volume, ProductDbItem } from '../types';
 import { api } from '../services/api'; // Import API
 import { playSound } from '../utils/sound';
-import { Trash2, CheckCircle, AlertTriangle, ChevronRight, X, ArrowLeft, Camera, AlertCircle, Check, MinusCircle, PlusCircle, Edit, Lock, Printer, Tag, Box, Play } from 'lucide-react';
+import { Trash2, CheckCircle, AlertTriangle, ChevronRight, X, ArrowLeft, Camera, AlertCircle, Check, MinusCircle, PlusCircle, Edit, Lock, Printer, Tag, Box, Play, ListOrdered } from 'lucide-react';
 import { Card } from '../components/Card';
 
 interface VerificationScreenProps {
@@ -439,6 +439,46 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
 
     const currentVolume = volumes.find(v => v.id === currentVolumeId);
 
+    const handleDeleteVolume = async (volUuid: string, volId: number) => {
+        console.log('handleDeleteVolume called for:', volUuid);
+        if (!window.confirm(`Tem certeza que deseja excluir o Volume ${volId}? Todos os itens serão removidos.`)) return;
+
+        try {
+            console.log('Sending DELETE request...');
+            const response = await fetch(`http://localhost:3001/api/volumes/${volUuid}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Falha ao excluir volume');
+
+            await loadVolumes();
+            setAlertMsg({ type: 'success', msg: `Volume ${volId} excluído com sucesso` });
+
+            if (currentVolumeUUID === volUuid) {
+                setCurrentVolumeId(null);
+                setCurrentVolumeUUID(null);
+            }
+        } catch (err) {
+            console.error('Erro ao excluir volume', err);
+            setAlertMsg({ type: 'error', msg: 'Erro ao excluir volume' });
+        }
+    };
+
+    const handleRenumberVolumes = async () => {
+        if (!window.confirm('Isso vai renumerar todos os volumes desta carga/cliente para 1, 2, 3 com base na ordem de criação. Deseja continuar?')) return;
+        try {
+            const response = await fetch('http://localhost:3001/api/volumes/renumber', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cargaId, clienteId: client.id })
+            });
+            if (!response.ok) throw new Error('Falha ao renumerar');
+
+            await loadVolumes();
+            setAlertMsg({ type: 'success', msg: 'Volumes renumerados com sucesso!' });
+        } catch (err) {
+            console.error('Erro ao renumerar', err);
+            setAlertMsg({ type: 'error', msg: 'Erro ao renumerar volumes' });
+        }
+    };
+
     return (
         <div className="flex flex-col h-full bg-[var(--bg-app)] text-white relative">
 
@@ -580,9 +620,14 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                 )}
 
                 {/* Previous Volumes */}
-                {volumes.length > 1 && (
+                {volumes.some(v => v.id !== currentVolumeId) && (
                     <div className="pt-8 border-t border-[var(--border-color)]">
-                        <h3 className="text-xs font-bold text-black uppercase tracking-widest mb-4">Volumes Completos</h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-xs font-bold text-black uppercase tracking-widest">Volumes Completos</h3>
+                            <button onClick={handleRenumberVolumes} className="text-xs text-[var(--primary)] hover:underline flex items-center gap-1" title="Corrigir numeração (1, 2, 3...)">
+                                <ListOrdered size={14} /> Renumerar
+                            </button>
+                        </div>
                         <div className="grid grid-cols-2 gap-3">
                             {volumes.filter(v => v.id !== currentVolumeId).map(vol => (
                                 <div key={vol.id} className="bg-[var(--bg-card)] p-3 rounded-lg border border-[var(--border-color)] opacity-70 hover:opacity-100 transition flex justify-between items-center">
@@ -590,9 +635,22 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                                         <p className="text-xs font-bold text-black">Volume {vol.id}</p>
                                         <p className="text-[10px] text-black">{vol.items.length} itens</p>
                                     </div>
-                                    <button onClick={() => handleEditVolume(vol.uuid)} className="text-[var(--primary)] hover:bg-[var(--primary)]/10 p-2 rounded-lg transition" title="Reabrir Volume para Conferência">
-                                        <Edit size={16} />
-                                    </button>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                console.log('Trash clicked', vol.uuid);
+                                                handleDeleteVolume(vol.uuid, vol.id);
+                                            }}
+                                            className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition"
+                                            title="Excluir Volume"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                        <button onClick={() => handleEditVolume(vol.uuid)} className="text-[var(--primary)] hover:bg-[var(--primary)]/10 p-2 rounded-lg transition" title="Reabrir Volume para Conferência">
+                                            <Edit size={16} />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>

@@ -612,6 +612,76 @@ app.put('/api/items/:id', async (req, res) => {
     }
 });
 
+// Renumerar volumes (1, 2, 3...)
+app.post('/api/volumes/renumber', async (req, res) => {
+    const { cargaId, clienteId } = req.body;
+    let client;
+    try {
+        client = await getClient();
+        await client.query('BEGIN');
+
+        // 1. Get all volumes ordered by created_at ASC
+        const vols = await client.query(
+            'SELECT id FROM volumes WHERE carga_id = $1 AND cliente_id = $2 ORDER BY created_at ASC',
+            [cargaId, clienteId]
+        );
+
+        if (vols.rows.length === 0) {
+            await client.query('ROLLBACK');
+            return res.json({ success: true, message: 'Nenhum volume para renumerar' });
+        }
+
+        // 2. Update each volume
+        for (let i = 0; i < vols.rows.length; i++) {
+            const newSeq = i + 1;
+            await client.query('UPDATE volumes SET numero_sequencial = $1 WHERE id = $2', [newSeq, vols.rows[i].id]);
+        }
+
+        await client.query('COMMIT');
+        res.json({ success: true, message: 'Volumes renumerados com sucesso' });
+
+    } catch (err) {
+        if (client) await client.query('ROLLBACK');
+        console.error('Erro ao renumerar volumes:', err);
+        res.status(500).json({ error: 'Falha ao renumerar volumes' });
+    } finally {
+        if (client) client.release();
+    }
+});
+
+// Excluir Volume
+app.delete('/api/volumes/:id', async (req, res) => {
+    const { id } = req.params; // This is the UUID
+    console.log(`[DELETE] Request to delete volume UUID: ${id}`);
+
+    let client;
+    try {
+        client = await getClient();
+        await client.query('BEGIN');
+
+        // 1. Delete items first
+        await client.query('DELETE FROM volume_itens WHERE volume_id = $1', [id]);
+
+        // 2. Delete the volume
+        const result = await client.query('DELETE FROM volumes WHERE id = $1 RETURNING *', [id]);
+
+        if (result.rowCount === 0) {
+            await client.query('ROLLBACK');
+            return res.status(404).json({ error: 'Volume não encontrado' });
+        }
+
+        await client.query('COMMIT');
+        res.json({ success: true, message: 'Volume excluído com sucesso' });
+
+    } catch (err) {
+        if (client) await client.query('ROLLBACK');
+        console.error('Erro ao excluir volume:', err);
+        res.status(500).json({ error: 'Falha ao excluir volume' });
+    } finally {
+        if (client) client.release();
+    }
+});
+
 // Buscar volumes de um cliente
 app.get('/api/clients/:id/volumes', async (req, res) => {
     const { id } = req.params;
