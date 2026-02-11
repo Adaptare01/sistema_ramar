@@ -180,41 +180,72 @@ export const LabelScreen: React.FC<LabelScreenProps> = ({ onBack }) => {
                                 {/* Styles for Printing (Argox OS-214plus: 80mm width, 38x30mm labels) */}
                                 <style>{`
                                     @media print {
-                                        @page { margin: 0; size: auto; }
-                                        html, body { background: white; color: black; margin: 0; padding: 0; width: 80mm; }
+                                        @page { 
+                                            margin: 0; 
+                                            size: 80mm auto;
+                                        }
+                                        
+                                        * {
+                                            -webkit-print-color-adjust: exact !important;
+                                            print-color-adjust: exact !important;
+                                        }
+                                        
+                                        html, body { 
+                                            background: white !important; 
+                                            color: black !important; 
+                                            margin: 0 !important; 
+                                            padding: 0 !important; 
+                                            width: 80mm !important;
+                                        }
                                         
                                         /* Hide UI */
                                         .print\\:hidden, header, nav, button { display: none !important; }
                                         
-                                        /* Grid Layout */
+                                        /* Show Print Container */
                                         .print-container {
                                             display: grid !important;
-                                            grid-template-columns: 39mm 39mm; /* Sligtly larger than 38 to fill space */
-                                            column-gap: 1mm;
+                                            grid-template-columns: 38mm 38mm;
+                                            column-gap: 2mm;
                                             row-gap: 2mm;
                                             padding: 1mm;
-                                            width: 100%;
+                                            width: 78mm;
+                                            background: white !important;
                                         }
 
                                         /* Label Item */
                                         .label-item {
                                             width: 38mm;
                                             height: 30mm;
-                                            border: 1px dotted #ccc; /* Helper border, maybe remove if not needed */
+                                            border: 1px solid #000;
                                             padding: 2mm;
-                                            display: flex;
+                                            display: flex !important;
                                             flex-direction: column;
                                             justify-content: space-between;
                                             overflow: hidden;
                                             page-break-inside: avoid;
                                             box-sizing: border-box;
-                                            background: white;
+                                            background: white !important;
                                         }
                                         
                                         /* Fonts */
-                                        .label-client { font-size: 10px; font-weight: bold; line-height: 1.1; text-transform: uppercase; }
-                                        .label-code { font-size: 20px; font-weight: 900; }
-                                        .label-date { font-size: 8px; text-align: right; margin-top: 2px; }
+                                        .label-client { 
+                                            font-size: 9px !important; 
+                                            font-weight: bold !important; 
+                                            line-height: 1.1 !important; 
+                                            text-transform: uppercase !important; 
+                                            color: black !important;
+                                        }
+                                        .label-code { 
+                                            font-size: 18px !important; 
+                                            font-weight: 900 !important; 
+                                            color: black !important;
+                                        }
+                                        .label-date { 
+                                            font-size: 7px !important; 
+                                            text-align: right !important; 
+                                            margin-top: 2px !important; 
+                                            color: black !important;
+                                        }
                                     }
                                 `}</style>
 

@@ -182,5 +182,15 @@ export const api = {
         const response = await fetch(`${API_Base}/conferencias/in-progress`);
         if (!response.ok) throw new Error('Falha ao listar conferências em andamento');
         return response.json();
+    },
+
+    toggleInvoice: async (conferenceId: string, faturado: boolean) => {
+        const response = await fetch(`${API_Base}/conferencias/${conferenceId}/invoice`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ faturado })
+        });
+        if (!response.ok) throw new Error('Falha ao atualizar status de faturamento');
+        return response.json();
     }
 };

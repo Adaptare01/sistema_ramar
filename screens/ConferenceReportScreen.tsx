@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Package, User, Calendar, Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Package, User, Calendar, Download, ChevronDown, ChevronUp, Receipt } from 'lucide-react';
 
 interface ConferenceReportScreenProps {
     conferenceId: string;
@@ -12,6 +12,8 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [showMatches, setShowMatches] = useState(false);
+    const [faturado, setFaturado] = useState(false);
+    const [invoiceLoading, setInvoiceLoading] = useState(false);
 
     useEffect(() => {
         loadReport();
@@ -25,11 +27,26 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
             console.log("Report data received:", res);
             if (!res) throw new Error("Dados vazios recebidos da API");
             setData(res);
+            setFaturado(res.faturado || false);
         } catch (err) {
             console.error("Erro ao carregar relatório:", err);
             alert("Erro ao carregar relatório. Verifique o console.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleToggleInvoice = async () => {
+        try {
+            setInvoiceLoading(true);
+            const newStatus = !faturado;
+            await api.toggleInvoice(conferenceId, newStatus);
+            setFaturado(newStatus);
+            alert(newStatus ? 'Marcada como FATURADA' : 'Faturamento removido');
+        } catch (err: any) {
+            alert(err.message || 'Erro ao atualizar status');
+        } finally {
+            setInvoiceLoading(false);
         }
     };
 
@@ -58,6 +75,19 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                     <h1 className="text-lg font-bold text-black leading-tight">Relatório de Conferência</h1>
                     <p className="text-xs text-gray-500 font-mono">ID: {(conferenceId || '').split('-')[0]}...</p>
                 </div>
+                {faturado && (
+                    <div className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        FATURADO
+                    </div>
+                )}
+                <button
+                    onClick={handleToggleInvoice}
+                    disabled={invoiceLoading}
+                    className="p-2 text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg"
+                    title={faturado ? "Remover Faturamento" : "Marcar como Faturado"}
+                >
+                    <Receipt size={20} />
+                </button>
                 <button className="p-2 text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg" title="Exportar PDF (Futuro)">
                     <Download size={20} />
                 </button>

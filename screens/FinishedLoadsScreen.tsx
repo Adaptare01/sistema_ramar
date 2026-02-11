@@ -25,7 +25,7 @@ export const FinishedLoadsScreen = ({ onBack, onSelectConference }: FinishedLoad
     const [inProgress, setInProgress] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [activeTab, setActiveTab] = useState<'ALL' | 'ISSUES' | 'IN_PROGRESS'>('ALL');
+    const [activeTab, setActiveTab] = useState<'ALL' | 'ISSUES' | 'IN_PROGRESS' | 'INVOICED'>('ALL');
 
     useEffect(() => {
         loadConferences();
@@ -56,8 +56,11 @@ export const FinishedLoadsScreen = ({ onBack, onSelectConference }: FinishedLoad
             list = conferences.filter(c =>
                 (c.resumo?.missing || 0) > 0 || (c.resumo?.excess || 0) > 0 || (c.resumo?.extra || 0) > 0
             );
+        } else if (activeTab === 'INVOICED') {
+            list = conferences.filter(c => c.faturado === true);
         } else {
-            list = conferences;
+            // ALL tab: show only NON-invoiced conferences
+            list = conferences.filter(c => c.faturado !== true);
         }
 
         return list.filter(c =>
@@ -87,7 +90,7 @@ export const FinishedLoadsScreen = ({ onBack, onSelectConference }: FinishedLoad
                     onClick={() => setActiveTab('ALL')}
                     className={`px-4 py-2 rounded-lg text-sm font-bold transition whitespace-nowrap ${activeTab === 'ALL' ? 'bg-[var(--primary)] text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
                 >
-                    Todas Finalizadas ({conferences.length})
+                    Todas Finalizadas ({conferences.filter(c => c.faturado !== true).length})
                 </button>
                 <button
                     onClick={() => setActiveTab('ISSUES')}
@@ -100,6 +103,12 @@ export const FinishedLoadsScreen = ({ onBack, onSelectConference }: FinishedLoad
                     className={`px-4 py-2 rounded-lg text-sm font-bold transition whitespace-nowrap ${activeTab === 'IN_PROGRESS' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
                 >
                     Em Andamento ({inProgress.length})
+                </button>
+                <button
+                    onClick={() => setActiveTab('INVOICED')}
+                    className={`px-4 py-2 rounded-lg text-sm font-bold transition whitespace-nowrap ${activeTab === 'INVOICED' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
+                >
+                    Faturadas ({conferences.filter(c => c.faturado === true).length})
                 </button>
             </div>
 
@@ -127,56 +136,71 @@ export const FinishedLoadsScreen = ({ onBack, onSelectConference }: FinishedLoad
                         <p>Nenhum registro encontrado.</p>
                     </div>
                 ) : (
-                    filtered.map(conf => (
-                        <div
-                            key={conf.id}
-                            onClick={() => activeTab !== 'IN_PROGRESS' && onSelectConference(conf.id)}
-                            className={`bg-[var(--bg-card)] rounded-xl border border-[var(--border-color)] p-4 transition group ${activeTab !== 'IN_PROGRESS' ? 'cursor-pointer hover:border-[var(--primary)] hover:shadow-md' : 'opacity-80'}`}
-                        >
-                            <div className="flex justify-between items-start mb-3">
-                                <div>
-                                    <h3 className="font-bold text-lg text-black group-hover:text-[var(--primary)] transition">
-                                        {conf.cliente_nome}
-                                    </h3>
-                                    <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                        <Package size={12} />
-                                        <span>{conf.carga_nome}</span>
-                                    </div>
-                                </div>
-                                {activeTab === 'IN_PROGRESS' ? (
-                                    <span className="bg-blue-500/10 text-blue-600 border border-blue-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1">
-                                        <Clock size={10} /> Em Andamento
-                                    </span>
-                                ) : (
-                                    ((conf.resumo?.missing || 0) === 0 && (conf.resumo?.excess || 0) === 0 && (conf.resumo?.extra || 0) === 0) ? (
-                                        <span className="bg-green-500/10 text-green-600 border border-green-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1">
-                                            <CheckCircle size={10} /> Perfeita
-                                        </span>
-                                    ) : (
-                                        <span className="bg-orange-500/10 text-orange-600 border border-orange-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1">
-                                            <AlertTriangle size={10} /> Ressalvas
-                                        </span>
-                                    )
-                                )}
-                            </div>
+                    filtered.map(conf => {
+                        const isFaturado = conf.faturado === true;
+                        const faturadoClasses = isFaturado ? 'border-l-4 border-l-green-500 bg-green-50/20' : '';
 
-                            <div className="flex items-center justify-between text-xs text-gray-400 border-t border-[var(--border-color)] pt-3 mt-2">
-                                <div className="flex items-center gap-1">
-                                    <Calendar size={12} />
-                                    {new Date(conf.created_at).toLocaleDateString('pt-BR')}
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <Clock size={12} />
-                                    {new Date(conf.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                                </div>
-                                {activeTab !== 'IN_PROGRESS' && (
-                                    <div className="flex items-center gap-1 text-[var(--primary)] font-bold">
-                                        Ver Relatório <ArrowLeft className="rotate-180 w-3 h-3" />
+                        return (
+                            <div
+                                key={conf.id}
+                                onClick={() => activeTab !== 'IN_PROGRESS' && onSelectConference(conf.id)}
+                                className={`bg-[var(--bg-card)] rounded-xl border border-[var(--border-color)] p-4 transition group relative ${activeTab !== 'IN_PROGRESS' ? 'cursor-pointer hover:border-[var(--primary)] hover:shadow-md' : 'opacity-80'} ${faturadoClasses}`}
+                            >
+
+                                <div className="flex justify-between items-start mb-3">
+                                    <div>
+                                        <h3 className="font-bold text-lg text-black group-hover:text-[var(--primary)] transition">
+                                            {conf.cliente_nome}
+                                        </h3>
+                                        <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                            <Package size={12} />
+                                            <span>{conf.carga_nome}</span>
+                                        </div>
                                     </div>
-                                )}
+                                    <div className="flex flex-col gap-2 items-end">
+                                        {activeTab === 'IN_PROGRESS' ? (
+                                            <span className="bg-blue-500/10 text-blue-600 border border-blue-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1">
+                                                <Clock size={10} /> Em Andamento
+                                            </span>
+                                        ) : (
+                                            ((conf.resumo?.missing || 0) === 0 && (conf.resumo?.excess || 0) === 0 && (conf.resumo?.extra || 0) === 0) ? (
+                                                <span className="bg-green-500/10 text-green-600 border border-green-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1">
+                                                    <CheckCircle size={10} /> Perfeita
+                                                </span>
+                                            ) : (
+                                                <span className="bg-orange-500/10 text-orange-600 border border-orange-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1">
+                                                    <AlertTriangle size={10} /> Ressalvas
+                                                </span>
+                                            )
+                                        )}
+
+                                        {/* Faturado Badge */}
+                                        {isFaturado && (
+                                            <span className="bg-green-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                                                FATURADO
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between text-xs text-gray-400 border-t border-[var(--border-color)] pt-3 mt-2">
+                                    <div className="flex items-center gap-1">
+                                        <Calendar size={12} />
+                                        {new Date(conf.created_at).toLocaleDateString('pt-BR')}
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <Clock size={12} />
+                                        {new Date(conf.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                    </div>
+                                    {activeTab !== 'IN_PROGRESS' && (
+                                        <div className="flex items-center gap-1 text-[var(--primary)] font-bold">
+                                            Ver Relatório <ArrowLeft className="rotate-180 w-3 h-3" />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
         </div>

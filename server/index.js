@@ -836,6 +836,33 @@ conf.*,
     }
 });
 
+// Toggle Invoice/Faturado Status
+app.post('/api/conferencias/:id/invoice', async (req, res) => {
+    const { id } = req.params;
+    const { faturado } = req.body;
+
+    console.log(`[INVOICE] Toggle faturado for conference ${id} to ${faturado}`);
+
+    try {
+        const result = await query(
+            `UPDATE conferencias 
+             SET faturado = $1 
+             WHERE id = $2 
+             RETURNING *`,
+            [faturado, id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Conferência não encontrada' });
+        }
+
+        res.json({ success: true, faturado: result.rows[0].faturado });
+    } catch (err) {
+        console.error('Erro ao atualizar status de faturamento:', err);
+        res.status(500).json({ error: 'Erro ao atualizar status de faturamento' });
+    }
+});
+
 
 
 
