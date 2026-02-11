@@ -13,6 +13,7 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 import { randomUUID, createHash } from 'crypto';
 import { read, utils } from 'xlsx';
 import fs from 'fs';
+import { parseCrystalReportsXML } from './xmlParserNode.js';
 
 
 // Rota de Health Check (Teste)
