@@ -313,10 +313,25 @@ app.get('/api/cargas/:id/clients', async (req, res) => {
 
             // Verificar se conferência foi finalizada e pegar ID do relatório
             const confRes = await client.query(
-                `SELECT id FROM conferencias WHERE carga_id = $1 AND cliente_id = $2`,
+                `SELECT id, resumo FROM conferencias WHERE carga_id = $1 AND cliente_id = $2`,
                 [id, cli.id]
             );
-            const reportId = confRes.rows.length > 0 ? confRes.rows[0].id : null;
+
+            let reportId = null;
+            let hasReservations = false;
+
+            if (confRes.rows.length > 0) {
+                const report = confRes.rows[0];
+                reportId = report.id;
+
+                // Check for reservations
+                if (report.resumo) {
+                    const r = report.resumo;
+                    if ((r.missing > 0) || (r.excess > 0) || (r.extra > 0)) {
+                        hasReservations = true;
+                    }
+                }
+            }
 
             clientsData.push({
                 id: cli.id,
@@ -325,7 +340,8 @@ app.get('/api/cargas/:id/clients', async (req, res) => {
                 totalItems,
                 totalScanned,
                 isCompleted: totalScanned >= totalItems, // Or check if reportId exists for true completion status
-                reportId: reportId
+                reportId: reportId,
+                hasReservations: hasReservations
             });
         }
 

@@ -21,6 +21,7 @@ export interface ClientData {
   totalScanned?: number;
   isCompleted?: boolean;
   reportId?: string;
+  hasReservations?: boolean;
 }
 
 export interface ScannedItem {
