@@ -167,38 +167,70 @@ export const LabelScreen: React.FC<LabelScreenProps> = ({ onBack }) => {
                                     {volumes.map(vol => (
                                         <div key={vol.id} className="bg-white text-black p-6 rounded-lg shadow-lg">
                                             <div className="border-b-2 border-black pb-2 mb-2">
-                                                <h1 className="text-4xl font-extrabold">{selectedClient?.id}_{vol.numero_sequencial}</h1>
+                                                <h2 className="text-xl font-bold uppercase leading-tight">{selectedClient?.name}</h2>
                                             </div>
                                             <div>
-                                                <h2 className="text-lg font-bold uppercase leading-tight">{selectedClient?.name}</h2>
+                                                <h1 className="text-4xl font-extrabold">{selectedClient?.id}_{vol.numero_sequencial}/{volumes.length}</h1>
                                                 <p className="text-sm mt-4 text-right font-mono">{new Date().toLocaleDateString()}</p>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
 
-                                {/* Styles for Printing */}
+                                {/* Styles for Printing (Argox OS-214plus: 80mm width, 38x30mm labels) */}
                                 <style>{`
                                     @media print {
                                         @page { margin: 0; size: auto; }
-                                        body { background: white; color: black; }
-                                        .print\\:hidden { display: none !important; }
-                                        .print\\:grid { display: grid !important; }
-                                        .print\\:text-black { color: black !important; }
+                                        html, body { background: white; color: black; margin: 0; padding: 0; width: 80mm; }
+                                        
+                                        /* Hide UI */
+                                        .print\\:hidden, header, nav, button { display: none !important; }
+                                        
+                                        /* Grid Layout */
+                                        .print-container {
+                                            display: grid !important;
+                                            grid-template-columns: 39mm 39mm; /* Sligtly larger than 38 to fill space */
+                                            column-gap: 1mm;
+                                            row-gap: 2mm;
+                                            padding: 1mm;
+                                            width: 100%;
+                                        }
+
+                                        /* Label Item */
+                                        .label-item {
+                                            width: 38mm;
+                                            height: 30mm;
+                                            border: 1px dotted #ccc; /* Helper border, maybe remove if not needed */
+                                            padding: 2mm;
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: space-between;
+                                            overflow: hidden;
+                                            page-break-inside: avoid;
+                                            box-sizing: border-box;
+                                            background: white;
+                                        }
+                                        
+                                        /* Fonts */
+                                        .label-client { font-size: 10px; font-weight: bold; line-height: 1.1; text-transform: uppercase; }
+                                        .label-code { font-size: 20px; font-weight: 900; }
+                                        .label-date { font-size: 8px; text-align: right; margin-top: 2px; }
                                     }
                                 `}</style>
 
-                                {volumes.map(vol => (
-                                    <div key={vol.id} className="hidden print:block border-2 border-black p-4 m-2 break-inside-avoid">
-                                        <div className="border-b-2 border-black pb-2 mb-2">
-                                            <h1 className="text-5xl font-extrabold">{selectedClient?.id}_{vol.numero_sequencial}</h1>
+                                <div className="hidden print-container">
+                                    {volumes.map(vol => (
+                                        <div key={vol.id} className="label-item">
+                                            <div className="border-b border-black pb-1 mb-1">
+                                                <h2 className="label-client">{selectedClient?.name.substring(0, 50)}</h2>
+                                            </div>
+                                            <div>
+                                                <h1 className="label-code">{selectedClient?.id}_{vol.numero_sequencial}/{volumes.length}</h1>
+                                                <p className="label-date">{new Date().toLocaleDateString()}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h2 className="text-xl font-bold uppercase leading-tight">{selectedClient?.name}</h2>
-                                            <p className="text-sm mt-8 text-right font-mono">{new Date().toLocaleDateString()}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
