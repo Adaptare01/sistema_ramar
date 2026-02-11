@@ -12,6 +12,7 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
 import { randomUUID, createHash } from 'crypto';
 import { read, utils } from 'xlsx';
+import fs from 'fs';
 
 
 // Rota de Health Check (Teste)
@@ -621,18 +622,50 @@ app.get('/api/clients/:id/volumes', async (req, res) => {
 
 // Salvar Conferência (Finalizar)
 app.post('/api/conferencias', async (req, res) => {
+    console.log('--- REVIEW FINALIZATION ATTEMPT ---');
+    console.log('Body:', JSON.stringify(req.body, null, 2));
     const { cargaId, clienteId, resumo, reportSnapshot } = req.body;
     try {
-        const id = randomUUID();
-        await query(
-            `INSERT INTO conferencias(id, carga_id, cliente_id, resumo, report_snapshot, status)
-VALUES($1, $2, $3, $4, $5, 'FINALIZADA')`,
-            [id, cargaId, clienteId, resumo, reportSnapshot]
+        // 1. Check if exists
+        const check = await query(
+            'SELECT id FROM conferencias WHERE carga_id = $1 AND cliente_id = $2',
+            [cargaId, clienteId]
         );
-        res.json({ success: true, id });
+
+        if (check.rows.length > 0) {
+            console.log('Found existing conference, updating...');
+            // Update
+            const id = check.rows[0].id;
+            await query(
+                `UPDATE conferencias 
+                 SET resumo = $1, report_snapshot = $2::json, status = 'FINALIZADA', created_at = NOW()
+                 WHERE id = $3`,
+                [resumo, JSON.stringify(reportSnapshot), id]
+            );
+            console.log('Conference updated successfully:', id);
+            res.json({ success: true, id, message: 'Conferência atualizada' });
+        } else {
+            console.log('Creating new conference...');
+            // Insert
+            const id = randomUUID();
+            await query(
+                `INSERT INTO conferencias(id, carga_id, cliente_id, resumo, report_snapshot, status)
+                 VALUES($1, $2, $3, $4, $5::json, 'FINALIZADA')`,
+                [id, cargaId, clienteId, resumo, JSON.stringify(reportSnapshot)]
+            );
+            console.log('Conference created successfully:', id);
+            res.json({ success: true, id, message: 'Conferência criada' });
+        }
     } catch (err) {
-        console.error('Erro ao finalizar conferência:', err);
-        res.status(500).json({ error: 'Erro ao finalizar conferência' });
+        console.error('Erro ao finalizar conferência (Catch):', err);
+        try {
+            fs.appendFileSync('server_error.log', `[${new Date().toISOString()}] Error in /api/conferencias: ${err.message}\nPayload: ${JSON.stringify(req.body)}\nStack: ${err.stack}\n---\n`);
+        } catch (logErr) {
+            console.error("Failed to write to log file:", logErr);
+        }
+        res.status(500).json({ error: err.message || 'Erro ao processar finalização' });
+        fs.writeFileSync('server_error.log', `Error at ${new Date().toISOString()}:\n${JSON.stringify(err, Object.getOwnPropertyNames(err), 2)}\n\nPayload:\n${JSON.stringify(req.body, null, 2)}\n\n`);
+        res.status(500).json({ error: 'Erro ao finalizar conferência: ' + err.message });
     }
 });
 

@@ -35,6 +35,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     // Qty Modal States
     const [qtyInput, setQtyInput] = useState<string>("1");
     // Not strictly needed if scanning 1 by 1, but kept for future bulk scan
+    const [reportSnapshot, setReportSnapshot] = useState<any[]>([]); // New State for full report
 
     // Load ID Generation
     const loadId = useMemo(() => {
@@ -304,14 +305,27 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             return;
         }
 
+        const fullReport: any[] = [];
         const errors: any[] = [];
 
-        // 1. Check for Missing or Excess items in EXPECTED list
+        // Helper to find volumes containing a specific ref
+        const getVolumeLocations = (targetRef: string) => {
+            const locs: number[] = [];
+            volumes.forEach(v => {
+                const found = v.items.some(i =>
+                    String(i.referencia).trim().replace(/^0+/, '') === String(targetRef).trim().replace(/^0+/, '')
+                );
+                if (found) locs.push(v.id);
+            });
+            return locs.sort((a, b) => a - b);
+        };
+
+        // 1. Check EXPECTED list (Missing, Excess, Match)
         client.items.forEach(expected => {
             // Find scanned items that match this expected item (flexible match)
             let scannedQty = 0;
 
-            // Iterate over map to sum all matching references (in case of duplicates in map keys e.g. "2316" and "002316")
+            // Iterate over map to sum all matching references
             scannedMap.forEach((qty, ref) => {
                 const r1 = String(expected.referencia).trim().replace(/^0+/, '');
                 const r2 = String(ref).trim().replace(/^0+/, '');
@@ -321,18 +335,32 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             });
 
             if (scannedQty !== expected.quantidadeEsperada) {
-                errors.push({
+                const isExcess = scannedQty > expected.quantidadeEsperada;
+                const errorItem = {
                     nome: expected.nome,
                     scanned: scannedQty,
+                    expected: expected.quantidadeEsperada,
                     diff: scannedQty - expected.quantidadeEsperada,
-                    type: scannedQty < expected.quantidadeEsperada ? 'MISSING' : 'EXCESS'
+                    type: !isExcess ? 'MISSING' : 'EXCESS',
+                    locations: isExcess ? getVolumeLocations(expected.referencia) : []
+                };
+                errors.push(errorItem);
+                fullReport.push(errorItem);
+            } else {
+                // Perfect Match
+                fullReport.push({
+                    nome: expected.nome,
+                    scanned: scannedQty,
+                    expected: expected.quantidadeEsperada,
+                    diff: 0,
+                    type: 'MATCH'
                 });
             }
         });
 
         // 2. Check for EXTRA items (scanned but not in client.items)
         scannedMap.forEach((qty, ref) => {
-            // Stronger matching: Normalize refs (trim, remove leading zeros)
+            // Stronger matching: Normalize refs
             const isExpected = client.items.some(i => {
                 const r1 = String(i.referencia).trim().replace(/^0+/, '');
                 const r2 = String(ref).trim().replace(/^0+/, '');
@@ -340,17 +368,20 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             });
 
             if (!isExpected) {
-                // We need to find the name of this extra product. 
-                // Since we don't have a direct lookup here, we try to find it in the scanned items list
-                const nameItem = allScannedItems.find(i => i.referencia === ref);
-                errors.push({
-                    nome: nameItem?.nome || `REF: ${ref}`,
+                const errorItem = {
+                    nome: `Item Extra (${ref})`, // Fallback name if possible
                     scanned: qty,
+                    expected: 0,
                     diff: qty,
-                    type: 'EXTRA'
-                });
+                    type: 'EXTRA',
+                    locations: getVolumeLocations(ref)
+                };
+                errors.push(errorItem);
+                fullReport.push(errorItem);
             }
         });
+
+        setReportSnapshot(fullReport); // Save full report to state
 
         if (errors.length > 0) {
             setBlockingErrors(errors);
@@ -359,13 +390,14 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             return;
         }
 
-        // If no errors, Finalize immediately
-        handleConfirmFinalize([]);
+        // If no errors, Finalize immediately with full report
+        handleConfirmFinalize(fullReport);
     };
 
     const handleConfirmFinalize = async (overrideSnapshot?: any[]) => {
         try {
             const report = overrideSnapshot || [];
+            console.log("Finalizing with report snapshot:", report);
 
             // Calculate summary stats
             const missing = report.filter((i: any) => i.type === 'MISSING').length;
@@ -390,9 +422,15 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             alert("Conferência Finalizada com Sucesso!");
             onBack(); // Go back to client list (or could go to finished loads)
 
-        } catch (err) {
-            console.error(err);
-            alert("Erro ao finalizar conferência.");
+        } catch (err: any) {
+            console.error("Erro ao finalizar conferência (Frontend):", err);
+            // Show more details if available
+            if (err.response) {
+                console.error("Server response:", err.response.data);
+                alert(`Erro ao finalizar conferência: ${err.response.data.error || err.message}`);
+            } else {
+                alert(`Erro ao finalizar conferência: ${err.message}`);
+            }
         }
     };
 
@@ -652,8 +690,15 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                             <div className="bg-gray-100 rounded-lg p-4 max-h-60 overflow-y-auto mb-6 text-left space-y-2 border border-gray-200">
                                 {blockingErrors.map((err, idx) => (
                                     <div key={idx} className="flex justify-between items-center text-sm border-b border-gray-200 pb-2 last:border-0 last:pb-0">
-                                        <span className="text-black font-medium">{err.nome}</span>
-                                        <span className={err.diff < 0 ? 'text-red-400 font-bold' : 'text-orange-400 font-bold'}>
+                                        <div className="flex flex-col">
+                                            <span className="text-black font-medium">{err.nome}</span>
+                                            {err.locations && err.locations.length > 0 && (
+                                                <span className="text-xs text-gray-500 font-mono mt-0.5">
+                                                    Vol: {err.locations.map((l: any) => `V${l}`).join(', ')}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className={err.diff < 0 ? 'text-red-400 font-bold whitespace-nowrap ml-2' : 'text-orange-400 font-bold whitespace-nowrap ml-2'}>
                                             {err.diff < 0
                                                 ? `Faltando ${Math.abs(err.diff)}`
                                                 : (err.type === 'EXTRA' ? `EXTRA: ${err.diff}` : `Excesso: ${err.diff}`)
@@ -667,7 +712,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                             </button>
                             <button onClick={() => {
                                 setShowBlockingModal(false);
-                                handleConfirmFinalize(blockingErrors); // Call with discrepancies 
+                                handleConfirmFinalize(reportSnapshot); // Use the full snapshot from state
                             }} className="w-full py-3 bg-red-600 border border-red-700 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-lg">
                                 FINALIZAR COM RESSALVAS
                             </button>

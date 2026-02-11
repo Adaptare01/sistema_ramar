@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Package, User, Calendar, Download } from 'lucide-react';
+import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Package, User, Calendar, Download, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ConferenceReportScreenProps {
     conferenceId: string;
@@ -11,6 +11,7 @@ interface ConferenceReportScreenProps {
 export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceReportScreenProps) => {
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [showMatches, setShowMatches] = useState(false);
 
     useEffect(() => {
         loadReport();
@@ -41,6 +42,7 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
     const missing = snapshot.filter((i: any) => i?.type === 'MISSING') || [];
     const excess = snapshot.filter((i: any) => i?.type === 'EXCESS') || [];
     const extra = snapshot.filter((i: any) => i?.type === 'EXTRA') || [];
+    const match = snapshot.filter((i: any) => i?.type === 'MATCH') || [];
 
     const summary = data.resumo || {};
     const createdDate = data.created_at ? new Date(data.created_at) : new Date();
@@ -159,6 +161,37 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                     </div>
                 )}
 
+                {/* Matched Items Section */}
+                {match.length > 0 && (
+                    <div className="border-t border-gray-200 pt-4 mt-6">
+                        <button
+                            onClick={() => setShowMatches(!showMatches)}
+                            className="flex items-center justify-between w-full bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition"
+                        >
+                            <span className="font-bold text-gray-700 flex items-center gap-2">
+                                <CheckCircle size={18} className="text-green-600" />
+                                Itens Conferidos ({match.length})
+                            </span>
+                            {showMatches ? <ChevronUp size={20} className="text-gray-500" /> : <ChevronDown size={20} className="text-gray-500" />}
+                        </button>
+
+                        {showMatches && (
+                            <div className="mt-2 space-y-2 animate-fade-in">
+                                {match.map((item: any, idx: number) => (
+                                    <div key={idx} className="bg-white p-3 rounded-lg border border-gray-100 flex justify-between items-center shadow-sm">
+                                        <div>
+                                            <p className="text-sm font-medium text-black">{item.nome}</p>
+                                            <p className="text-xs text-gray-400">Qtd: {item.scanned}</p>
+                                        </div>
+                                        <span className="text-xs font-bold bg-green-50 px-2 py-1 rounded border border-green-100 text-green-600 flex items-center gap-1">
+                                            <CheckCircle size={10} /> OK
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
