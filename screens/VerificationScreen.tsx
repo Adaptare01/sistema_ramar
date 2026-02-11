@@ -36,6 +36,7 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     const [qtyInput, setQtyInput] = useState<string>("1");
     // Not strictly needed if scanning 1 by 1, but kept for future bulk scan
     const [reportSnapshot, setReportSnapshot] = useState<any[]>([]); // New State for full report
+    const [reservationNotes, setReservationNotes] = useState("");
 
     // Load ID Generation
     const loadId = useMemo(() => {
@@ -410,7 +411,8 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                 scanned_items: Array.from(scannedMap.values()).reduce((acc, q) => acc + q, 0),
                 missing,
                 excess,
-                extra
+                extra,
+                notes: reservationNotes
             };
 
             await api.finalizeConference({
@@ -711,10 +713,31 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
                             <button onClick={() => setShowBlockingModal(false)} className="w-full py-3 bg-[var(--bg-panel)] border border-[var(--border-color)] text-black font-bold rounded-lg hover:bg-black/5 transition mb-3">
                                 VOU CORRIGIR
                             </button>
-                            <button onClick={() => {
-                                setShowBlockingModal(false);
-                                handleConfirmFinalize(reportSnapshot); // Use the full snapshot from state
-                            }} className="w-full py-3 bg-red-600 border border-red-700 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-lg">
+
+                            <div className="mb-3 text-left">
+                                <label className="block text-sm font-bold text-gray-700 mb-1">Motivo da Ressalva (Obrigatório):</label>
+                                <textarea
+                                    value={reservationNotes}
+                                    onChange={(e) => setReservationNotes(e.target.value)}
+                                    maxLength={300}
+                                    className="w-full p-2 border border-gray-300 rounded-lg text-sm text-black"
+                                    placeholder="Descreva o motivo da divergência..."
+                                    rows={3}
+                                />
+                                <span className="text-xs text-gray-500 block text-right">{reservationNotes.length}/300</span>
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    if (!reservationNotes.trim()) {
+                                        alert("Por favor, infome o motivo da ressalva.");
+                                        return;
+                                    }
+                                    setShowBlockingModal(false);
+                                    handleConfirmFinalize(reportSnapshot); // Use the full snapshot from state
+                                }}
+                                className="w-full py-3 bg-red-600 border border-red-700 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-lg"
+                            >
                                 FINALIZAR COM RESSALVAS
                             </button>
                         </div>

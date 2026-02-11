@@ -104,6 +104,14 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                     }
                 </div>
 
+                {/* Reservation Notes */}
+                {data.resumo?.notes && (
+                    <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-sm text-yellow-800 mb-6">
+                        <strong className="block mb-1 font-bold">Ressalvas/Observações:</strong>
+                        {data.resumo.notes}
+                    </div>
+                )}
+
                 {/* Discrepancies */}
 
                 {missing.length > 0 && (
@@ -195,6 +203,6 @@ export const ConferenceReportScreen = ({ conferenceId, onBack }: ConferenceRepor
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
