@@ -224,6 +224,13 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
             alert("Feche o volume atual primeiro.");
             return;
         }
+
+        // Check for empty volumes (Prevent opening new one if previous is empty)
+        const emptyVol = volumes.find(v => v.items.length === 0);
+        if (emptyVol) {
+            alert(`ATENÇÃO: O Volume ${emptyVol.id} está vazio!\n\nVocê precisa adicionar itens a ele ou excluí-lo antes de abrir um novo volume.`);
+            return;
+        }
         try {
             const res = await api.createVolume(cargaId, client.id);
             if (res.success) {
@@ -303,6 +310,13 @@ export const VerificationScreen = ({ client, cargaId, onBack }: VerificationScre
     const handleAttemptFinalize = () => {
         if (currentVolumeId !== null) {
             alert("Feche o volume aberto antes de finalizar.");
+            return;
+        }
+
+        // Check for empty volumes
+        const emptyVol = volumes.find(v => v.items.length === 0);
+        if (emptyVol) {
+            alert(`ATENÇÃO: O Volume ${emptyVol.id} está vazio!\n\nPor favor, exclua os volumes vazios antes de finalizar a conferência.`);
             return;
         }
 
