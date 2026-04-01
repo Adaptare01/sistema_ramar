@@ -24,10 +24,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Volume não encontrado' }, { status: 404 });
         }
 
-        // 3. Check expected items (normalize ref: XLS may strip leading zeros)
+        // 3. Check expected items (normalize ref: XLS may strip leading zeros, XML may add them)
         const ref = produto.referencia || '';
         const normalizedRef = /^\d+$/.test(ref) ? ref.padStart(5, '0') : ref;
-        const refVariants = [...new Set([ref, normalizedRef].filter(Boolean))];
+        const strippedRef = /^\d+$/.test(ref) ? String(parseInt(ref, 10)) : ref;
+        const refVariants = [...new Set([ref, normalizedRef, strippedRef].filter(Boolean))];
 
         const expectedItem = await prisma.cargaItem.findFirst({
             where: {
@@ -85,7 +86,7 @@ export async function POST(req: NextRequest) {
             item: {
                 id: itemId,
                 referencia: produto.referencia,
-                nome: produto.nome,
+                nome: produto.descricao || produto.nome || '',
                 ean: produto.ean,
                 quantidade: quantity,
             },
