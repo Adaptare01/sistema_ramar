@@ -1,8 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, CheckCircle, AlertTriangle, XCircle, Printer } from 'lucide-react';
+import { ArrowLeft, CheckCircle, AlertTriangle, Printer, Filter } from 'lucide-react';
+
+interface VolumeItemDetail {
+    volumeSeq: number;
+    quantidade: number;
+}
 
 interface ReportDetail {
     ref: string;
@@ -11,6 +16,7 @@ interface ReportDetail {
     scanned: number;
     diff: number;
     status: string;
+    volumeItems?: VolumeItemDetail[];
 }
 
 interface ReportData {
@@ -27,6 +33,17 @@ interface ReportData {
     created_at: string;
 }
 
+interface DisplayRow {
+    ref: string;
+    nome: string;
+    expected: number;
+    conferido: number;
+    diff: number;
+    status: string;
+    volumeSeq: number | null;
+    isLastForProduct: boolean;
+}
+
 export default function ReportDetailPage() {
     const router = useRouter();
     const params = useParams();
@@ -34,6 +51,7 @@ export default function ReportDetailPage() {
 
     const [report, setReport] = useState<ReportData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [selectedVolume, setSelectedVolume] = useState<number | null>(null);
 
     useEffect(() => {
         fetch(`/api/conferencias/${id}`)
@@ -42,6 +60,66 @@ export default function ReportDetailPage() {
             .catch(console.error)
             .finally(() => setLoading(false));
     }, [id]);
+
+    // Expand details into display rows (one row per product×volume)
+    const displayRows = useMemo(() => {
+        if (!report?.report_snapshot?.details) return [];
+
+        const rows: DisplayRow[] = [];
+
+        for (const item of report.report_snapshot.details) {
+            const vItems = item.volumeItems || [];
+
+            if (vItems.length === 0) {
+                // FALTANDO — no volume, single row
+                rows.push({
+                    ref: item.ref,
+                    nome: item.nome,
+                    expected: item.expected,
+                    conferido: 0,
+                    diff: item.diff,
+                    status: item.status,
+                    volumeSeq: null,
+                    isLastForProduct: true,
+                });
+            } else if (vItems.length === 1) {
+                // Single volume — single row
+                rows.push({
+                    ref: item.ref,
+                    nome: item.nome,
+                    expected: item.expected,
+                    conferido: vItems[0].quantidade,
+                    diff: item.diff,
+                    status: item.status,
+                    volumeSeq: vItems[0].volumeSeq,
+                    isLastForProduct: true,
+                });
+            } else {
+                // Multiple volumes — one row per volume
+                vItems.forEach((vi, idx) => {
+                    const isLast = idx === vItems.length - 1;
+                    rows.push({
+                        ref: item.ref,
+                        nome: item.nome,
+                        expected: item.expected,
+                        conferido: vi.quantidade,
+                        diff: isLast ? item.diff : 0,
+                        status: isLast ? item.status : '',
+                        volumeSeq: vi.volumeSeq,
+                        isLastForProduct: isLast,
+                    });
+                });
+            }
+        }
+
+        return rows;
+    }, [report]);
+
+    // Filter rows by selected volume
+    const filteredRows = useMemo(() => {
+        if (selectedVolume === null) return displayRows;
+        return displayRows.filter((r) => r.volumeSeq === selectedVolume);
+    }, [displayRows, selectedVolume]);
 
     if (loading) {
         return (
@@ -61,6 +139,7 @@ export default function ReportDetailPage() {
 
     const snapshot = report.report_snapshot;
     const resumo = report.resumo;
+    const volumeSeqs = snapshot?.volumes?.map((v) => v.seq).sort((a, b) => a - b) || [];
 
     return (
         <div className="space-y-4 pb-4">
@@ -106,7 +185,7 @@ export default function ReportDetailPage() {
                         <p className="text-sm text-amber-600">
                             {resumo.missing > 0 && `${resumo.missing} faltando `}
                             {resumo.excess > 0 && `${resumo.excess} excedente `}
-                            {resumo.extra > 0 && `${resumo.extra} extra`}
+                            {resumo.extra > 0 && `${resumo.extra} fora do pedido`}
                         </p>
                     </div>
                 </div>
@@ -128,7 +207,37 @@ export default function ReportDetailPage() {
 
             {/* Details Table */}
             <div className="card overflow-hidden p-0">
-                <h2 className="font-semibold text-gray-900 p-4 pb-2">Detalhamento</h2>
+                {/* Filter + Title */}
+                <div className="p-4 pb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <h2 className="font-semibold text-gray-900">Detalhamento</h2>
+                    {volumeSeqs.length > 0 && (
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                            <Filter className="w-4 h-4 text-gray-400" />
+                            <button
+                                onClick={() => setSelectedVolume(null)}
+                                className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${selectedVolume === null
+                                    ? 'bg-primary text-white'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    }`}
+                            >
+                                Todos
+                            </button>
+                            {volumeSeqs.map((seq) => (
+                                <button
+                                    key={seq}
+                                    onClick={() => setSelectedVolume(seq)}
+                                    className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${selectedVolume === seq
+                                        ? 'bg-primary text-white'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        }`}
+                                >
+                                    Vol. {seq}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
@@ -138,24 +247,43 @@ export default function ReportDetailPage() {
                                 <th className="px-4 py-2 text-right">Esperado</th>
                                 <th className="px-4 py-2 text-right">Conferido</th>
                                 <th className="px-4 py-2 text-right">Diferença</th>
+                                <th className="px-4 py-2 text-center">Volume</th>
                                 <th className="px-4 py-2 text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
-                            {snapshot?.details?.map((item, i) => (
-                                <tr key={i} className="hover:bg-gray-50">
-                                    <td className="px-4 py-2 font-mono text-xs">{item.ref}</td>
-                                    <td className="px-4 py-2 text-gray-700 truncate max-w-[200px]">{item.nome}</td>
-                                    <td className="px-4 py-2 text-right">{item.expected}</td>
-                                    <td className="px-4 py-2 text-right font-medium">{item.scanned}</td>
-                                    <td className={`px-4 py-2 text-right font-bold ${item.diff < 0 ? 'text-red-600' : item.diff > 0 ? 'text-amber-600' : 'text-gray-400'}`}>
-                                        {item.diff > 0 ? `+${item.diff}` : item.diff === 0 ? '-' : item.diff}
+                            {filteredRows.map((row, i) => (
+                                <tr key={i} className={`hover:bg-gray-50 ${!row.isLastForProduct ? 'border-b-0' : ''}`}>
+                                    <td className="px-4 py-2 font-mono text-xs">{row.ref}</td>
+                                    <td className="px-4 py-2 text-gray-700 truncate max-w-[200px]">{row.nome}</td>
+                                    <td className="px-4 py-2 text-right">{row.expected}</td>
+                                    <td className="px-4 py-2 text-right font-medium">{row.conferido}</td>
+                                    <td className={`px-4 py-2 text-right font-bold ${!row.isLastForProduct ? 'text-gray-300' : row.diff < 0 ? 'text-red-600' : row.diff > 0 ? 'text-amber-600' : 'text-gray-400'}`}>
+                                        {!row.isLastForProduct ? '' : row.diff > 0 ? `+${row.diff}` : row.diff === 0 ? '-' : row.diff}
                                     </td>
                                     <td className="px-4 py-2 text-center">
-                                        <StatusBadge status={item.status} />
+                                        {row.volumeSeq ? (
+                                            <span className="bg-blue-50 text-blue-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                                                Vol. {row.volumeSeq}
+                                            </span>
+                                        ) : (
+                                            <span className="text-gray-300">-</span>
+                                        )}
+                                    </td>
+                                    <td className="px-4 py-2 text-center">
+                                        {row.isLastForProduct && row.status ? (
+                                            <StatusBadge status={row.status} />
+                                        ) : null}
                                     </td>
                                 </tr>
                             ))}
+                            {filteredRows.length === 0 && (
+                                <tr>
+                                    <td colSpan={7} className="px-4 py-8 text-center text-gray-400">
+                                        Nenhum item {selectedVolume ? `no Volume ${selectedVolume}` : ''}
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

@@ -254,15 +254,30 @@ export default function ConferenciaPage() {
         );
         const totalExpected = expectedItems.reduce((a, i) => a + i.quantidadeEsperada, 0);
 
+        // Build per-product scanned totals AND per-volume breakdown
         const scannedMap: Record<string, number> = {};
+        const refToVolumeItems: Record<string, { volumeSeq: number; quantidade: number }[]> = {};
+
         volumes.forEach((v) =>
             v.items.forEach((i) => {
-                scannedMap[i.produto_referencia] = (scannedMap[i.produto_referencia] || 0) + Number(i.quantidade);
+                const ref = i.produto_referencia;
+                scannedMap[ref] = (scannedMap[ref] || 0) + Number(i.quantidade);
+
+                if (!refToVolumeItems[ref]) refToVolumeItems[ref] = [];
+                const existing = refToVolumeItems[ref].find(x => x.volumeSeq === v.numero_sequencial);
+                if (existing) {
+                    existing.quantidade += Number(i.quantidade);
+                } else {
+                    refToVolumeItems[ref].push({ volumeSeq: v.numero_sequencial, quantidade: Number(i.quantidade) });
+                }
             })
         );
 
         let missing = 0, excess = 0, extra = 0;
-        const details: Array<{ ref: string; nome: string; expected: number; scanned: number; diff: number; status: string }> = [];
+        const details: Array<{
+            ref: string; nome: string; expected: number; scanned: number; diff: number; status: string;
+            volumeItems: { volumeSeq: number; quantidade: number }[];
+        }> = [];
 
         expectedItems.forEach((item) => {
             const scanned = scannedMap[item.referencia] || 0;
@@ -270,15 +285,21 @@ export default function ConferenciaPage() {
             let status = 'OK';
             if (diff < 0) { missing += Math.abs(diff); status = 'FALTANDO'; }
             else if (diff > 0) { excess += diff; status = 'EXCEDENTE'; }
-            details.push({ ref: item.referencia, nome: item.nome, expected: item.quantidadeEsperada, scanned, diff, status });
+            details.push({
+                ref: item.referencia, nome: item.nome, expected: item.quantidadeEsperada,
+                scanned, diff, status,
+                volumeItems: refToVolumeItems[item.referencia] || [],
+            });
             delete scannedMap[item.referencia];
         });
 
         Object.entries(scannedMap).forEach(([ref, qty]) => {
             extra += qty;
-            // Find name from volume items
             const itemName = volumes.flatMap(v => v.items).find(i => i.produto_referencia === ref)?.produto_nome || '';
-            details.push({ ref, nome: itemName, expected: 0, scanned: qty, diff: qty, status: 'EXTRA' });
+            details.push({
+                ref, nome: itemName, expected: 0, scanned: qty, diff: qty, status: 'EXTRA',
+                volumeItems: refToVolumeItems[ref] || [],
+            });
         });
 
         const resumo = { totalExpected, totalScanned, missing, excess, extra };
@@ -365,9 +386,9 @@ export default function ConferenciaPage() {
                 {/* Feedback */}
                 {scanFeedback && (
                     <div className={`mt-3 p-3 rounded-lg text-sm font-medium ${scanFeedback.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
-                            scanFeedback.type === 'warning' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
-                                scanFeedback.type === 'extra' ? 'bg-orange-50 text-orange-700 border border-orange-200' :
-                                    'bg-red-50 text-red-700 border border-red-200'
+                        scanFeedback.type === 'warning' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                            scanFeedback.type === 'extra' ? 'bg-orange-50 text-orange-700 border border-orange-200' :
+                                'bg-red-50 text-red-700 border border-red-200'
                         }`}>
                         {scanFeedback.message}
                     </div>
