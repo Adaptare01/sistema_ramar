@@ -21,6 +21,22 @@ export async function GET(
             },
         });
 
+        // Batch-load product names for all items
+        const allRefs = [...new Set(
+            volumes.flatMap(v => v.itens.map(i => i.produtoReferencia)).filter(Boolean)
+        )] as string[];
+
+        const produtos = allRefs.length > 0
+            ? await prisma.produto.findMany({
+                where: { referencia: { in: allRefs } },
+                select: { referencia: true, descricao: true, nome: true },
+            })
+            : [];
+
+        const produtoMap = new Map(
+            produtos.map(p => [p.referencia, p.descricao || p.nome || ''])
+        );
+
         return NextResponse.json(
             volumes.map((v) => ({
                 ...v,
@@ -31,6 +47,7 @@ export async function GET(
                     ...i,
                     produto_ean: i.produtoEan,
                     produto_referencia: i.produtoReferencia,
+                    produto_nome: produtoMap.get(i.produtoReferencia ?? '') || '',
                     created_at: i.createdAt,
                 })),
             }))

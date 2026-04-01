@@ -1,0 +1,2050 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FormattedReport xmlns = 'urn:crystal-reports:schemas' xmlns:xsi = 'http://www.w3.org/2000/10/XMLSchema-instance'
+>
+<FormattedAreaPair Level="0" Type="Report">
+<FormattedAreaPair Level="1" Type="Group">
+<FormattedArea Type="Header">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.GRUPODES}"><ObjectName>GRUPODES1</ObjectName>
+<FormattedValue>Cliente: 3877 - PADARIA BOM GOSTO LTDA</FormattedValue>
+<Value>Cliente: 3877 - PADARIA BOM GOSTO LTDA</Value>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+<FormattedAreaPair Level="2" Type="Group">
+<FormattedAreaPair Level="3" Type="Group">
+<FormattedAreaPair Level="4" Type="Group">
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>24,000</FormattedValue>
+<Value>24.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03129 - ABSORVENTE NOTURNO C/ ABAS CLINOFF LEVE 8 PAGUE 7 (12X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>6,000</FormattedValue>
+<Value>6.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03133 - ALGODAO BOLA CLINOFF 50G (48X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>12,000</FormattedValue>
+<Value>12.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03098 - AMACIANTE ROUPAS EXIGENTE SOFT BLUE 2 LITROS (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>12,000</FormattedValue>
+<Value>12.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03100 - AMACIANTE ROUPAS EXIGENTE SOFT PINK 2 LITROS (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>6,000</FormattedValue>
+<Value>6.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>01789 - CORANTE GUARANY AZUL MARINHO (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>6,000</FormattedValue>
+<Value>6.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>01717 - CORANTE GUARANY PRETO  (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>24,000</FormattedValue>
+<Value>24.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03137 - CURATIVO C/10 CLINOFF (36X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>24,000</FormattedValue>
+<Value>24.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03138 - CURATIVO C/35 CLINOFF (36X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>1,08</FormattedValue>
+<Value>1.08</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>1,08</FormattedValue>
+<Value>1.08</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>10,000</FormattedValue>
+<Value>10.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03252 - ESCOVA RAMAR OVAL MADEIRA  (24x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>1,08</FormattedValue>
+<Value>1.08</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>1,08</FormattedValue>
+<Value>1.08</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>10,000</FormattedValue>
+<Value>10.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03251 - ESCOVA RAMAR PLASTICA MULTIUSO  (24x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,10</FormattedValue>
+<Value>0.10</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,10</FormattedValue>
+<Value>0.10</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>12,000</FormattedValue>
+<Value>12.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02111 - ESPONJA ABRASIVA MULTIUSO RAMAR  60X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>12,000</FormattedValue>
+<Value>12.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03168 - HASTE C/150 POTE CLINOFF (36X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>24,000</FormattedValue>
+<Value>24.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03140 - HASTE C/75 FLEXIVEL CLINOFF (72X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>PCT</FormattedValue>
+<Value>PCT</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>01322 - ISCA RATICIDA GRAN. MADERAT DIPIL 25G - PCT/40Un   (40x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>PCT</FormattedValue>
+<Value>PCT</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02545 - KELLMICIDA FORMICIDA GRANULADA PCT/10X50G</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>24,000</FormattedValue>
+<Value>24.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>01319 - MATA MOSCA DIPIL 25G - DISPLAY C/24UN.   (24x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>12,000</FormattedValue>
+<Value>12.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03074 - PODEROSO MULTI INSETICIDA 400ML</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>24,000</FormattedValue>
+<Value>24.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03154 - TOALHA UMEDECIDA CARINHO C/ 50 CLINOFF (24X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>24,000</FormattedValue>
+<Value>24.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03152 - TOALHA UMEDECIDA CUIDADO DA PELE C/ 50 CLINOFF (24X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#PesoLiquidoCliente}"><ObjectName>PesoLiquidoCliente1</ObjectName>
+<FormattedValue>2,26</FormattedValue>
+<Value>2.26</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#PesoBrutoCliente}"><ObjectName>PesoBrutoCliente1</ObjectName>
+<FormattedValue>2,26</FormattedValue>
+<Value>2.26</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#QuantidadesCliente}"><ObjectName>QuantidadesCliente1</ObjectName>
+<FormattedValue>270,00</FormattedValue>
+<Value>270.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text21</ObjectName>
+<TextValue>Total Cliente 3877 - PADARIA BOM GOSTO LTDA</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="1" Type="Group">
+<FormattedArea Type="Header">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.GRUPODES}"><ObjectName>GRUPODES1</ObjectName>
+<FormattedValue>Cliente: 4897 - L&amp;S MERCADO E PADARIA LTDA</FormattedValue>
+<Value>Cliente: 4897 - L&amp;S MERCADO E PADARIA LTDA</Value>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+<FormattedAreaPair Level="2" Type="Group">
+<FormattedAreaPair Level="3" Type="Group">
+<FormattedAreaPair Level="4" Type="Group">
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02269 - AMENDOIM DA NONA CRI-CRI C/ CAFE 200G  32X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02271 - AMENDOIM DA NONA CRI-CRI C/ CHOCOLATE 200G  32X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02268 - AMENDOIM DA NONA CRI-CRI C/ COCO 200G  32X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>6,000</FormattedValue>
+<Value>6.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02270 - AMENDOIM DA NONA CRI-CRI TRADICIONAL 200G  32X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03192 - DESINFETANTE CASA PERFUMADA EUCALIPTO 2 LITROS (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03102 - DESINFETANTE CASA PERFUMADA JASMINE 2 LITROS (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03103 - DESINFETANTE CASA PERFUMADA LAVANDA 2 LITROS (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02980 - DOCE DE ABOBORA E COCO FORNO VELHO 250G  12X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>2,000</FormattedValue>
+<Value>2.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02982 - DOCE DE MORANGO FORNO VELHO 250G  12X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>2,000</FormattedValue>
+<Value>2.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02928 - DOCE DE UVA FORNO VELHO 250G  12X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,07</FormattedValue>
+<Value>0.07</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,07</FormattedValue>
+<Value>0.07</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>6,000</FormattedValue>
+<Value>6.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>00003 - ESFREGÃO AÇO RAMAR C/2UN 12G   (50X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>2,000</FormattedValue>
+<Value>2.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03172 - GELEIA DE ABACAXI E PIMENTA FORNO VELHO 260G</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>3,000</FormattedValue>
+<Value>3.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03173 - GELEIA DE MORANGO E PIMENTA FORNO VELHO 260G</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>12,000</FormattedValue>
+<Value>12.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03248 - RODO ESPUMA RAMAR LIMPEZA LEVE &quot;SEM CABO&quot;  (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>12,000</FormattedValue>
+<Value>12.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03249 - RODO ESPUMA RAMAR LIMPEZA PESADA &quot;SEM CABO&quot; (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#PesoLiquidoCliente}"><ObjectName>PesoLiquidoCliente1</ObjectName>
+<FormattedValue>0,07</FormattedValue>
+<Value>0.07</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#PesoBrutoCliente}"><ObjectName>PesoBrutoCliente1</ObjectName>
+<FormattedValue>0,07</FormattedValue>
+<Value>0.07</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#QuantidadesCliente}"><ObjectName>QuantidadesCliente1</ObjectName>
+<FormattedValue>66,00</FormattedValue>
+<Value>66.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text21</ObjectName>
+<TextValue>Total Cliente 4897 - L&amp;S MERCADO E PADARIA LTDA</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="1" Type="Group">
+<FormattedArea Type="Header">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.GRUPODES}"><ObjectName>GRUPODES1</ObjectName>
+<FormattedValue>Cliente: 4962 - VIVIANE DE LIMA OLIVO</FormattedValue>
+<Value>Cliente: 4962 - VIVIANE DE LIMA OLIVO</Value>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+<FormattedAreaPair Level="2" Type="Group">
+<FormattedAreaPair Level="3" Type="Group">
+<FormattedAreaPair Level="4" Type="Group">
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,20</FormattedValue>
+<Value>0.20</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,20</FormattedValue>
+<Value>0.20</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>4,000</FormattedValue>
+<Value>4.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>00849 - AFASTA TRAÇA SAIF ORQUIDEA SAIF 30G   (24x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03237 - AROMATIZADOR AMBIENTES E TECIDOS RAMAR ISTAMBUL - PISTACHE 500ML (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03238 - AROMATIZADOR AMBIENTES E TECIDOS RAMAR LONDRES - CHÁ BRANCO 500ML (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03138 - CURATIVO C/35 CLINOFF (36X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02465 - DETERGENTE PÓ SAIF P/ MAQUINA LAVAR LOUÇA 1KG   12X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02990 - DIFUSOR DE AROMAS RAMAR CAIRO - CRAVO CANELA 150ML  (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02992 - DIFUSOR DE AROMAS RAMAR TÓQUIO - FLOR DE CEREJEIRA 150ML  (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>2,000</FormattedValue>
+<Value>2.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02998 - GEL ADESIVO 4 APLICAÇOES BRISA MARINHA 28G (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>2,000</FormattedValue>
+<Value>2.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02999 - GEL ADESIVO 4 APLICAÇOES FLORES DO JARDIM 28G (12x1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>2,000</FormattedValue>
+<Value>2.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03186 - KIT PROMOCIONAL TIRA MANCHAS + LIMPA MAQUNAS SAIF (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02431 - LAVA ROUPAS CONCENTRADO SAIF 3L - GLICERINA  (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02944 - MULTIUSO ANTIBAC + ALCOOL SQUEEZE SAIF 500ML - LIMAO  12X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02213 - MULTIUSO ORGANICO SAIF COZINHA SAIF &quot;SACHE&quot; 500ML  12X1</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>03148 - PROTETOR DIARIO C/ 40 CLINOFF (24X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>1,000</FormattedValue>
+<Value>1.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02443 - TIRA MANCHAS SEM CLORO + BRANCO SAIF 3L  (6X1)</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedAreaPair Level="5" Type="Details">
+<FormattedArea Type="Details">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.QTDEMBALAG}"><ObjectName>QTDEMBALAG1</ObjectName>
+<FormattedValue></FormattedValue>
+<Value></Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTLIQIT}"><ObjectName>TOTLIQIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.TOTBRUTIT}"><ObjectName>TOTBRUTIT1</ObjectName>
+<FormattedValue>0,00</FormattedValue>
+<Value>0.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{tmpMinutaCarregamentoImpressao.QUANTIDADE}"><ObjectName>QUANTIDADE1</ObjectName>
+<FormattedValue>5,000</FormattedValue>
+<Value>5.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{tmpMinutaCarregamentoImpressao.UNIDADE}"><ObjectName>UNIDADE1</ObjectName>
+<FormattedValue>UN</FormattedValue>
+<Value>UN</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text7</ObjectName>
+<TextValue>02632 - VELA RAMAR N.1 14G  24X8</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#PesoLiquidoCliente}"><ObjectName>PesoLiquidoCliente1</ObjectName>
+<FormattedValue>0,20</FormattedValue>
+<Value>0.20</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#PesoBrutoCliente}"><ObjectName>PesoBrutoCliente1</ObjectName>
+<FormattedValue>0,20</FormattedValue>
+<Value>0.20</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedField" Type="xsd:float" FieldName="{#QuantidadesCliente}"><ObjectName>QuantidadesCliente1</ObjectName>
+<FormattedValue>26,00</FormattedValue>
+<Value>26.00</Value>
+</FormattedReportObject>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text21</ObjectName>
+<TextValue>Total Cliente 4962 - VIVIANE DE LIMA OLIVO</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+<FormattedArea Type="Footer">
+<FormattedSections>
+<FormattedSection SectionNumber="0">
+<FormattedReportObjects>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="2">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text20</ObjectName>
+<TextValue>Pedido(s): 0000042791 - 0000042840 - 0000042841 - 0000042843 - 0000042844</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="3">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedText"><ObjectName>Text18</ObjectName>
+<TextValue>Peso Bruto: 55,532 Peso Líquido: 59,262</TextValue>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+<FormattedSection SectionNumber="5">
+<FormattedReportObjects>
+<FormattedReportObject xsi:type="CTFormattedSubreport">
+<ObjectName>Subreport1</ObjectName>
+</FormattedReportObject>
+</FormattedReportObjects>
+</FormattedSection>
+</FormattedSections>
+</FormattedArea>
+</FormattedAreaPair>
+</FormattedReport>

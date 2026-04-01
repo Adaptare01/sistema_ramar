@@ -81,11 +81,12 @@ export default function ReportDetailPage() {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
                 <SummaryCard label="Esperado" value={resumo.totalExpected} color="blue" />
                 <SummaryCard label="Conferido" value={resumo.totalScanned} color="green" />
                 <SummaryCard label="Faltando" value={resumo.missing} color="red" />
-                <SummaryCard label="Excedente" value={resumo.excess + resumo.extra} color="amber" />
+                <SummaryCard label="Excedente" value={resumo.excess} color="amber" />
+                <SummaryCard label="Fora do Pedido" value={resumo.extra} color="orange" />
             </div>
 
             {/* Status Banner */}
@@ -136,6 +137,7 @@ export default function ReportDetailPage() {
                                 <th className="px-4 py-2">Produto</th>
                                 <th className="px-4 py-2 text-right">Esperado</th>
                                 <th className="px-4 py-2 text-right">Conferido</th>
+                                <th className="px-4 py-2 text-right">Diferença</th>
                                 <th className="px-4 py-2 text-center">Status</th>
                             </tr>
                         </thead>
@@ -146,6 +148,9 @@ export default function ReportDetailPage() {
                                     <td className="px-4 py-2 text-gray-700 truncate max-w-[200px]">{item.nome}</td>
                                     <td className="px-4 py-2 text-right">{item.expected}</td>
                                     <td className="px-4 py-2 text-right font-medium">{item.scanned}</td>
+                                    <td className={`px-4 py-2 text-right font-bold ${item.diff < 0 ? 'text-red-600' : item.diff > 0 ? 'text-amber-600' : 'text-gray-400'}`}>
+                                        {item.diff > 0 ? `+${item.diff}` : item.diff === 0 ? '-' : item.diff}
+                                    </td>
                                     <td className="px-4 py-2 text-center">
                                         <StatusBadge status={item.status} />
                                     </td>
@@ -170,6 +175,7 @@ function SummaryCard({ label, value, color }: { label: string; value: number; co
         green: 'bg-green-50 text-green-700',
         red: 'bg-red-50 text-red-700',
         amber: 'bg-amber-50 text-amber-700',
+        orange: 'bg-orange-50 text-orange-700',
     };
 
     return (

@@ -22,6 +22,7 @@ interface VolumeItemData {
     id: string;
     produto_ean: string;
     produto_referencia: string;
+    produto_nome: string;
     quantidade: number;
     created_at: string;
 }
@@ -31,6 +32,13 @@ interface ExpectedItem {
     nome: string;
     quantidadeEsperada: number;
     unidade: string;
+}
+
+interface PendingScan {
+    barcode: string;
+    product: { referencia: string; nome: string; ean: string };
+    isExtra: boolean;
+    step: 'extra_confirm' | 'quantity';
 }
 
 export default function ConferenciaPage() {
@@ -47,6 +55,10 @@ export default function ConferenciaPage() {
     const [scanFeedback, setScanFeedback] = useState<{ type: string; message: string } | null>(null);
     const [showScanner, setShowScanner] = useState(false);
     const barcodeRef = useRef<HTMLInputElement>(null);
+
+    // 2-step scan state
+    const [pendingScan, setPendingScan] = useState<PendingScan | null>(null);
+    const [pendingQty, setPendingQty] = useState('1');
 
     const loadData = useCallback(async () => {
         try {
@@ -75,13 +87,126 @@ export default function ConferenciaPage() {
         loadData();
     }, [loadData]);
 
-    // Focus barcode input
     useEffect(() => {
-        barcodeRef.current?.focus();
-    }, [volumes]);
+        if (!pendingScan) barcodeRef.current?.focus();
+    }, [volumes, pendingScan]);
 
     const openVolume = volumes.find((v) => v.is_open);
 
+    // ─── Step 1: Lookup product (no insert) ───
+    async function handleScan(e: React.FormEvent) {
+        e.preventDefault();
+        if (!barcode.trim() || !openVolume) return;
+        await doLookup(barcode.trim());
+    }
+
+    async function handleCameraScan(code: string) {
+        setShowScanner(false);
+        if (!code.trim() || !openVolume) return;
+        await doLookup(code.trim());
+    }
+
+    async function doLookup(code: string) {
+        setScanFeedback(null);
+        try {
+            const res = await fetch('/api/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ volumeId: openVolume!.id, barcode: code }),
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                setScanFeedback({ type: 'error', message: data.error || 'Erro ao bipar' });
+                try { new Audio('/error.mp3').play(); } catch { /* ignore */ }
+                setBarcode('');
+                barcodeRef.current?.focus();
+                return;
+            }
+
+            // Product found — decide next step
+            if (data.isExtra) {
+                // Show FORA DO PEDIDO confirmation popup
+                setPendingScan({
+                    barcode: code,
+                    product: data.product,
+                    isExtra: true,
+                    step: 'extra_confirm',
+                });
+            } else {
+                // Go directly to quantity modal
+                setPendingScan({
+                    barcode: code,
+                    product: data.product,
+                    isExtra: false,
+                    step: 'quantity',
+                });
+                setPendingQty('1');
+            }
+            setBarcode('');
+        } catch (err) {
+            console.error(err);
+            setScanFeedback({ type: 'error', message: 'Erro de conexão' });
+            setBarcode('');
+        }
+    }
+
+    // ─── Step 2a: User confirms extra item → go to quantity ───
+    function handleConfirmExtra() {
+        if (!pendingScan) return;
+        setPendingScan({ ...pendingScan, step: 'quantity' });
+        setPendingQty('1');
+    }
+
+    // ─── Step 2b: Cancel extra → discard ───
+    function handleCancelScan() {
+        setPendingScan(null);
+        setPendingQty('1');
+        barcodeRef.current?.focus();
+    }
+
+    // ─── Step 3: Confirm quantity → insert ───
+    async function handleConfirmQuantity() {
+        if (!pendingScan || !openVolume) return;
+        const qty = parseInt(pendingQty) || 1;
+
+        try {
+            const res = await fetch('/api/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    volumeId: openVolume.id,
+                    barcode: pendingScan.barcode,
+                    quantity: qty,
+                    forceInsert: pendingScan.isExtra,
+                }),
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                const label = pendingScan.isExtra ? '⚠️ RESSALVA' : '✅';
+                setScanFeedback({
+                    type: pendingScan.isExtra ? 'extra' : data.warning ? 'warning' : 'success',
+                    message: data.warning
+                        ? data.warning.message
+                        : `${label}: ${data.item.referencia} - ${data.item.nome} (×${qty})`,
+                });
+                try { new Audio('/beep.mp3').play(); } catch { /* ignore */ }
+                loadData();
+            } else {
+                setScanFeedback({ type: 'error', message: data.error || 'Erro ao inserir' });
+            }
+        } catch (err) {
+            console.error(err);
+            setScanFeedback({ type: 'error', message: 'Erro de conexão' });
+        }
+
+        setPendingScan(null);
+        setPendingQty('1');
+        barcodeRef.current?.focus();
+    }
+
+    // ─── Volume management ───
     async function handleNewVolume() {
         try {
             const res = await fetch('/api/volumes', {
@@ -90,14 +215,9 @@ export default function ConferenciaPage() {
                 body: JSON.stringify({ cargaId, clienteId }),
             });
             const data = await res.json();
-            if (!res.ok) {
-                alert(data.error);
-                return;
-            }
+            if (!res.ok) { alert(data.error); return; }
             loadData();
-        } catch (err) {
-            console.error(err);
-        }
+        } catch (err) { console.error(err); }
     }
 
     async function handleCloseVolume(volumeId: string) {
@@ -109,10 +229,7 @@ export default function ConferenciaPage() {
     async function handleReopenVolume(volumeId: string) {
         const res = await fetch(`/api/volumes/${volumeId}/reopen`, { method: 'POST' });
         const data = await res.json();
-        if (!res.ok) {
-            alert(data.error);
-            return;
-        }
+        if (!res.ok) { alert(data.error); return; }
         loadData();
     }
 
@@ -122,108 +239,21 @@ export default function ConferenciaPage() {
         loadData();
     }
 
-    async function handleScan(e: React.FormEvent) {
-        e.preventDefault();
-        if (!barcode.trim() || !openVolume) return;
-
-        setScanFeedback(null);
-
-        try {
-            const res = await fetch('/api/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ volumeId: openVolume.id, barcode: barcode.trim() }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                setScanFeedback({
-                    type: 'error',
-                    message: data.error || 'Erro ao bipar',
-                });
-                // Play error sound
-                try { new Audio('/error.mp3').play(); } catch { /* ignore */ }
-            } else {
-                const msg = data.isExtra
-                    ? `⚠️ FORA DO PEDIDO: ${data.item.referencia} - ${data.item.nome}`
-                    : `✅ ${data.item.referencia} - ${data.item.nome}`;
-
-                setScanFeedback({
-                    type: data.warning ? 'warning' : data.isExtra ? 'extra' : 'success',
-                    message: data.warning ? data.warning.message : msg,
-                });
-
-                // Play success sound
-                try { new Audio('/beep.mp3').play(); } catch { /* ignore */ }
-                loadData();
-            }
-        } catch (err) {
-            console.error(err);
-            setScanFeedback({ type: 'error', message: 'Erro de conexão' });
-        }
-
-        setBarcode('');
-        barcodeRef.current?.focus();
-    }
-
-    async function handleCameraScan(code: string) {
-        setShowScanner(false);
-        if (!code.trim() || !openVolume) return;
-
-        setScanFeedback(null);
-
-        try {
-            const res = await fetch('/api/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ volumeId: openVolume.id, barcode: code.trim() }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                setScanFeedback({
-                    type: 'error',
-                    message: data.error || 'Erro ao bipar',
-                });
-                try { new Audio('/error.mp3').play(); } catch { /* ignore */ }
-            } else {
-                const msg = data.isExtra
-                    ? `⚠️ FORA DO PEDIDO: ${data.item.referencia} - ${data.item.nome}`
-                    : `✅ ${data.item.referencia} - ${data.item.nome}`;
-
-                setScanFeedback({
-                    type: data.warning ? 'warning' : data.isExtra ? 'extra' : 'success',
-                    message: data.warning ? data.warning.message : msg,
-                });
-
-                try { new Audio('/beep.mp3').play(); } catch { /* ignore */ }
-                loadData();
-            }
-        } catch (err) {
-            console.error(err);
-            setScanFeedback({ type: 'error', message: 'Erro de conexão' });
-        }
-    }
-
     async function handleRemoveItem(itemId: string) {
         if (!confirm('Remover este item?')) return;
         await fetch(`/api/items/${itemId}`, { method: 'DELETE' });
         loadData();
     }
 
+    // ─── Finalize ───
     async function handleFinalize() {
         if (!confirm('Finalizar conferência deste cliente? Esta ação gerará o relatório.')) return;
 
-        // Calculate summary
         const totalScanned = volumes.reduce(
-            (acc, v) => acc + v.items.reduce((a, i) => a + Number(i.quantidade), 0),
-            0
+            (acc, v) => acc + v.items.reduce((a, i) => a + Number(i.quantidade), 0), 0
         );
         const totalExpected = expectedItems.reduce((a, i) => a + i.quantidadeEsperada, 0);
 
-        // Build scanned map
         const scannedMap: Record<string, number> = {};
         volumes.forEach((v) =>
             v.items.forEach((i) => {
@@ -231,50 +261,30 @@ export default function ConferenciaPage() {
             })
         );
 
-        let missing = 0;
-        let excess = 0;
-        let extra = 0;
-
+        let missing = 0, excess = 0, extra = 0;
         const details: Array<{ ref: string; nome: string; expected: number; scanned: number; diff: number; status: string }> = [];
 
         expectedItems.forEach((item) => {
             const scanned = scannedMap[item.referencia] || 0;
             const diff = scanned - item.quantidadeEsperada;
             let status = 'OK';
-
             if (diff < 0) { missing += Math.abs(diff); status = 'FALTANDO'; }
             else if (diff > 0) { excess += diff; status = 'EXCEDENTE'; }
-
-            details.push({
-                ref: item.referencia,
-                nome: item.nome,
-                expected: item.quantidadeEsperada,
-                scanned,
-                diff,
-                status,
-            });
+            details.push({ ref: item.referencia, nome: item.nome, expected: item.quantidadeEsperada, scanned, diff, status });
             delete scannedMap[item.referencia];
         });
 
-        // Extra items (not in expected list)
         Object.entries(scannedMap).forEach(([ref, qty]) => {
             extra += qty;
-            details.push({ ref, nome: '', expected: 0, scanned: qty, diff: qty, status: 'EXTRA' });
+            // Find name from volume items
+            const itemName = volumes.flatMap(v => v.items).find(i => i.produto_referencia === ref)?.produto_nome || '';
+            details.push({ ref, nome: itemName, expected: 0, scanned: qty, diff: qty, status: 'EXTRA' });
         });
 
         const resumo = { totalExpected, totalScanned, missing, excess, extra };
-
         const reportSnapshot = {
-            clienteId,
-            clienteName: clientName,
-            cargaId,
-            resumo,
-            details,
-            volumes: volumes.map((v) => ({
-                id: v.id,
-                seq: v.numero_sequencial,
-                itemCount: v.item_count,
-            })),
+            clienteId, clienteName: clientName, cargaId, resumo, details,
+            volumes: volumes.map((v) => ({ id: v.id, seq: v.numero_sequencial, itemCount: v.item_count })),
             generatedAt: new Date().toISOString(),
         };
 
@@ -284,7 +294,6 @@ export default function ConferenciaPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ cargaId, clienteId, resumo, reportSnapshot }),
             });
-
             const data = await res.json();
             if (res.ok) {
                 alert('✅ Conferência finalizada com sucesso!');
@@ -330,14 +339,14 @@ export default function ConferenciaPage() {
                             value={barcode}
                             onChange={(e) => setBarcode(e.target.value)}
                             placeholder={openVolume ? 'Bipe o código de barras...' : 'Abra um volume primeiro'}
-                            disabled={!openVolume}
+                            disabled={!openVolume || !!pendingScan}
                             className="input-field pl-10 font-mono"
                             autoComplete="off"
                         />
                     </div>
                     <button
                         type="button"
-                        disabled={!openVolume}
+                        disabled={!openVolume || !!pendingScan}
                         onClick={() => setShowScanner(true)}
                         className="px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white rounded-lg transition-colors"
                         title="Abrir câmera"
@@ -346,7 +355,7 @@ export default function ConferenciaPage() {
                     </button>
                     <button
                         type="submit"
-                        disabled={!openVolume || !barcode.trim()}
+                        disabled={!openVolume || !barcode.trim() || !!pendingScan}
                         className="btn-primary disabled:opacity-50"
                     >
                         Bipar
@@ -356,23 +365,95 @@ export default function ConferenciaPage() {
                 {/* Feedback */}
                 {scanFeedback && (
                     <div className={`mt-3 p-3 rounded-lg text-sm font-medium ${scanFeedback.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
-                        scanFeedback.type === 'warning' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
-                            scanFeedback.type === 'extra' ? 'bg-orange-50 text-orange-700 border border-orange-200' :
-                                'bg-red-50 text-red-700 border border-red-200'
+                            scanFeedback.type === 'warning' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                                scanFeedback.type === 'extra' ? 'bg-orange-50 text-orange-700 border border-orange-200' :
+                                    'bg-red-50 text-red-700 border border-red-200'
                         }`}>
                         {scanFeedback.message}
                     </div>
                 )}
             </div>
 
+            {/* ════════════ MODAL: FORA DO PEDIDO ════════════ */}
+            {pendingScan?.step === 'extra_confirm' && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 space-y-4">
+                        <div className="flex items-center gap-3 text-amber-600">
+                            <AlertTriangle className="w-8 h-8 flex-shrink-0" />
+                            <h2 className="text-lg font-bold">Item fora do pedido</h2>
+                        </div>
+                        <div className="bg-amber-50 rounded-lg p-3">
+                            <p className="font-mono text-sm font-bold">{pendingScan.product.referencia}</p>
+                            <p className="text-sm text-gray-700 mt-1">{pendingScan.product.nome}</p>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                            Este item <strong>não pertence ao pedido</strong> deste cliente. Deseja incluir mesmo assim?
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={handleCancelScan}
+                                className="flex-1 py-3 px-4 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
+                            >
+                                NÃO
+                            </button>
+                            <button
+                                onClick={handleConfirmExtra}
+                                className="flex-1 py-3 px-4 rounded-xl bg-amber-500 text-white font-semibold hover:bg-amber-600 transition-colors"
+                            >
+                                SIM, Incluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ════════════ MODAL: QUANTIDADE ════════════ */}
+            {pendingScan?.step === 'quantity' && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 space-y-4">
+                        <h2 className="text-lg font-bold text-gray-900">Quantidade</h2>
+                        <div className={`rounded-lg p-3 ${pendingScan.isExtra ? 'bg-amber-50 border border-amber-200' : 'bg-blue-50 border border-blue-200'}`}>
+                            <p className="font-mono text-sm font-bold">{pendingScan.product.referencia}</p>
+                            <p className="text-sm text-gray-700 mt-1">{pendingScan.product.nome}</p>
+                            {pendingScan.isExtra && (
+                                <p className="text-xs text-amber-600 font-semibold mt-1">⚠️ FORA DO PEDIDO (Ressalva)</p>
+                            )}
+                        </div>
+                        <div>
+                            <label className="text-sm text-gray-600 block mb-1">Quantidade neste volume:</label>
+                            <input
+                                type="number"
+                                min="1"
+                                value={pendingQty}
+                                onChange={(e) => setPendingQty(e.target.value)}
+                                autoFocus
+                                onKeyDown={(e) => { if (e.key === 'Enter') handleConfirmQuantity(); }}
+                                className="input-field text-center text-2xl font-bold w-full"
+                            />
+                        </div>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={handleCancelScan}
+                                className="flex-1 py-3 px-4 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={handleConfirmQuantity}
+                                className="flex-1 py-3 px-4 rounded-xl bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
+                            >
+                                ✓ Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Volume Controls */}
             <div className="flex items-center justify-between">
-                <h2 className="font-semibold text-gray-900">
-                    Volumes ({volumes.length})
-                </h2>
+                <h2 className="font-semibold text-gray-900">Volumes ({volumes.length})</h2>
                 <button onClick={handleNewVolume} className="btn-primary text-sm flex items-center gap-1">
-                    <Plus className="w-4 h-4" />
-                    Novo Volume
+                    <Plus className="w-4 h-4" /> Novo Volume
                 </button>
             </div>
 
@@ -389,63 +470,40 @@ export default function ConferenciaPage() {
                         <div key={vol.id} className={`card ${vol.is_open ? 'border-primary/30 bg-primary/5' : ''}`}>
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
-                                    {vol.is_open ? (
-                                        <Unlock className="w-4 h-4 text-primary" />
-                                    ) : (
-                                        <Lock className="w-4 h-4 text-gray-400" />
-                                    )}
-                                    <span className="font-medium text-sm">
-                                        Volume {vol.numero_sequencial}
-                                    </span>
-                                    <span className="text-xs text-gray-500">
-                                        ({vol.items?.length || 0} itens)
-                                    </span>
+                                    {vol.is_open ? <Unlock className="w-4 h-4 text-primary" /> : <Lock className="w-4 h-4 text-gray-400" />}
+                                    <span className="font-medium text-sm">Volume {vol.numero_sequencial}</span>
+                                    <span className="text-xs text-gray-500">({vol.items?.length || 0} itens)</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     {vol.is_open ? (
-                                        <button
-                                            onClick={() => handleCloseVolume(vol.id)}
-                                            className="p-1.5 text-gray-400 hover:text-amber-600 rounded"
-                                            title="Fechar volume"
-                                        >
+                                        <button onClick={() => handleCloseVolume(vol.id)} className="p-1.5 text-gray-400 hover:text-amber-600 rounded" title="Fechar volume">
                                             <Lock className="w-4 h-4" />
                                         </button>
                                     ) : (
-                                        <button
-                                            onClick={() => handleReopenVolume(vol.id)}
-                                            className="p-1.5 text-gray-400 hover:text-primary rounded"
-                                            title="Reabrir volume"
-                                        >
+                                        <button onClick={() => handleReopenVolume(vol.id)} className="p-1.5 text-gray-400 hover:text-primary rounded" title="Reabrir volume">
                                             <Unlock className="w-4 h-4" />
                                         </button>
                                     )}
-                                    <button
-                                        onClick={() => handleDeleteVolume(vol.id)}
-                                        className="p-1.5 text-gray-400 hover:text-red-600 rounded"
-                                        title="Excluir volume"
-                                    >
+                                    <button onClick={() => handleDeleteVolume(vol.id)} className="p-1.5 text-gray-400 hover:text-red-600 rounded" title="Excluir volume">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Volume Items */}
+                            {/* Volume Items — show REF - NOME instead of EAN */}
                             {vol.items && vol.items.length > 0 && (
                                 <div className="mt-2 space-y-1">
                                     {vol.items.map((item) => (
                                         <div key={item.id} className="flex items-center justify-between py-1 px-2 bg-white rounded text-xs">
-                                            <div>
-                                                <span className="font-mono text-gray-600">{item.produto_referencia}</span>
-                                                <span className="mx-1 text-gray-300">•</span>
-                                                <span className="text-gray-500">EAN: {item.produto_ean}</span>
+                                            <div className="flex-1 min-w-0">
+                                                <span className="font-mono text-gray-600 font-medium">{item.produto_referencia}</span>
+                                                <span className="mx-1 text-gray-300">-</span>
+                                                <span className="text-gray-600 truncate">{item.produto_nome || `EAN: ${item.produto_ean}`}</span>
                                             </div>
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
                                                 <span className="font-medium">×{item.quantidade}</span>
                                                 {vol.is_open && (
-                                                    <button
-                                                        onClick={() => handleRemoveItem(item.id)}
-                                                        className="text-red-400 hover:text-red-600"
-                                                    >
+                                                    <button onClick={() => handleRemoveItem(item.id)} className="text-red-400 hover:text-red-600">
                                                         <X className="w-3.5 h-3.5" />
                                                     </button>
                                                 )}
@@ -466,37 +524,24 @@ export default function ConferenciaPage() {
                     <div className="grid grid-cols-2 gap-2 text-sm">
                         <div>
                             <span className="text-gray-500">Esperado:</span>{' '}
-                            <span className="font-medium">
-                                {expectedItems.reduce((a, i) => a + i.quantidadeEsperada, 0)}
-                            </span>
+                            <span className="font-medium">{expectedItems.reduce((a, i) => a + i.quantidadeEsperada, 0)}</span>
                         </div>
                         <div>
                             <span className="text-gray-500">Bipado:</span>{' '}
                             <span className="font-medium">
-                                {volumes.reduce(
-                                    (acc, v) => acc + (v.items?.reduce((a, i) => a + Number(i.quantidade), 0) || 0),
-                                    0
-                                )}
+                                {volumes.reduce((acc, v) => acc + (v.items?.reduce((a, i) => a + Number(i.quantidade), 0) || 0), 0)}
                             </span>
                         </div>
                     </div>
-
-                    <button
-                        onClick={handleFinalize}
-                        className="btn-success w-full mt-4 flex items-center justify-center gap-2"
-                    >
-                        <CheckCircle className="w-5 h-5" />
-                        Finalizar Conferência
+                    <button onClick={handleFinalize} className="btn-success w-full mt-4 flex items-center justify-center gap-2">
+                        <CheckCircle className="w-5 h-5" /> Finalizar Conferência
                     </button>
                 </div>
             )}
 
-            {/* Camera Barcode Scanner Overlay */}
+            {/* Camera Scanner */}
             {showScanner && (
-                <BarcodeScanner
-                    onDetected={handleCameraScan}
-                    onClose={() => setShowScanner(false)}
-                />
+                <BarcodeScanner onDetected={handleCameraScan} onClose={() => setShowScanner(false)} />
             )}
         </div>
     );

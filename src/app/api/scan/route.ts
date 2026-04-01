@@ -4,7 +4,8 @@ import { randomUUID } from 'crypto';
 
 export async function POST(req: NextRequest) {
     try {
-        const { volumeId, barcode, quantity = 1 } = await req.json();
+        const body = await req.json();
+        const { volumeId, barcode, quantity, forceInsert = false } = body;
 
         // 1. Find product by EAN
         const produto = await prisma.produto.findFirst({ where: { ean: barcode } });
@@ -38,30 +39,55 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        let isExtra = false;
+        const isExtra = !expectedItem;
+        const productName = produto.descricao || produto.nome || '';
+
+        // ─── LOOKUP MODE: no quantity → just return product info, don't insert ───
+        if (quantity === undefined || quantity === null) {
+            return NextResponse.json({
+                mode: 'lookup',
+                product: {
+                    referencia: produto.referencia,
+                    nome: productName,
+                    ean: produto.ean,
+                },
+                isExtra,
+            });
+        }
+
+        // ─── INSERT MODE: quantity provided ───
+
+        // If extra and not forced → ask confirmation
+        if (isExtra && !forceInsert) {
+            return NextResponse.json({
+                requiresConfirmation: true,
+                product: {
+                    referencia: produto.referencia,
+                    nome: productName,
+                    ean: produto.ean,
+                },
+                isExtra: true,
+            });
+        }
+
+        // Check excess quantity warning (only for items in pedido)
         let warning = null;
-
-        if (!expectedItem) {
-            isExtra = true;
-        } else {
+        if (expectedItem) {
             const expectedQty = Number(expectedItem.quantidadeEsperada ?? 0);
-
-            // Get already scanned quantity
             const scannedAgg = await prisma.volumeItem.aggregate({
                 where: {
                     volume: { cargaId: volume.cargaId!, clienteId: volume.clienteId! },
-                    produtoReferencia: produto.referencia,
+                    produtoReferencia: { in: refVariants },
                 },
                 _sum: { quantidade: true },
             });
-
             const currentTotal = Number(scannedAgg._sum.quantidade ?? 0);
             const newTotal = currentTotal + Number(quantity);
 
             if (newTotal > expectedQty) {
                 warning = {
                     type: 'EXCESS_QUANTITY',
-                    message: `ATENÇÃO: Produto ${produto.referencia} (${produto.descricao || produto.nome}) - Quantidade maior que o pedido (${expectedQty}).`,
+                    message: `ATENÇÃO: Produto ${produto.referencia} (${productName}) - Quantidade maior que o pedido (${expectedQty}).`,
                     expected: expectedQty,
                     current: currentTotal,
                     attempted: newTotal,
@@ -69,7 +95,7 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        // 4. Insert scanned item
+        // Insert scanned item
         const itemId = randomUUID();
         await prisma.volumeItem.create({
             data: {
@@ -86,11 +112,10 @@ export async function POST(req: NextRequest) {
             item: {
                 id: itemId,
                 referencia: produto.referencia,
-                nome: produto.descricao || produto.nome || '',
+                nome: productName,
                 ean: produto.ean,
                 quantidade: quantity,
             },
-            product: produto,
             isExtra,
             warning,
         });
