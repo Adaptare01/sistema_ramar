@@ -5,7 +5,7 @@ const JWT_SECRET = new TextEncoder().encode(
     process.env.JWT_SECRET || 'velo-adaptare-secret-key-change-in-production'
 );
 
-const PUBLIC_PATHS = ['/login', '/api/auth/login', '/api/health'];
+const PUBLIC_PATHS = ['/login', '/api/auth/login', '/api/health', '/api/admin/migrate'];
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
