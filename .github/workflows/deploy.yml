@@ -85,7 +85,7 @@ jobs:
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             NODE_ENV=production
-            PORT=3000
+            PORT=3001
             EOF
 
             echo "=== Login no GHCR ==="

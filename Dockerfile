@@ -43,7 +43,7 @@ RUN apk add --no-cache openssl
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
+ENV PORT=3001
 ENV HOSTNAME="0.0.0.0"
 
 # Create non-root user
@@ -61,6 +61,6 @@ RUN chown -R nextjs:nodejs /app
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["node", "server.js"]
