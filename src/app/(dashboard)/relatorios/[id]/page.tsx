@@ -29,8 +29,11 @@ interface ReportData {
         volumes: { id: string; seq: number; itemCount: number }[];
         generatedAt: string;
     };
+    observacoes: string | null;
     faturado: boolean;
     created_at: string;
+    finalizado_em: string | null;
+    faturado_em: string | null;
 }
 
 interface DisplayRow {
@@ -188,6 +191,14 @@ export default function ReportDetailPage() {
                             {resumo.extra > 0 && `${resumo.extra} fora do pedido`}
                         </p>
                     </div>
+                </div>
+            )}
+
+            {/* Observações */}
+            {report.observacoes && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-blue-800 text-sm mb-1">📝 Observações do Operador</h3>
+                    <p className="text-sm text-blue-700 whitespace-pre-wrap">{report.observacoes}</p>
                 </div>
             )}
 

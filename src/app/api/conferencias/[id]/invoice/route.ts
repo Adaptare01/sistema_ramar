@@ -11,7 +11,10 @@ export async function POST(
     try {
         const result = await prisma.conferencia.update({
             where: { id },
-            data: { faturado },
+            data: {
+                faturado,
+                faturadoEm: faturado ? new Date() : null,
+            },
         });
 
         return NextResponse.json({ success: true, faturado: result.faturado });

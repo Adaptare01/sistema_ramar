@@ -25,6 +25,8 @@ export async function GET(
             cliente_nome: conf.cliente.nome,
             report_snapshot: conf.reportSnapshot,
             created_at: conf.createdAt,
+            finalizado_em: conf.finalizadoEm,
+            faturado_em: conf.faturadoEm,
         });
     } catch (error) {
         console.error('Erro ao obter conferência:', error);

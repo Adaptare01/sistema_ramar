@@ -105,16 +105,19 @@ model VolumeItem {
 }
 
 model Conferencia {
-  id             String   @id @default(uuid())
-  cargaId        String   @map("carga_id")
-  clienteId      String   @map("cliente_id") @db.VarChar(255)
-  status         String?  @default("FINALIZADA")
+  id             String    @id @default(uuid())
+  cargaId        String    @map("carga_id")
+  clienteId      String    @map("cliente_id") @db.VarChar(255)
+  status         String?   @default("EM_ANDAMENTO")
   resumo         Json?
-  reportSnapshot Json?    @map("report_snapshot")
-  faturado       Boolean? @default(false)
-  createdAt      DateTime @default(now()) @map("created_at")
-  carga          Carga    @relation(fields: [cargaId], references: [id])
-  cliente        Cliente  @relation(fields: [clienteId], references: [id])
+  reportSnapshot Json?     @map("report_snapshot")
+  observacoes    String?
+  faturado       Boolean?  @default(false)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  finalizadoEm   DateTime? @map("finalizado_em")
+  faturadoEm     DateTime? @map("faturado_em")
+  carga          Carga     @relation(fields: [cargaId], references: [id])
+  cliente        Cliente   @relation(fields: [clienteId], references: [id])
 
   @@map("conferencias")
 }

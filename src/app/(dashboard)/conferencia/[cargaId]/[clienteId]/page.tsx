@@ -60,6 +60,14 @@ export default function ConferenciaPage() {
     const [pendingScan, setPendingScan] = useState<PendingScan | null>(null);
     const [pendingQty, setPendingQty] = useState('1');
 
+    // Finalize modal state
+    const [finalizeData, setFinalizeData] = useState<{
+        resumo: { totalExpected: number; totalScanned: number; missing: number; excess: number; extra: number };
+        reportSnapshot: Record<string, unknown>;
+        hasIssues: boolean;
+    } | null>(null);
+    const [observacoes, setObservacoes] = useState('');
+
     const loadData = useCallback(async () => {
         try {
             const [volRes, clientRes] = await Promise.all([
@@ -309,11 +317,29 @@ export default function ConferenciaPage() {
             generatedAt: new Date().toISOString(),
         };
 
+        const hasIssues = missing > 0 || excess > 0 || extra > 0;
+
+        if (hasIssues) {
+            // Show observações modal
+            setFinalizeData({ resumo, reportSnapshot, hasIssues });
+            setObservacoes('');
+            return;
+        }
+
+        // No issues → finalize directly
+        await doFinalize(resumo, reportSnapshot, '');
+    }
+
+    async function doFinalize(
+        resumo: { totalExpected: number; totalScanned: number; missing: number; excess: number; extra: number },
+        reportSnapshot: Record<string, unknown>,
+        obs: string,
+    ) {
         try {
             const res = await fetch('/api/conferencias', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cargaId, clienteId, resumo, reportSnapshot }),
+                body: JSON.stringify({ cargaId, clienteId, resumo, reportSnapshot, observacoes: obs || null }),
             });
             const data = await res.json();
             if (res.ok) {
@@ -326,6 +352,7 @@ export default function ConferenciaPage() {
             console.error(err);
             alert('Erro ao finalizar conferência');
         }
+        setFinalizeData(null);
     }
 
     if (loading) {
@@ -557,6 +584,59 @@ export default function ConferenciaPage() {
                     <button onClick={handleFinalize} className="btn-success w-full mt-4 flex items-center justify-center gap-2">
                         <CheckCircle className="w-5 h-5" /> Finalizar Conferência
                     </button>
+                </div>
+            )}
+
+            {/* ════════════ MODAL: OBSERVAÇÕES (RESSALVAS) ════════════ */}
+            {finalizeData && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
+                        <div className="flex items-center gap-3 text-amber-600">
+                            <AlertTriangle className="w-8 h-8 flex-shrink-0" />
+                            <h2 className="text-lg font-bold">Conferência com Ressalvas</h2>
+                        </div>
+
+                        <div className="bg-amber-50 rounded-lg p-3 space-y-1 text-sm">
+                            {finalizeData.resumo.missing > 0 && (
+                                <p className="text-red-700">❌ Faltando: <strong>{finalizeData.resumo.missing}</strong> itens</p>
+                            )}
+                            {finalizeData.resumo.excess > 0 && (
+                                <p className="text-amber-700">⚠️ Excedente: <strong>{finalizeData.resumo.excess}</strong> itens</p>
+                            )}
+                            {finalizeData.resumo.extra > 0 && (
+                                <p className="text-orange-700">📦 Fora do Pedido: <strong>{finalizeData.resumo.extra}</strong> itens</p>
+                            )}
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 block mb-1">
+                                Observações / Justificativa:
+                            </label>
+                            <textarea
+                                value={observacoes}
+                                onChange={(e) => setObservacoes(e.target.value)}
+                                placeholder="Ex: Substituí o produto 3283762483 - Sabonete Dove por Sabonete Prudence, pois não vamos receber esta semana..."
+                                rows={4}
+                                autoFocus
+                                className="input-field w-full resize-none text-sm"
+                            />
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setFinalizeData(null)}
+                                className="flex-1 py-3 px-4 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={() => doFinalize(finalizeData.resumo, finalizeData.reportSnapshot, observacoes)}
+                                className="flex-1 py-3 px-4 rounded-xl bg-amber-500 text-white font-semibold hover:bg-amber-600 transition-colors"
+                            >
+                                Finalizar mesmo assim
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 

@@ -17,6 +17,10 @@ export async function GET() {
                 ...conf,
                 carga_nome: conf.carga.nomeArquivo,
                 cliente_nome: conf.cliente.nome,
+                report_snapshot: conf.reportSnapshot,
+                created_at: conf.createdAt,
+                finalizado_em: conf.finalizadoEm,
+                faturado_em: conf.faturadoEm,
             }))
         );
     } catch (error) {
@@ -27,7 +31,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
     try {
-        const { cargaId, clienteId, resumo, reportSnapshot } = await req.json();
+        const { cargaId, clienteId, resumo, reportSnapshot, observacoes } = await req.json();
 
         // Check if exists
         const existing = await prisma.conferencia.findFirst({
@@ -40,8 +44,9 @@ export async function POST(req: NextRequest) {
                 data: {
                     resumo,
                     reportSnapshot,
+                    observacoes: observacoes || null,
                     status: 'FINALIZADA',
-                    createdAt: new Date(),
+                    finalizadoEm: new Date(),
                 },
             });
             return NextResponse.json({ success: true, id: existing.id, message: 'Conferência atualizada' });
@@ -55,7 +60,9 @@ export async function POST(req: NextRequest) {
                 clienteId,
                 resumo,
                 reportSnapshot,
+                observacoes: observacoes || null,
                 status: 'FINALIZADA',
+                finalizadoEm: new Date(),
             },
         });
 

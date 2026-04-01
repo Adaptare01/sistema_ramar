@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { randomUUID } from 'crypto';
 
@@ -35,6 +36,27 @@ export async function POST(req: NextRequest) {
                 isOpen: true,
             },
         });
+
+        // Upsert conferencia as EM_ANDAMENTO (tracks start time)
+        const existingConf = await prisma.conferencia.findFirst({
+            where: { cargaId, clienteId },
+        });
+        if (!existingConf) {
+            await prisma.conferencia.create({
+                data: {
+                    id: randomUUID(),
+                    cargaId,
+                    clienteId,
+                    status: 'EM_ANDAMENTO',
+                },
+            });
+        } else if (existingConf.status === 'FINALIZADA') {
+            // Re-opening a finalized conference
+            await prisma.conferencia.update({
+                where: { id: existingConf.id },
+                data: { status: 'EM_ANDAMENTO', finalizadoEm: null, resumo: Prisma.JsonNull, reportSnapshot: Prisma.JsonNull },
+            });
+        }
 
         return NextResponse.json({ success: true, volumeId, sequencial: nextSeq });
     } catch (error) {
