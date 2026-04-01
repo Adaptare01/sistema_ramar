@@ -922,7 +922,9 @@ app.delete('/api/products/:id', async (req, res) => {
 
 // Em produção, catch-all para SPA (deve ser DEPOIS de todas as rotas API)
 if (process.env.NODE_ENV === 'production') {
-    app.get('*', (req, res) => {
+    app.use((req, res, next) => {
+        // Não interceptar rotas de API
+        if (req.path.startsWith('/api')) return next();
         const indexPath = path.join(__dirname, '../dist/index.html');
         if (fs.existsSync(indexPath)) {
             res.sendFile(indexPath);
