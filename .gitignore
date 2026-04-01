@@ -4,12 +4,18 @@ dist/
 out/
 build/
 
+# Next.js
+next-env.d.ts
+
 # Environment files
 .env
 .env.local
 .env.development
 .env.production
 .env.*.local
+
+# Prisma
+prisma/migrations/migration_lock.toml
 
 # Logs
 *.log
@@ -27,3 +33,6 @@ Thumbs.db
 # Backups
 *.bak
 backup_orders.json
+
+# Debug/legacy scripts (old Express architecture)
+# These can be removed once migration is confirmed stable

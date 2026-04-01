@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  SUPERVISOR
+  OPERADOR
+}
+
+model User {
+  id        String   @id @default(uuid())
+  nome      String
+  email     String   @unique
+  senha     String
+  perfil    Role     @default(OPERADOR)
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Carga {
+  id             String      @id @default(uuid())
+  nomeArquivo    String?     @map("nome_arquivo")
+  status         String?     @default("ABERTO")
+  totalItens     Decimal?    @default(0) @map("total_itens")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  dataImportacao DateTime    @default(now()) @map("data_importacao")
+  xmlHash        String?     @map("xml_hash") @db.VarChar(64)
+  itens          CargaItem[]
+  volumes        Volume[]
+  conferencias   Conferencia[]
+
+  @@index([xmlHash])
+  @@map("cargas")
+}
+
+model Cliente {
+  id           String        @id @db.VarChar(255)
+  nome         String?
+  itens        CargaItem[]
+  volumes      Volume[]
+  conferencias Conferencia[]
+
+  @@map("clientes")
+}
+
+model Produto {
+  id         String  @id @default(uuid())
+  referencia String? @unique
+  descricao  String?
+  ean        String?
+  nome       String?
+
+  @@map("produtos")
+}
+
+model CargaItem {
+  id                 String   @id @default(uuid())
+  cargaId            String?  @map("carga_id")
+  clienteId          String?  @map("cliente_id") @db.VarChar(255)
+  produtoReferencia  String?  @map("produto_referencia")
+  produtoNome        String?  @map("produto_nome")
+  quantidadeEsperada Decimal? @map("quantidade_esperada")
+  unidade            String?
+  carga              Carga?   @relation(fields: [cargaId], references: [id])
+  cliente            Cliente? @relation(fields: [clienteId], references: [id])
+
+  @@map("carga_itens")
+}
+
+model Volume {
+  id               String       @id @default(uuid())
+  cargaId          String?      @map("carga_id")
+  clienteId        String?      @map("cliente_id") @db.VarChar(255)
+  numeroSequencial Int?         @map("numero_sequencial")
+  isOpen           Boolean?     @default(true) @map("is_open")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  closedAt         DateTime?    @map("closed_at")
+  carga            Carga?       @relation(fields: [cargaId], references: [id])
+  cliente          Cliente?     @relation(fields: [clienteId], references: [id])
+  itens            VolumeItem[]
+
+  @@map("volumes")
+}
+
+model VolumeItem {
+  id                String   @id @default(uuid())
+  volumeId          String?  @map("volume_id")
+  produtoEan        String?  @map("produto_ean")
+  produtoReferencia String?  @map("produto_referencia")
+  quantidade        Decimal?
+  createdAt         DateTime @default(now()) @map("created_at")
+  volume            Volume?  @relation(fields: [volumeId], references: [id])
+
+  @@map("volume_itens")
+}
+
+model Conferencia {
+  id             String   @id @default(uuid())
+  cargaId        String   @map("carga_id")
+  clienteId      String   @map("cliente_id") @db.VarChar(255)
+  status         String?  @default("FINALIZADA")
+  resumo         Json?
+  reportSnapshot Json?    @map("report_snapshot")
+  faturado       Boolean? @default(false)
+  createdAt      DateTime @default(now()) @map("created_at")
+  carga          Carga    @relation(fields: [cargaId], references: [id])
+  cliente        Cliente  @relation(fields: [clienteId], references: [id])
+
+  @@map("conferencias")
+}

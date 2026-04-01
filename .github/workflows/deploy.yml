@@ -83,8 +83,9 @@ jobs:
             mkdir -p /opt/ramar
             cat > /opt/ramar/.env.production << EOF
             DATABASE_URL=${{ secrets.DATABASE_URL }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
             NODE_ENV=production
-            PORT=3001
+            PORT=3000
             EOF
 
             echo "=== Login no GHCR ==="
@@ -93,6 +94,13 @@ jobs:
 
             echo "=== Pull da nova imagem ==="
             docker pull ghcr.io/adaptare01/sistema_ramar:latest
+
+            echo "=== Executando Prisma Migrate ==="
+            docker run --rm \
+              --env-file /opt/ramar/.env.production \
+              --network adaptare \
+              ghcr.io/adaptare01/sistema_ramar:latest \
+              npx prisma migrate deploy
 
             echo "=== Deploy do stack ==="
             cd /opt/ramar

@@ -5,6 +5,8 @@ services:
     image: ghcr.io/adaptare01/sistema_ramar:latest
     env_file:
       - .env.production
+    environment:
+      - PORT=3000
     networks:
       - proxy
       - adaptare
