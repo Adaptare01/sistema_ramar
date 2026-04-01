@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  app:
+    image: ghcr.io/adaptare01/sistema_ramar:latest
+    env_file:
+      - .env.production
+    networks:
+      - proxy
+      - adaptare
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        parallelism: 1
+        order: start-first
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+networks:
+  proxy:
+    external: true
+  adaptare:
+    external: true

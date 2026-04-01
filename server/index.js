@@ -1,19 +1,29 @@
 import express from 'express';
 import cors from 'cors';
 import { query, getClient } from './db.js';
+import { randomUUID, createHash } from 'crypto';
+import { read, utils } from 'xlsx';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { parseCrystalReportsXML } from './xmlParserNode.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3001;
-
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
-import { randomUUID, createHash } from 'crypto';
-import { read, utils } from 'xlsx';
-import fs from 'fs';
-import { parseCrystalReportsXML } from './xmlParserNode.js';
+// Em produção, servir arquivos estáticos do Vite (dist/)
+if (process.env.NODE_ENV === 'production') {
+    const distPath = path.join(__dirname, '../dist');
+    app.use(express.static(distPath));
+    console.log(`[STATIC] Servindo frontend de: ${distPath}`);
+}
 
 
 // Rota de Health Check (Teste)
@@ -910,6 +920,18 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 });
 
+// Em produção, catch-all para SPA (deve ser DEPOIS de todas as rotas API)
+if (process.env.NODE_ENV === 'production') {
+    app.get('*', (req, res) => {
+        const indexPath = path.join(__dirname, '../dist/index.html');
+        if (fs.existsSync(indexPath)) {
+            res.sendFile(indexPath);
+        } else {
+            res.status(404).json({ error: 'Frontend não encontrado' });
+        }
+    });
+}
+
 // Global Error Handler
 app.use((err, req, res, next) => {
     console.error('Unhandled Error:', err);
@@ -920,13 +942,9 @@ app.use((err, req, res, next) => {
     });
 });
 
-
-
 // Inicialização do servidor
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-    app.listen(port, () => {
-        console.log(`🚀 Servidor backend rodando em http://localhost:${port}`);
-    });
-}
+app.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Servidor rodando em http://0.0.0.0:${port} [${process.env.NODE_ENV || 'development'}]`);
+});
 
 export default app;

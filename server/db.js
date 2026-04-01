@@ -2,18 +2,40 @@ import { createRequire } from 'module';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import fs from 'fs';
 
 const require = createRequire(import.meta.url);
 const { Pool } = require('pg');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-dotenv.config({ path: join(__dirname, '../.env.local') });
 
-// Configuração estrita conforme padrão Adaptare
+// Carregar variáveis de ambiente (produção ou desenvolvimento)
+if (process.env.NODE_ENV === 'production') {
+    // Em produção, variáveis já vêm do environment do Docker
+    console.log('[DB] Modo produção — usando variáveis de ambiente do container');
+} else {
+    // Em desenvolvimento, carregar .env.local
+    const envPath = join(__dirname, '../.env.local');
+    if (fs.existsSync(envPath)) {
+        dotenv.config({ path: envPath });
+        console.log('[DB] Modo desenvolvimento — carregou .env.local');
+    } else {
+        console.warn('[DB] ⚠️ Arquivo .env.local não encontrado');
+    }
+}
+
+// Suportar tanto DATABASE_URL (padrão Adaptare) quanto POSTGRES_URL (legado MVP)
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+
+if (!connectionString) {
+    console.error('❌ CRITICAL: Nenhuma variável DATABASE_URL ou POSTGRES_URL definida!');
+    process.exit(1);
+}
+
 const pool = new Pool({
-    connectionString: process.env.POSTGRES_URL,
-    ssl: false, // OBRIGATÓRIO: Desliga SSL para conexão via IP direto
+    connectionString,
+    ssl: false,
 });
 
 pool.on('error', (err) => {
@@ -21,18 +43,32 @@ pool.on('error', (err) => {
     process.exit(-1);
 });
 
-// Teste de conexão imediato para validar infraestrutura
+// Teste de conexão imediato
 pool.connect((err, client, release) => {
     if (err) {
         console.error('❌ CRITICAL: Erro de conexão com o PostgreSQL:', err.message);
-        if (err.message.includes('self-signed')) {
-            console.error('DICA: Verifique se ssl: false está configurado corretamente.');
-        }
     } else {
-        console.log('✅ Conexão com banco de dados estabelecida com sucesso (Padrão Adaptare).');
+        console.log('✅ Conexão com banco de dados estabelecida com sucesso.');
         release();
     }
 });
+
+// Auto-criar tabelas na inicialização (idempotente com IF NOT EXISTS)
+async function initDatabase() {
+    try {
+        const initSqlPath = join(__dirname, '../init_db.sql');
+        if (fs.existsSync(initSqlPath)) {
+            const sql = fs.readFileSync(initSqlPath, 'utf-8');
+            await pool.query(sql);
+            console.log('✅ Tabelas do banco verificadas/criadas com sucesso.');
+        }
+    } catch (err) {
+        console.error('⚠️ Erro ao inicializar tabelas (pode já existirem):', err.message);
+    }
+}
+
+// Executar inicialização
+initDatabase();
 
 export const query = (text, params) => pool.query(text, params);
 export const getClient = () => pool.connect();
