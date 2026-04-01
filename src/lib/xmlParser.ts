@@ -14,80 +14,103 @@ export interface ParsedClient {
     totalItems: number;
 }
 
+/**
+ * Parser para XML de Minuta de Carregamento gerado pelo Crystal Reports.
+ *
+ * Estrutura esperada do XML:
+ *   FormattedAreaPair Level="1" Type="Group"   → 1 por CLIENTE
+ *     ├── Header  → GRUPODES → "Cliente: 3877 - PADARIA BOM GOSTO LTDA"
+ *     └── FormattedAreaPair Level="5" Type="Details"  → 1 por PRODUTO
+ *           ├── QUANTIDADE → <Value>24.00</Value>
+ *           ├── UNIDADE    → <Value>UN</Value>
+ *           └── TextValue  → "03129 - ABSORVENTE NOTURNO..."
+ */
 export function parseCrystalReportsXML(xmlContent: string): ParsedClient[] {
-    const $ = cheerio.load(xmlContent, { xmlMode: true });
-    const clientsMap = new Map<string, ParsedClient>();
+    // Strip XML namespace declarations and prefixes to simplify cheerio CSS selectors
+    const cleanedXml = xmlContent
+        .replace(/xmlns(?::\w+)?\s*=\s*['"][^'"]*['"]/g, '')  // remove xmlns="..." and xmlns:xsi="..."
+        .replace(/xsi:/g, '');                                  // remove xsi: prefix (xsi:type → type)
 
-    // Try to find the data structure
-    $('Details').each((_i, el) => {
-        const fields = $(el).find('Field, Section, Text');
-        const values: string[] = [];
+    const $ = cheerio.load(cleanedXml, { xmlMode: true });
+    const clients: ParsedClient[] = [];
 
-        fields.each((_j, field) => {
-            const text = $(field).text().trim();
-            if (text) values.push(text);
-        });
+    // Each client is a Level="1" Group
+    $('FormattedAreaPair[Level="1"][Type="Group"]').each((_i, clientEl) => {
+        // ─── 1. Extract client info from the Group Header ───
+        let clientInfo = '';
 
-        // Parse values based on Crystal Reports structure
-        if (values.length >= 4) {
-            const clientId = values[0] || '';
-            const clientName = values[1] || clientId;
-            const referencia = values[2] || '';
-            const nome = values[3] || '';
-            const quantidade = parseFloat(values[4] || '0') || 0;
-            const unidade = values[5] || 'UN';
+        $(clientEl)
+            .children('FormattedArea[Type="Header"]')
+            .find('FormattedReportObject')
+            .each((_j, obj) => {
+                const fieldName = $(obj).attr('FieldName') || '';
+                if (fieldName.includes('GRUPODES')) {
+                    clientInfo =
+                        $(obj).find('FormattedValue').first().text().trim() ||
+                        $(obj).find('Value').first().text().trim();
+                }
+            });
 
-            if (!clientId || !referencia) return;
+        if (!clientInfo) return;
 
-            if (!clientsMap.has(clientId)) {
-                clientsMap.set(clientId, {
-                    id: clientId,
-                    name: clientName,
-                    items: [],
-                    totalItems: 0,
+        // Parse "Cliente: 3877 - PADARIA BOM GOSTO LTDA"
+        const clientMatch = clientInfo.match(/Cliente:\s*(\S+)\s*-\s*(.+)/i);
+        if (!clientMatch) return;
+
+        const clientId = clientMatch[1].trim();
+        const clientName = clientMatch[2].trim();
+
+        // ─── 2. Extract product items from Level="5" Details ───
+        const items: ParsedItem[] = [];
+        let totalItems = 0;
+
+        $(clientEl)
+            .find('FormattedAreaPair[Level="5"][Type="Details"]')
+            .each((_j, detailPair) => {
+                const section = $(detailPair)
+                    .find('FormattedSection[SectionNumber="0"]')
+                    .first();
+
+                let quantidade = 0;
+                let unidade = 'UN';
+                let produtoText = '';
+
+                section.find('FormattedReportObject').each((_k, obj) => {
+                    const fieldName = $(obj).attr('FieldName') || '';
+
+                    if (fieldName.includes('QUANTIDADE')) {
+                        const raw = $(obj).find('Value').first().text().trim();
+                        quantidade = parseFloat(raw) || 0;
+                    } else if (fieldName.includes('UNIDADE')) {
+                        unidade = $(obj).find('Value').first().text().trim() || 'UN';
+                    } else {
+                        // Check for TextValue (product text in CTFormattedText elements)
+                        const textVal = $(obj).find('TextValue').first().text().trim();
+                        if (textVal) {
+                            produtoText = textVal;
+                        }
+                    }
                 });
-            }
 
-            const client = clientsMap.get(clientId)!;
-            client.items.push({ referencia, nome, quantidadeEsperada: quantidade, unidade });
-            client.totalItems += quantidade;
+                if (!produtoText || quantidade <= 0) return;
+
+                // Parse "03129 - ABSORVENTE NOTURNO C/ ABAS CLINOFF LEVE 8 PAGUE 7 (12X1)"
+                const itemMatch = produtoText.match(/^(\S+)\s*-\s*(.+)/);
+                if (!itemMatch) return;
+
+                items.push({
+                    referencia: itemMatch[1].trim(),
+                    nome: itemMatch[2].trim(),
+                    quantidadeEsperada: quantidade,
+                    unidade,
+                });
+                totalItems += quantidade;
+            });
+
+        if (items.length > 0) {
+            clients.push({ id: clientId, name: clientName, items, totalItems });
         }
     });
 
-    // Fallback: try table-based format
-    if (clientsMap.size === 0) {
-        const rows = $('Row, TR, row');
-        let currentClient: ParsedClient | null = null;
-
-        rows.each((_i, el) => {
-            const cells: string[] = [];
-            $(el).children().each((_j, cell) => {
-                cells.push($(cell).text().trim());
-            });
-
-            if (cells.length >= 3) {
-                // Check if this is a client header row
-                if (cells[0] && !cells[0].match(/^\d/) && cells.length <= 3) {
-                    currentClient = {
-                        id: cells[0],
-                        name: cells[1] || cells[0],
-                        items: [],
-                        totalItems: 0,
-                    };
-                    clientsMap.set(cells[0], currentClient);
-                } else if (currentClient && cells.length >= 4) {
-                    const quantidade = parseFloat(cells[2] || '0') || 0;
-                    currentClient.items.push({
-                        referencia: cells[0],
-                        nome: cells[1],
-                        quantidadeEsperada: quantidade,
-                        unidade: cells[3] || 'UN',
-                    });
-                    currentClient.totalItems += quantidade;
-                }
-            }
-        });
-    }
-
-    return Array.from(clientsMap.values());
+    return clients;
 }
