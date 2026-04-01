@@ -4,8 +4,11 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import {
     ArrowLeft, Package, Plus, X, Trash2, Lock, Unlock, CheckCircle,
-    AlertTriangle, ScanBarcode
+    AlertTriangle, ScanBarcode, Camera
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const BarcodeScanner = dynamic(() => import('@/components/BarcodeScanner'), { ssr: false });
 
 interface VolumeData {
     id: string;
@@ -42,6 +45,7 @@ export default function ConferenciaPage() {
     const [loading, setLoading] = useState(true);
     const [barcode, setBarcode] = useState('');
     const [scanFeedback, setScanFeedback] = useState<{ type: string; message: string } | null>(null);
+    const [showScanner, setShowScanner] = useState(false);
     const barcodeRef = useRef<HTMLInputElement>(null);
 
     const loadData = useCallback(async () => {
@@ -161,6 +165,46 @@ export default function ConferenciaPage() {
 
         setBarcode('');
         barcodeRef.current?.focus();
+    }
+
+    async function handleCameraScan(code: string) {
+        setShowScanner(false);
+        if (!code.trim() || !openVolume) return;
+
+        setScanFeedback(null);
+
+        try {
+            const res = await fetch('/api/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ volumeId: openVolume.id, barcode: code.trim() }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setScanFeedback({
+                    type: 'error',
+                    message: data.error || 'Erro ao bipar',
+                });
+                try { new Audio('/error.mp3').play(); } catch { /* ignore */ }
+            } else {
+                const msg = data.isExtra
+                    ? `⚠️ FORA DO PEDIDO: ${data.item.referencia} - ${data.item.nome}`
+                    : `✅ ${data.item.referencia} - ${data.item.nome}`;
+
+                setScanFeedback({
+                    type: data.warning ? 'warning' : data.isExtra ? 'extra' : 'success',
+                    message: data.warning ? data.warning.message : msg,
+                });
+
+                try { new Audio('/beep.mp3').play(); } catch { /* ignore */ }
+                loadData();
+            }
+        } catch (err) {
+            console.error(err);
+            setScanFeedback({ type: 'error', message: 'Erro de conexão' });
+        }
     }
 
     async function handleRemoveItem(itemId: string) {
@@ -291,6 +335,15 @@ export default function ConferenciaPage() {
                             autoComplete="off"
                         />
                     </div>
+                    <button
+                        type="button"
+                        disabled={!openVolume}
+                        onClick={() => setShowScanner(true)}
+                        className="px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white rounded-lg transition-colors"
+                        title="Abrir câmera"
+                    >
+                        <Camera className="w-5 h-5" />
+                    </button>
                     <button
                         type="submit"
                         disabled={!openVolume || !barcode.trim()}
@@ -436,6 +489,14 @@ export default function ConferenciaPage() {
                         Finalizar Conferência
                     </button>
                 </div>
+            )}
+
+            {/* Camera Barcode Scanner Overlay */}
+            {showScanner && (
+                <BarcodeScanner
+                    onDetected={handleCameraScan}
+                    onClose={() => setShowScanner(false)}
+                />
             )}
         </div>
     );

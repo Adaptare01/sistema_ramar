@@ -11,6 +11,15 @@ const config: Config = {
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
             },
+            animation: {
+                'scan-line': 'scan-line 2s ease-in-out infinite',
+            },
+            keyframes: {
+                'scan-line': {
+                    '0%, 100%': { top: '8px' },
+                    '50%': { top: 'calc(100% - 8px)' },
+                },
+            },
         },
     },
     plugins: [],
