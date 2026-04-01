@@ -39,6 +39,10 @@ export async function POST(req: NextRequest) {
             }
 
             if (!ref) continue;
+            // Normalize numeric refs to 5 digits with leading zeros (match XML format)
+            if (/^\d+$/.test(ref) && ref.length < 5) {
+                ref = ref.padStart(5, '0');
+            }
             if (ean.length > 20) ean = ean.substring(0, 20);
 
             await prisma.produto.create({

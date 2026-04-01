@@ -24,12 +24,16 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Volume não encontrado' }, { status: 404 });
         }
 
-        // 3. Check expected items
+        // 3. Check expected items (normalize ref: XLS may strip leading zeros)
+        const ref = produto.referencia || '';
+        const normalizedRef = /^\d+$/.test(ref) ? ref.padStart(5, '0') : ref;
+        const refVariants = [...new Set([ref, normalizedRef].filter(Boolean))];
+
         const expectedItem = await prisma.cargaItem.findFirst({
             where: {
                 cargaId: volume.cargaId!,
                 clienteId: volume.clienteId!,
-                produtoReferencia: produto.referencia,
+                produtoReferencia: { in: refVariants },
             },
         });
 
