@@ -23,6 +23,8 @@ export async function GET(
             ...conf,
             carga_nome: conf.carga.nomeArquivo,
             cliente_nome: conf.cliente.nome,
+            report_snapshot: conf.reportSnapshot,
+            created_at: conf.createdAt,
         });
     } catch (error) {
         console.error('Erro ao obter conferência:', error);
