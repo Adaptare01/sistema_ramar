@@ -24,8 +24,15 @@ export async function GET(
         return NextResponse.json(
             volumes.map((v) => ({
                 ...v,
+                is_open: v.isOpen,
+                numero_sequencial: v.numeroSequencial,
                 item_count: v.itens.length,
-                items: v.itens,
+                items: v.itens.map((i) => ({
+                    ...i,
+                    produto_ean: i.produtoEan,
+                    produto_referencia: i.produtoReferencia,
+                    created_at: i.createdAt,
+                })),
             }))
         );
     } catch (error) {
