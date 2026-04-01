@@ -19,8 +19,10 @@ export async function GET() {
                 cliente_nome: conf.cliente.nome,
                 report_snapshot: conf.reportSnapshot,
                 created_at: conf.createdAt,
-                finalizado_em: conf.finalizadoEm,
-                faturado_em: conf.faturadoEm,
+                finalizado_em: (conf as Record<string, unknown>).finalizadoEm,
+                faturado_em: (conf as Record<string, unknown>).faturadoEm,
+                operador_nome: (conf as Record<string, unknown>).operadorNome,
+                operador_id: (conf as Record<string, unknown>).operadorId,
             }))
         );
     } catch (error) {

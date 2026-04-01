@@ -112,6 +112,8 @@ model Conferencia {
   resumo         Json?
   reportSnapshot Json?     @map("report_snapshot")
   observacoes    String?
+  operadorId     String?   @map("operador_id") @db.VarChar(255)
+  operadorNome   String?   @map("operador_nome") @db.VarChar(255)
   faturado       Boolean?  @default(false)
   createdAt      DateTime  @default(now()) @map("created_at")
   finalizadoEm   DateTime? @map("finalizado_em")

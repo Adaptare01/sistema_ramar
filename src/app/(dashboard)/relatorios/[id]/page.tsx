@@ -30,6 +30,7 @@ interface ReportData {
         generatedAt: string;
     };
     observacoes: string | null;
+    operador_nome: string | null;
     faturado: boolean;
     created_at: string;
     finalizado_em: string | null;
@@ -160,6 +161,21 @@ export default function ReportDetailPage() {
                 <button onClick={() => window.print()} className="p-2 text-gray-400 hover:text-primary rounded-lg" title="Imprimir">
                     <Printer className="w-5 h-5" />
                 </button>
+            </div>
+
+            {/* Operator & Timestamps */}
+            <div className="card bg-gray-50 text-sm space-y-1">
+                {report.operador_nome && (
+                    <p className="text-gray-700">👤 <span className="font-medium">Operador:</span> {report.operador_nome}</p>
+                )}
+                <div className="flex items-center gap-4 text-gray-500 flex-wrap">
+                    {report.created_at && (
+                        <span>🟢 Início: {new Date(report.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} {new Date(report.created_at).toLocaleDateString('pt-BR')}</span>
+                    )}
+                    {report.finalizado_em && (
+                        <span>🏁 Final: {new Date(report.finalizado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} {new Date(report.finalizado_em).toLocaleDateString('pt-BR')}</span>
+                    )}
+                </div>
             </div>
 
             {/* Summary Cards */}

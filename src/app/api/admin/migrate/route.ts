@@ -6,8 +6,10 @@ export async function GET() {
         await prisma.$executeRawUnsafe(`ALTER TABLE conferencias ADD COLUMN IF NOT EXISTS finalizado_em TIMESTAMP`);
         await prisma.$executeRawUnsafe(`ALTER TABLE conferencias ADD COLUMN IF NOT EXISTS faturado_em TIMESTAMP`);
         await prisma.$executeRawUnsafe(`ALTER TABLE conferencias ADD COLUMN IF NOT EXISTS observacoes TEXT`);
+        await prisma.$executeRawUnsafe(`ALTER TABLE conferencias ADD COLUMN IF NOT EXISTS operador_id VARCHAR(255)`);
+        await prisma.$executeRawUnsafe(`ALTER TABLE conferencias ADD COLUMN IF NOT EXISTS operador_nome VARCHAR(255)`);
 
-        return NextResponse.json({ success: true, message: 'Migration applied: finalizado_em, faturado_em, observacoes added' });
+        return NextResponse.json({ success: true, message: 'Migration applied: finalizado_em, faturado_em, observacoes, operador_id, operador_nome' });
     } catch (error) {
         console.error('Migration error:', error);
         const msg = error instanceof Error ? error.message : 'Unknown error';

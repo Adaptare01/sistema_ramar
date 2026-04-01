@@ -16,6 +16,7 @@ interface Conferencia {
     status: string;
     resumo: { totalExpected: number; totalScanned: number; missing: number; excess: number; extra: number } | null;
     observacoes: string | null;
+    operador_nome: string | null;
     faturado: boolean;
     created_at: string;
     finalizado_em: string | null;
@@ -188,15 +189,20 @@ export default function RelatoriosPage() {
                                         <p className="text-xs text-gray-500 mt-0.5 truncate flex items-center gap-1">
                                             <span>📦</span> {conf.carga_nome}
                                         </p>
-                                        <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
-                                            {formatDate(displayDate) && (
+                                        {conf.operador_nome && (
+                                            <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                                <span>👤</span> <span className="font-medium">Operador:</span> {conf.operador_nome}
+                                            </p>
+                                        )}
+                                        <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400 flex-wrap">
+                                            {conf.created_at && (
                                                 <span className="flex items-center gap-1">
-                                                    📅 {formatDate(displayDate)}
+                                                    🟢 Início: {formatTime(conf.created_at)} {formatDate(conf.created_at)}
                                                 </span>
                                             )}
-                                            {formatTime(displayTime) && (
+                                            {conf.finalizado_em && (
                                                 <span className="flex items-center gap-1">
-                                                    🕐 {formatTime(displayTime)}
+                                                    🏁 Final: {formatTime(conf.finalizado_em)} {formatDate(conf.finalizado_em)}
                                                 </span>
                                             )}
                                         </div>

@@ -223,7 +223,14 @@ export default function ConferenciaPage() {
                 body: JSON.stringify({ cargaId, clienteId }),
             });
             const data = await res.json();
-            if (!res.ok) { alert(data.error); return; }
+            if (!res.ok) {
+                if (res.status === 423) {
+                    alert(`🔒 ${data.error}`);
+                } else {
+                    alert(data.error);
+                }
+                return;
+            }
             loadData();
         } catch (err) { console.error(err); }
     }
