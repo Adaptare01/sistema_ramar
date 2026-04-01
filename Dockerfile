@@ -29,6 +29,9 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
+# Ensure public directory exists
+RUN mkdir -p public
+
 RUN npx prisma generate
 RUN npm run build
 
