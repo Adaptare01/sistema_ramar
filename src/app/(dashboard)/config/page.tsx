@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Upload, Search, Edit2, Trash2, Save, X, UserPlus, Package } from 'lucide-react';
+import { Upload, Search, Edit2, Trash2, Save, X, UserPlus, Package, Shield, AlertTriangle } from 'lucide-react';
 
 interface Product {
     id: string;
@@ -10,14 +10,32 @@ interface Product {
     ean: string;
 }
 
+interface UserSession {
+    userId: string;
+    nome: string;
+    email: string;
+    perfil: string;
+}
+
 export default function ConfigPage() {
-    const [tab, setTab] = useState<'produtos' | 'usuarios'>('produtos');
+    const [tab, setTab] = useState<'produtos' | 'usuarios' | 'sistema'>('produtos');
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [editing, setEditing] = useState<string | null>(null);
     const [editForm, setEditForm] = useState({ descricao: '', ean: '' });
     const [uploading, setUploading] = useState(false);
+    const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
+
+    useEffect(() => {
+        // Buscar perfil do usuário logado
+        fetch('/api/auth/me')
+            .then(res => res.json())
+            .then(data => {
+                if (data.userId) setCurrentUser(data);
+            })
+            .catch(() => { });
+    }, []);
 
     useEffect(() => {
         if (tab === 'produtos') loadProducts();
@@ -104,6 +122,8 @@ export default function ConfigPage() {
             p.ean?.includes(search)
     );
 
+    const isSuperAdmin = currentUser?.perfil === 'SUPER_ADMIN';
+
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-bold text-gray-900">Configurações</h1>
@@ -126,6 +146,16 @@ export default function ConfigPage() {
                     <UserPlus className="w-4 h-4 inline mr-1" />
                     Usuários
                 </button>
+                {isSuperAdmin && (
+                    <button
+                        onClick={() => setTab('sistema')}
+                        className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${tab === 'sistema' ? 'bg-white shadow text-gray-900' : 'text-gray-500'
+                            }`}
+                    >
+                        <Shield className="w-4 h-4 inline mr-1" />
+                        Sistema
+                    </button>
+                )}
             </div>
 
             {tab === 'produtos' && (
@@ -243,10 +273,12 @@ export default function ConfigPage() {
             )}
 
             {tab === 'usuarios' && <UsersTab />}
+            {tab === 'sistema' && isSuperAdmin && <SystemTab />}
         </div>
     );
 }
 
+// ─── ABA USUÁRIOS ───────────────────────────────────────────
 function UsersTab() {
     const [users, setUsers] = useState<Array<{ id: string; nome: string; email: string; perfil: string; ativo: boolean }>>([]);
     const [loading, setLoading] = useState(true);
@@ -368,6 +400,162 @@ function UsersTab() {
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
+// ─── ABA SISTEMA (SUPER_ADMIN ONLY) ────────────────────────
+function SystemTab() {
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [resetting, setResetting] = useState(false);
+    const [result, setResult] = useState<{
+        success: boolean;
+        message: string;
+        deletados?: Record<string, number>;
+    } | null>(null);
+    const [confirmText, setConfirmText] = useState('');
+
+    async function handleReset() {
+        setResetting(true);
+        setResult(null);
+        try {
+            const res = await fetch('/api/admin/reset', { method: 'POST' });
+            const data = await res.json();
+            if (res.ok) {
+                setResult(data);
+                setShowConfirm(false);
+                setConfirmText('');
+            } else {
+                setResult({ success: false, message: data.error || 'Erro ao limpar sistema' });
+            }
+        } catch (err) {
+            console.error(err);
+            setResult({ success: false, message: 'Erro de conexão' });
+        } finally {
+            setResetting(false);
+        }
+    }
+
+    return (
+        <div className="space-y-4">
+            {/* Resultado da limpeza */}
+            {result && (
+                <div className={`p-4 rounded-lg border ${result.success
+                    ? 'bg-green-50 border-green-200 text-green-800'
+                    : 'bg-red-50 border-red-200 text-red-800'
+                    }`}>
+                    <p className="font-medium text-sm">{result.success ? '✅' : '❌'} {result.message}</p>
+                    {result.success && result.deletados && (
+                        <div className="mt-2 text-xs space-y-1">
+                            <p>Registros excluídos:</p>
+                            <ul className="list-disc list-inside ml-2">
+                                {result.deletados.cargas > 0 && <li>{result.deletados.cargas} carga(s)</li>}
+                                {result.deletados.cargaItens > 0 && <li>{result.deletados.cargaItens} item(ns) de carga</li>}
+                                {result.deletados.clientes > 0 && <li>{result.deletados.clientes} cliente(s)</li>}
+                                {result.deletados.volumes > 0 && <li>{result.deletados.volumes} volume(s)</li>}
+                                {result.deletados.volumeItens > 0 && <li>{result.deletados.volumeItens} item(ns) de volume</li>}
+                                {result.deletados.conferencias > 0 && <li>{result.deletados.conferencias} conferência(s)</li>}
+                                {result.deletados.produtos > 0 && <li>{result.deletados.produtos} produto(s)</li>}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Zona de Perigo */}
+            <div className="border-2 border-red-200 rounded-lg overflow-hidden">
+                <div className="bg-red-50 px-4 py-3 border-b border-red-200">
+                    <div className="flex items-center gap-2">
+                        <AlertTriangle className="w-5 h-5 text-red-600" />
+                        <h3 className="font-semibold text-red-800">Zona de Perigo</h3>
+                    </div>
+                </div>
+
+                <div className="p-4 space-y-4">
+                    {/* Limpar Sistema */}
+                    <div className="flex items-start justify-between gap-4">
+                        <div>
+                            <p className="text-sm font-medium text-gray-900">Limpar Sistema</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Remove <strong>todos</strong> os dados operacionais: XMLs importados, cargas,
+                                clientes, volumes, conferências e produtos cadastrados.
+                            </p>
+                            <p className="text-xs text-green-700 mt-1 font-medium">
+                                ⚡ Usuários NÃO serão apagados.
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => setShowConfirm(true)}
+                            className="shrink-0 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                            Limpar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Modal de Confirmação */}
+            {showConfirm && (
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                                <AlertTriangle className="w-6 h-6 text-red-600" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900">Tem certeza?</h3>
+                                <p className="text-sm text-gray-500">Esta ação NÃO pode ser desfeita.</p>
+                            </div>
+                        </div>
+
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800">
+                            <p className="font-medium mb-2">Serão apagados permanentemente:</p>
+                            <ul className="list-disc list-inside space-y-1 text-xs">
+                                <li>Todas as cargas e XMLs importados</li>
+                                <li>Todos os itens de carga</li>
+                                <li>Todos os clientes</li>
+                                <li>Todos os volumes e itens bipados</li>
+                                <li>Todas as conferências finalizadas</li>
+                                <li>Todos os produtos cadastrados</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <label className="text-sm text-gray-700 block mb-1">
+                                Digite <strong className="text-red-600">LIMPAR</strong> para confirmar:
+                            </label>
+                            <input
+                                type="text"
+                                value={confirmText}
+                                onChange={(e) => setConfirmText(e.target.value)}
+                                placeholder="LIMPAR"
+                                className="input-field text-center font-mono tracking-widest"
+                                autoFocus
+                            />
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => {
+                                    setShowConfirm(false);
+                                    setConfirmText('');
+                                }}
+                                className="flex-1 py-2 px-4 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={handleReset}
+                                disabled={confirmText !== 'LIMPAR' || resetting}
+                                className="flex-1 py-2 px-4 bg-red-600 hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors"
+                            >
+                                {resetting ? 'Limpando...' : 'Sim, limpar tudo'}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

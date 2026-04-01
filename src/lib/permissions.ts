@@ -21,6 +21,9 @@ export const PERMISSIONS = {
     // Configurações
     VIEW_CONFIG: ['SUPER_ADMIN', 'ADMIN'] as Role[],
     MANAGE_PRODUCTS: ['SUPER_ADMIN', 'ADMIN', 'SUPERVISOR'] as Role[],
+
+    // Administração do Sistema
+    RESET_SYSTEM: ['SUPER_ADMIN'] as Role[],
 };
 
 export function can(userRole: Role, permission: keyof typeof PERMISSIONS): boolean {
