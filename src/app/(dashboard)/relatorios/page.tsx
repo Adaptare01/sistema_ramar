@@ -231,6 +231,11 @@ export default function RelatoriosPage() {
                                                         FATURADO
                                                     </span>
                                                 )}
+                                                {conf.faturado_em && (
+                                                    <span className="text-xs text-green-600">
+                                                        💰 {formatTime(conf.faturado_em)} {formatDate(conf.faturado_em)}
+                                                    </span>
+                                                )}
                                             </>
                                         )}
 
