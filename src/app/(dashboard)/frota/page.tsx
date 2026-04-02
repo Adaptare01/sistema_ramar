@@ -55,6 +55,7 @@ export default function FrotaPage() {
 
     // Viagem form
     const [showViagemForm, setShowViagemForm] = useState(false);
+    const [editViagemId, setEditViagemId] = useState<string | null>(null);
     const [vCaminhaoId, setVCaminhaoId] = useState('');
     const [vData, setVData] = useState(new Date().toISOString().split('T')[0]);
     const [vKmSaida, setVKmSaida] = useState('');
@@ -112,11 +113,22 @@ export default function FrotaPage() {
 
     // ─── Viagem CRUD ───
     function openNewViagem() {
+        setEditViagemId(null);
         setVCaminhaoId(caminhoes[0]?.id || '');
         setVData(new Date().toISOString().split('T')[0]);
         setVKmSaida('');
         setVKmChegada('');
         setVObs('');
+        setShowViagemForm(true);
+    }
+
+    function openEditViagem(v: ViagemData) {
+        setEditViagemId(v.id);
+        setVCaminhaoId(v.caminhaoId);
+        setVData(new Date(v.data).toISOString().split('T')[0]);
+        setVKmSaida(String(v.kmSaida));
+        setVKmChegada(v.kmChegada !== null ? String(v.kmChegada) : '');
+        setVObs(v.observacoes || '');
         setShowViagemForm(true);
     }
 
@@ -128,10 +140,13 @@ export default function FrotaPage() {
             kmChegada: vKmChegada ? parseFloat(vKmChegada) : null,
             observacoes: vObs,
         };
-        const res = await fetch('/api/viagens', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const url = editViagemId ? `/api/viagens/${editViagemId}` : '/api/viagens';
+        const method = editViagemId ? 'PUT' : 'POST';
+        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         const data = await res.json();
         if (!res.ok) { alert(data.error); return; }
         setShowViagemForm(false);
+        setEditViagemId(null);
         loadAll();
     }
 
@@ -298,9 +313,14 @@ export default function FrotaPage() {
                                                 </div>
                                                 {v.observacoes && <p className="text-xs text-gray-400 mt-0.5">{v.observacoes}</p>}
                                             </div>
-                                            <button onClick={() => deleteViagem(v.id)} className="p-1.5 text-gray-400 hover:text-red-500">
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
+                                            <div className="flex gap-1">
+                                                <button onClick={() => openEditViagem(v)} className="p-1.5 text-gray-400 hover:text-primary rounded" title="Editar">
+                                                    <Edit2 className="w-4 h-4" />
+                                                </button>
+                                                <button onClick={() => deleteViagem(v.id)} className="p-1.5 text-gray-400 hover:text-red-500 rounded" title="Excluir">
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -467,7 +487,7 @@ export default function FrotaPage() {
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 space-y-4">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-lg font-bold">Registrar Viagem</h2>
+                            <h2 className="text-lg font-bold">{editViagemId ? 'Editar Viagem' : 'Registrar Viagem'}</h2>
                             <button onClick={() => setShowViagemForm(false)}><X className="w-5 h-5 text-gray-400" /></button>
                         </div>
                         <div className="space-y-3">

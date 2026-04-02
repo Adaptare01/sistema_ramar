@@ -4,8 +4,13 @@ import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
     ClipboardCheck, Search, FileText, CheckCircle, AlertTriangle,
-    DollarSign, Clock, Loader2
+    DollarSign, Clock, Loader2, Filter
 } from 'lucide-react';
+
+const MESES = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+];
 
 interface Conferencia {
     id: string;
@@ -38,6 +43,8 @@ export default function RelatoriosPage() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [activeTab, setActiveTab] = useState<TabKey>('finalizadas');
+    const [filterMes, setFilterMes] = useState('');
+    const [filterAno, setFilterAno] = useState('');
 
     useEffect(() => {
         loadConferencias();
@@ -73,12 +80,29 @@ export default function RelatoriosPage() {
         return c.resumo && (c.resumo.missing > 0 || c.resumo.excess > 0 || c.resumo.extra > 0);
     }
 
+    const currentYear = new Date().getFullYear();
+    const yearOptions = [currentYear, currentYear - 1, currentYear - 2];
+    const hasDateFilter = filterMes || filterAno;
+
     // Filtered lists
-    const searchFiltered = conferencias.filter(
-        (c) =>
+    const searchFiltered = conferencias.filter((c) => {
+        // Search filter
+        const matchSearch =
             c.cliente_nome?.toLowerCase().includes(search.toLowerCase()) ||
-            c.carga_nome?.toLowerCase().includes(search.toLowerCase())
-    );
+            c.carga_nome?.toLowerCase().includes(search.toLowerCase());
+        if (!matchSearch) return false;
+
+        // Date filter (use finalizado_em for finalizadas, created_at for em_andamento)
+        if (filterMes || filterAno) {
+            const dateStr = c.finalizado_em || c.created_at;
+            if (!dateStr) return false;
+            const d = new Date(dateStr);
+            if (filterAno && d.getFullYear() !== parseInt(filterAno)) return false;
+            if (filterMes && (d.getMonth() + 1) !== parseInt(filterMes)) return false;
+        }
+
+        return true;
+    });
 
     const counts = useMemo(() => ({
         finalizadas: conferencias.filter(c => c.status === 'FINALIZADA').length,
@@ -134,16 +158,49 @@ export default function RelatoriosPage() {
                 ))}
             </div>
 
-            {/* Search */}
-            <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                    type="text"
-                    placeholder="Buscar por cliente ou carga..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="input-field pl-10"
-                />
+            {/* Filters */}
+            <div className="flex items-center gap-3 flex-wrap">
+                <div className="relative flex-1 min-w-[200px]">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Buscar por cliente ou carga..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="input-field pl-10"
+                    />
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                    <Filter className="w-4 h-4 text-gray-400" />
+                    <select
+                        value={filterMes}
+                        onChange={e => setFilterMes(e.target.value)}
+                        className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    >
+                        <option value="">Todos os meses</option>
+                        {MESES.map((m, i) => (
+                            <option key={i} value={String(i + 1)}>{m}</option>
+                        ))}
+                    </select>
+                    <select
+                        value={filterAno}
+                        onChange={e => setFilterAno(e.target.value)}
+                        className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    >
+                        <option value="">Todos os anos</option>
+                        {yearOptions.map(y => (
+                            <option key={y} value={String(y)}>{y}</option>
+                        ))}
+                    </select>
+                    {hasDateFilter && (
+                        <button
+                            onClick={() => { setFilterMes(''); setFilterAno(''); }}
+                            className="text-xs text-primary hover:underline font-medium"
+                        >
+                            Limpar
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Loading */}

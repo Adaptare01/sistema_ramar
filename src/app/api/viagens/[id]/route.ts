@@ -7,10 +7,16 @@ export async function PUT(
 ) {
     const { id } = await params;
     try {
-        const { kmChegada } = await req.json();
+        const { caminhaoId, data, kmSaida, kmChegada, observacoes } = await req.json();
         const viagem = await prisma.viagem.update({
             where: { id },
-            data: { kmChegada },
+            data: {
+                ...(caminhaoId !== undefined && { caminhaoId }),
+                ...(data !== undefined && { data: new Date(data) }),
+                ...(kmSaida !== undefined && { kmSaida }),
+                ...(kmChegada !== undefined && { kmChegada }),
+                ...(observacoes !== undefined && { observacoes: observacoes?.trim() || null }),
+            },
         });
         return NextResponse.json({ success: true, viagem });
     } catch (error) {
