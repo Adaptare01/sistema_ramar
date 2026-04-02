@@ -123,3 +123,28 @@ model Conferencia {
 
   @@map("conferencias")
 }
+
+model Caminhao {
+  id        String   @id @default(uuid())
+  placa     String   @unique @db.VarChar(10)
+  modelo    String?  @db.VarChar(100)
+  condutor  String?  @db.VarChar(255)
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  viagens   Viagem[]
+
+  @@map("caminhoes")
+}
+
+model Viagem {
+  id           String   @id @default(uuid())
+  caminhaoId   String   @map("caminhao_id")
+  data         DateTime
+  kmSaida      Decimal  @map("km_saida")
+  kmChegada    Decimal? @map("km_chegada")
+  observacoes  String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  caminhao     Caminhao @relation(fields: [caminhaoId], references: [id])
+
+  @@map("viagens")
+}

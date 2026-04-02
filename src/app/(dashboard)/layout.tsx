@@ -10,6 +10,7 @@ import {
     LogOut,
     Menu,
     X,
+    MapPin,
 } from 'lucide-react';
 
 interface UserSession {
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
     { id: 'dashboard', label: 'Início', href: '/dashboard', icon: LayoutDashboard, roles: ['SUPER_ADMIN', 'ADMIN', 'SUPERVISOR', 'OPERADOR'] },
     { id: 'cargas', label: 'Cargas', href: '/cargas', icon: Truck, roles: ['SUPER_ADMIN', 'ADMIN', 'SUPERVISOR', 'OPERADOR'] },
     { id: 'relatorios', label: 'Relatórios', href: '/relatorios', icon: ClipboardCheck, roles: ['SUPER_ADMIN', 'ADMIN', 'SUPERVISOR'] },
+    { id: 'frota', label: 'Frota', href: '/frota', icon: MapPin, roles: ['SUPER_ADMIN', 'ADMIN'] },
     { id: 'config', label: 'Config', href: '/config', icon: Settings, roles: ['SUPER_ADMIN', 'ADMIN'] },
 ];
 
