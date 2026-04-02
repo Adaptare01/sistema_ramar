@@ -1,10 +1,15 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import {
     Truck, Plus, Edit2, Trash2, MapPin, Calendar, Loader2,
-    X, Save, BarChart3
+    X, Save, BarChart3, Filter
 } from 'lucide-react';
+
+const MESES = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+];
 
 interface CaminhaoData {
     id: string;
@@ -42,6 +47,11 @@ export default function FrotaPage() {
     const [formPlaca, setFormPlaca] = useState('');
     const [formModelo, setFormModelo] = useState('');
     const [formCondutor, setFormCondutor] = useState('');
+
+    // Relatório filters
+    const [rCaminhaoId, setRCaminhaoId] = useState('');
+    const [rMes, setRMes] = useState('');
+    const [rAno, setRAno] = useState('');
 
     // Viagem form
     const [showViagemForm, setShowViagemForm] = useState(false);
@@ -131,12 +141,39 @@ export default function FrotaPage() {
         loadAll();
     }
 
-    // ─── Relatório ───
-    const viagensByTruck = caminhoes.map(c => {
-        const trips = viagens.filter(v => v.caminhaoId === c.id);
-        const totalKm = trips.reduce((acc, v) => acc + (v.kmPercorrido || 0), 0);
-        return { ...c, trips, totalKm };
-    }).filter(c => c.trips.length > 0);
+    // ─── Relatório (com filtros) ───
+    const currentYear = new Date().getFullYear();
+    const yearOptions = [currentYear, currentYear - 1, currentYear - 2];
+    const hasRelFilter = rCaminhaoId || rMes || rAno;
+
+    const viagensByTruck = useMemo(() => {
+        // First filter viagens by date
+        let filtered = viagens;
+        if (rMes || rAno) {
+            filtered = viagens.filter(v => {
+                const d = new Date(v.data);
+                if (rAno && d.getFullYear() !== parseInt(rAno)) return false;
+                if (rMes && (d.getMonth() + 1) !== parseInt(rMes)) return false;
+                return true;
+            });
+        }
+
+        // Then filter by caminhao
+        const truckList = rCaminhaoId
+            ? caminhoes.filter(c => c.id === rCaminhaoId)
+            : caminhoes;
+
+        return truckList.map(c => {
+            const trips = filtered.filter(v => v.caminhaoId === c.id);
+            const totalKm = trips.reduce((acc, v) => acc + (v.kmPercorrido || 0), 0);
+            return { ...c, trips, totalKm };
+        }).filter(c => c.trips.length > 0);
+    }, [viagens, caminhoes, rCaminhaoId, rMes, rAno]);
+
+    const totalGeralKm = useMemo(() =>
+        viagensByTruck.reduce((acc, t) => acc + t.totalKm, 0),
+        [viagensByTruck]
+    );
 
     const TABS: { key: Tab; label: string }[] = [
         { key: 'caminhoes', label: 'Caminhões' },
@@ -274,6 +311,66 @@ export default function FrotaPage() {
                     {/* ═══════ TAB: RELATÓRIO ═══════ */}
                     {tab === 'relatorio' && (
                         <div className="space-y-4">
+                            {/* Filtros */}
+                            <div className="card">
+                                <div className="flex items-center gap-3 flex-wrap">
+                                    <Filter className="w-4 h-4 text-gray-400" />
+                                    <span className="text-sm font-medium text-gray-600">Filtros:</span>
+
+                                    <select
+                                        value={rCaminhaoId}
+                                        onChange={e => setRCaminhaoId(e.target.value)}
+                                        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                    >
+                                        <option value="">Todos os caminhões</option>
+                                        {caminhoes.map(c => (
+                                            <option key={c.id} value={c.id}>{c.placa} - {c.condutor || c.modelo || ''}</option>
+                                        ))}
+                                    </select>
+
+                                    <select
+                                        value={rMes}
+                                        onChange={e => setRMes(e.target.value)}
+                                        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                    >
+                                        <option value="">Todos os meses</option>
+                                        {MESES.map((m, i) => (
+                                            <option key={i} value={String(i + 1)}>{m}</option>
+                                        ))}
+                                    </select>
+
+                                    <select
+                                        value={rAno}
+                                        onChange={e => setRAno(e.target.value)}
+                                        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                    >
+                                        <option value="">Todos os anos</option>
+                                        {yearOptions.map(y => (
+                                            <option key={y} value={String(y)}>{y}</option>
+                                        ))}
+                                    </select>
+
+                                    {hasRelFilter && (
+                                        <button
+                                            onClick={() => { setRCaminhaoId(''); setRMes(''); setRAno(''); }}
+                                            className="text-xs text-primary hover:underline font-medium"
+                                        >
+                                            Limpar filtros
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Total Geral */}
+                            {viagensByTruck.length > 0 && (
+                                <div className="card bg-primary/5 border border-primary/20 flex items-center justify-between">
+                                    <span className="text-sm font-medium text-gray-700">
+                                        🚛 {viagensByTruck.length} caminhão(ões) • {viagensByTruck.reduce((a, t) => a + t.trips.length, 0)} viagem(ns)
+                                    </span>
+                                    <span className="text-lg font-bold text-primary">{totalGeralKm.toLocaleString()} km total</span>
+                                </div>
+                            )}
+
                             {viagensByTruck.length === 0 ? (
                                 <div className="card text-center py-12">
                                     <BarChart3 className="w-12 h-12 text-gray-300 mx-auto mb-3" />
